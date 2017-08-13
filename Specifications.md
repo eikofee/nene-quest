@@ -1,29 +1,37 @@
 # Specifications
 
-(The list can be extended)
+*(The list can be extended)*
+
+## Gameplay
+
+Nene Quest is a 2D side-scrolling action game.
+The player must go through a succession of levels which increase in difficulty, with a boss at the end of each level.
 
 ## Player
 
-* The Player can move vertically
-* The Player can jump (?)
-* The Player can attack (short range)
-* The Player have a life bar
-* The Player can pick up items
+* Player character can move both horizontally and vertically
+* Player character can jump (?)
+* Player character can attack (short range)
+* Player character have a health bar
+* Player *may* have some kind of special attack, like a bomb (ref. sword icons near healthbar) 
+* Player character can pick up items by touching them
  
 
-## Ennemis
+## Enemies
 
 * Monsters : 
   - Pigs can run into you from front or behind
-  - Dragons can throw fire at you
+  - Dragons are supposed to be boss-type enemies
+  - Dragons can breath fire at player character (medium-range, must be dodged)
 
 * Obstacles : 
-  - Wodden barrel can hurt you if you run into them 
+  - Wodden barrel can hurt you if you run into them
 
 
 ## Map
 * Automatic horizontal scrolling
+* Enemies and items are randomly spawned through the level
 
 ## Items
 
-* Food items regenerate the player's life bar
+* Food items regenerate the player's health bar
