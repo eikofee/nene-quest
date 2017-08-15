@@ -10,6 +10,7 @@ class Menu : public Screen {
     public:
         Menu();
         virtual int run(sf::RenderWindow &app);
+        short int validateMenu(short int menuIndex);
 };
 
 #endif

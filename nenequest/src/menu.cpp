@@ -7,6 +7,15 @@ Menu::Menu() {
 	playing = false;
 }
 
+short int Menu::validateMenu(short int menuIndex) {
+    if (menuIndex == 0) {
+        playing = true;
+        return 1;
+    }
+    else
+        return (-1);
+}
+
 int Menu::run(RenderWindow &app) {
 	Event event;
 	bool running = true;
@@ -67,10 +76,14 @@ int Menu::run(RenderWindow &app) {
 
     // ---------------- Main Loop ----------------
 	while(running) {
+
+        Vector2i localPosition = Mouse::getPosition(app);
+
 		while(app.pollEvent(event)) {
-			if (event.type == Event::Closed) {
+			if (event.type == Event::Closed)
 				return (-1);
-			}
+
+            // Keyboard handling
 			if (event.type == Event::KeyPressed) {
 				switch (event.key.code) {
                     case Keyboard::Up:
@@ -80,19 +93,23 @@ int Menu::run(RenderWindow &app) {
                         menuIndex = (menuIndex+1)%menuButtons.size();
                         break;
                     case Keyboard::Return:
-                        if (menuIndex == 0) {
-                            playing = true;
-                            return 1;
-                        }
-                        else {
-                            return (-1);
-                        }
+                        return validateMenu(menuIndex);
                         break;
                     default:
                         break;
 				}
 				selector.setPosition(menuButtons[menuIndex]->getPosition());
 			}
+            // Mouse handling
+            if (event.type == Event::MouseMoved) {
+                for (int i=0; i<menuButtons.size(); i++) {
+                    if (menuButtons[i]->getGlobalBounds().contains((float)localPosition.x, (float)localPosition.y))
+                        menuIndex = i;
+                }
+                selector.setPosition(menuButtons[menuIndex]->getPosition());
+            }
+            if (event.type == Event::MouseButtonPressed)
+                return validateMenu(menuIndex);
 		}
 
 		app.clear(Color(252, 251, 253, 255));
