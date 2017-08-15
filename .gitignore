@@ -75,5 +75,7 @@ x64/Release/nene-quest.tlog/unsuccessfulbuild
 *.sln
 nene-quest.vcxproj
 *.filters
-/.vs/nene-quest/v15/Browse.VC.opendb
-/x64/Release
+/.vs/*
+/x64/*
+/nene-quest.vcxproj.user
+*.ilk
