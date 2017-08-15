@@ -66,3 +66,14 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/c++,windows,codeblocks
+
+# VS stuff
+*.pdb
+x64/Release/nene-quest.tlog/unsuccessfulbuild
+*.suo
+.vs/nene-quest/v15/Browse.VC.db
+*.sln
+nene-quest.vcxproj
+*.filters
+/.vs/nene-quest/v15/Browse.VC.opendb
+/x64/Release
