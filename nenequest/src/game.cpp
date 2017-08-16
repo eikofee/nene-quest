@@ -1,5 +1,6 @@
 #include "../headers/game.hpp"
 #include "../headers/lifebar.hpp"
+#include "../headers/randomCloud.hpp"
 
 using namespace std;
 using namespace sf;
@@ -15,6 +16,11 @@ int Game::run(RenderWindow &app) {
 	// LifeBar
     LifeBar life(100);
 	life.setPosition(300, 100);
+
+	//Test cloud
+	RandomCloud cloud;
+	cloud.setPosition(500, 500);
+	cloud.generateBorder();
 
     // ---------------- Main Loop ----------------
 	while(running) {
@@ -36,6 +42,7 @@ int Game::run(RenderWindow &app) {
 
 		app.clear(Color::White);
 		app.draw(life);
+		app.draw(cloud);
 		app.display();
 	}
 
