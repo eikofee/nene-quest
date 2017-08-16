@@ -2,6 +2,8 @@
 #include "../headers/lifebar.hpp"
 #include "../headers/randomCloud.hpp"
 #include "../headers/background.hpp"
+#include "../headers/enemy.hpp"
+#include "../headers/boar.hpp"
 
 using namespace std;
 using namespace sf;
@@ -26,6 +28,8 @@ int Game::run(RenderWindow &app) {
 	cloud.setPosition(500, 500);
 	cloud.generateBorder();
 
+	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x, app.getSize().y/2), Vector2f(-1,0));
+
     // ---------------- Main Loop ----------------
 	while(running) {
 		while(app.pollEvent(event)) {
@@ -35,6 +39,7 @@ int Game::run(RenderWindow &app) {
 			if (event.type == Event::KeyPressed) {
 				switch (event.key.code) {
                     case Keyboard::Up:
+                        boar1.stun();
                         break;
                     case Keyboard::Down:
                         break;
@@ -43,9 +48,11 @@ int Game::run(RenderWindow &app) {
 				}
 			}
 		}
+		boar1.move();
 
 		app.clear(Color::White);
         app.draw(background);
+		app.draw(boar1);
 		app.draw(life);
 		app.draw(cloud);
 		app.display();
