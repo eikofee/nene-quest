@@ -9,7 +9,8 @@ int main() {
 	vector<Screen*> screens;
 	int selectedScreen = 0;
 
-	RenderWindow app(VideoMode::getDesktopMode(), "Nene Quest", Style::Fullscreen);
+	RenderWindow app(VideoMode::getDesktopMode(), "Nene Quest", Style::Close | Style::Titlebar);
+
 
 	Menu s0;
 	screens.push_back(&s0);
