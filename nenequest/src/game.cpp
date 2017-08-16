@@ -1,4 +1,5 @@
 #include "../headers/game.hpp"
+#include "../headers/lifebar.hpp"
 
 using namespace std;
 using namespace sf;
@@ -10,6 +11,10 @@ Game::Game() {
 int Game::run(RenderWindow &app) {
 	Event event;
 	bool running = true;
+
+	// LifeBar
+    LifeBar life(100);
+	life.setPosition(300, 100);
 
     // ---------------- Main Loop ----------------
 	while(running) {
@@ -29,7 +34,8 @@ int Game::run(RenderWindow &app) {
 			}
 		}
 
-		app.clear(Color::Black);
+		app.clear(Color::White);
+		app.draw(life);
 		app.display();
 	}
 

@@ -1,4 +1,5 @@
 #include "../headers/menu.hpp"
+#include "../headers/lifebar.hpp"
 
 using namespace std;
 using namespace sf;
@@ -52,7 +53,7 @@ int Menu::run(RenderWindow &app) {
     exitText.setString(L"おわる");
     menuButtons.push_back(&exitText);
 
-    for (int i=0; i<menuButtons.size(); i++) {
+    for (unsigned int i=0; i<menuButtons.size(); i++) {
         Text* t = menuButtons[i];
         t->setFont(font);
         t->setCharacterSize(TEXT_SIZE);
@@ -102,7 +103,7 @@ int Menu::run(RenderWindow &app) {
 			}
             // Mouse handling
             if (event.type == Event::MouseMoved) {
-                for (int i=0; i<menuButtons.size(); i++) {
+                for (unsigned int i=0; i<menuButtons.size(); i++) {
                     if (menuButtons[i]->getGlobalBounds().contains((float)localPosition.x, (float)localPosition.y))
                         menuIndex = i;
                 }
