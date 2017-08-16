@@ -10,6 +10,8 @@
 - Les déclarations de variables *locales* se font sous le format abcDef
 - Les déclarations de variables *globales* se font sour le format AbcDef
 - Les déclarations de *constantes* se font sous le format ABC_DEF
+- Les déclarations de variables de *classes* se font sous le format abc_def
+- Les déclarations de *fonctions* se font sous le format AbcDef
 - Les commentaires doivent être rédigés en anglais
 - Le nom des fichiers se fait sous le format fichierFichier
 - Le placement des accolades se fait dans le style de Java `if (...) {`
