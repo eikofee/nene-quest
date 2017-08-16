@@ -1,6 +1,7 @@
 #include "../headers/game.hpp"
 #include "../headers/lifebar.hpp"
 #include "../headers/randomCloud.hpp"
+#include "../headers/background.hpp"
 
 using namespace std;
 using namespace sf;
@@ -16,6 +17,9 @@ int Game::run(RenderWindow &app) {
 	// LifeBar
     LifeBar life(100);
 	life.setPosition(300, 100);
+
+	// Background
+    Background background = Background(app.getSize());
 
 	//Test cloud
 	RandomCloud cloud;
@@ -41,6 +45,7 @@ int Game::run(RenderWindow &app) {
 		}
 
 		app.clear(Color::White);
+        app.draw(background);
 		app.draw(life);
 		app.draw(cloud);
 		app.display();
