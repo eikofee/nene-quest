@@ -7,7 +7,7 @@
 ## Conventions de programmation
 
 - Les identifiants doivent être en anglais
-- Les déclarations de variables *locales* se font sous le format abc_def
+- Les déclarations de variables *locales* se font sous le format abcDef
 - Les déclarations de variables *globales* se font sour le format AbcDef
 - Les déclarations de *constantes* se font sous le format ABC_DEF
 - Les commentaires doivent être rédigés en anglais
