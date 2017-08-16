@@ -20,6 +20,13 @@ int Game::run(RenderWindow &app) {
     LifeBar life(100);
 	life.setPosition(300, 100);
 
+	Texture knightHeadTex;
+	knightHeadTex.loadFromFile("img/icon_p1.png");
+	Sprite knightHead(knightHeadTex);
+	knightHead.setOrigin(knightHeadTex.getSize().x/2, knightHeadTex.getSize().x/2);
+	knightHead.setPosition(life.getPosition());
+	knightHead.move(-life.LIFEBAR_WIDTH/2, -10);
+
 	// Background
     Background background = Background(app.getSize());
 
@@ -54,6 +61,7 @@ int Game::run(RenderWindow &app) {
         app.draw(background);
 		app.draw(boar1);
 		app.draw(life);
+		app.draw(knightHead);
 		app.draw(cloud);
 		app.display();
 	}
