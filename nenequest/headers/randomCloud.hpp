@@ -20,14 +20,14 @@ class RandomCloud : public sf::Drawable, sf::Transformable {
 		RandomCloud();
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
 			target.draw(this->cloudBody);
-			for each (sf::CircleShape var in this->cloudBorder) {
+			for (sf::CircleShape var : this->cloudBorder) {
 				target.draw(var);
 			}
 		}
 
 		virtual void setPosition(float x, float y) {
 			this->cloudBody.setPosition(x, y);
-			for each (sf::CircleShape var in this->cloudBorder) {
+			for (sf::CircleShape var : this->cloudBorder) {
 				var.setPosition(x, y);
 			}
 		}
