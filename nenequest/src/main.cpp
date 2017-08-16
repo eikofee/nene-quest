@@ -16,7 +16,7 @@ int main() {
 	screens.push_back(&s0);
 	Game s1;
 	screens.push_back(&s1);
-
+	app.setFramerateLimit(60);
 	while (selectedScreen >= 0) {
 		selectedScreen = screens[selectedScreen]->run(app);
 	}
