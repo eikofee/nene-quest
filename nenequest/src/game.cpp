@@ -89,7 +89,7 @@ void Game::checkCollision(){
     for(unsigned int i = 0; i < players.size(); i++){
         for(unsigned int j = 0; j < enemies.size(); j++){
             if(players.at(i).detectHit(enemies.at(j))){
-                life.decrease(enemies.at(j).getAttackDamage());
+				;// life.decrease(enemies.at(j).getAttackDamage());
             }
         }
         /*for(int j = 0; j < onigiris.size(); j++){
