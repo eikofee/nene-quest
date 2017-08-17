@@ -4,6 +4,8 @@
 #include "../headers/background.hpp"
 #include "../headers/enemy.hpp"
 #include "../headers/boar.hpp"
+#include "../headers/dragon.hpp"
+
 
 using namespace std;
 using namespace sf;
@@ -35,7 +37,8 @@ int Game::run(RenderWindow &app) {
 	cloud.setPosition(500, 500);
 	cloud.generateBorder();
 
-	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x, app.getSize().y/2), Vector2f(-1,0));
+	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-6,0));
+	Dragon dragon = Dragon(Vector2f(1000,500));
 
     // ---------------- Main Loop ----------------
 	while(running) {
@@ -55,11 +58,13 @@ int Game::run(RenderWindow &app) {
 				}
 			}
 		}
-		boar1.move();
+		boar1.update();
+		dragon.update();
 
 		app.clear(Color::White);
         app.draw(background);
 		app.draw(boar1);
+		app.draw(dragon);
 		app.draw(life);
 		app.draw(knightHead);
 		app.draw(cloud);

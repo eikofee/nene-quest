@@ -11,6 +11,9 @@ class Enemy : public Entity
         virtual ~Enemy();
 
     protected:
+        short int hp;
+        sf::Clock clock;
+        int animation_state = 0;
 
     private:
 };
