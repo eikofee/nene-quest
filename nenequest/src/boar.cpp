@@ -50,7 +50,7 @@ void Boar::progressAnimation(){
 
     //Check if the boar is still in the screen
     if(hitbox.getGlobalBounds().left + hitbox.getGlobalBounds().width < 0 || hitbox.getGlobalBounds().left > window_size.x);
-        //destroy boar
+        //delete(this);
 
     if(hp < 0);
         //Destroy boar

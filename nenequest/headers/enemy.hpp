@@ -9,11 +9,14 @@ class Enemy : public MovableEntity
     public:
         Enemy();
         virtual ~Enemy();
+        short int getAttackDamage();
 
     protected:
         short int hp;
         sf::Clock clock;
-        int animation_state = 0;
+        short int animation_state = 0;
+        short int attack_damage;
+
 
     private:
 };

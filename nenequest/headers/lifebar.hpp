@@ -13,6 +13,7 @@ class LifeBar : public sf::Drawable, sf::Transformable {
         static const int LIFEBAR_WIDTH = 350;
         static const int LIFEBAR_HEIGHT = 35;
         LifeBar(short int max);
+        LifeBar();
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
             target.draw(this->background);
             target.draw(this->bar);
