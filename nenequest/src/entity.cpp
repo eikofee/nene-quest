@@ -23,25 +23,3 @@ void Entity::setPosition(int x, int y)
 	hitbox.setPosition(x,y);
 }
 
-void Entity::setSpeed(sf::Vector2f g_speed){
-
-	speed = g_speed;
-}
-
-Vector2f Entity::getSpeed(){
-
-    return speed;
-}
-
- void Entity::move(float elapsedTime){
-
-
- 	hitbox.move(speed.x * elapsedTime, speed.y*elapsedTime);
- 	sprite.move(speed.x * elapsedTime, speed.y*elapsedTime);
- }
-
-  void Entity::move(Vector2f g_speed, float elapsedTime){
-
- 	hitbox.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
- 	sprite.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
- }
