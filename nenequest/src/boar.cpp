@@ -1,7 +1,6 @@
 #include "../headers/boar.hpp"
 #include <SFML/Graphics.hpp>
 
-#include<stdio.h>
 using namespace sf;
 
 Boar::Boar(Vector2u windowSize, Vector2f position, Vector2f g_speed){
@@ -33,16 +32,16 @@ void Boar::progressAnimation(){
     }
 }
 
- void Boar::update() {
+ void Boar::update(float elapsedTime) {
 
-     if(clock.getElapsedTime().asSeconds() > 0.2){
+     if(clock.getElapsedTime().asSeconds() > 0.1){
         progressAnimation();
         clock.restart();
      }
-    this->move();
+
     //Move the boar if he isn't stunned
     if(!is_stunned){
-        this->move();
+        this->move(elapsedTime);
     }
     else{
         if(--stun_timer <= 0)

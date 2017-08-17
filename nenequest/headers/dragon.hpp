@@ -10,7 +10,7 @@ class Dragon : public Enemy {
     public:
         Dragon(sf::Vector2f position = sf::Vector2f(0,0));
         virtual ~Dragon();
-        void update();
+        void update(float elapsedTime);
 
     protected:
 

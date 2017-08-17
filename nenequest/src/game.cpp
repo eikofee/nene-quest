@@ -18,6 +18,7 @@ int Game::run(RenderWindow &app) {
 	Event event;
 	bool running = true;
 
+
 	// LifeBar
     LifeBar life(100);
 	life.setPosition(300, 100);
@@ -37,11 +38,17 @@ int Game::run(RenderWindow &app) {
 	cloud.setPosition(500, 500);
 	cloud.generateBorder();
 
-	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-6,0));
+	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-1,0));
 	Dragon dragon = Dragon(Vector2f(1000,500));
+
+    //Clock
+	Clock clock;
 
     // ---------------- Main Loop ----------------
 	while(running) {
+
+    float elapsedTime = clock.restart().asMilliseconds();
+
 		while(app.pollEvent(event)) {
 			if (event.type == Event::Closed) {
 				return (-1);
@@ -58,8 +65,9 @@ int Game::run(RenderWindow &app) {
 				}
 			}
 		}
-		boar1.update();
-		dragon.update();
+
+		boar1.update(elapsedTime);
+		dragon.update(elapsedTime);
 
 		app.clear(Color::White);
         app.draw(background);
@@ -69,6 +77,7 @@ int Game::run(RenderWindow &app) {
 		app.draw(knightHead);
 		app.draw(cloud);
 		app.display();
+
 	}
 
 	return (-1);

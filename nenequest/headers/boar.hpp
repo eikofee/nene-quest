@@ -10,7 +10,7 @@ class Boar : public Enemy {
     public:
         Boar(sf::Vector2u windowSize, sf::Vector2f position = sf::Vector2f(0,0), sf::Vector2f g_speed = sf::Vector2f(-10,0));
         virtual ~Boar();
-        void update();
+        void update(float elapsedTime);
         void stun();
 
     protected:
