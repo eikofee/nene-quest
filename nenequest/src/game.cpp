@@ -69,13 +69,20 @@ int Game::run(RenderWindow &app) {
 		boar1.update(elapsedTime);
 		dragon.update(elapsedTime);
 
+
 		app.clear(Color::White);
         app.draw(background);
 		app.draw(boar1);
 		app.draw(dragon);
 		app.draw(life);
 		app.draw(knightHead);
-		app.draw(cloud);
+
+		//Test cloud part 2
+		cloud.update();
+		if (cloud.isAlive())
+			app.draw(cloud);
+		
+		
 		app.display();
 
 	}
