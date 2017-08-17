@@ -8,8 +8,10 @@ Enemy::Enemy(){
 
 }
 
-Enemy::~Enemy()
-{
+Enemy::~Enemy() {
     //dtor
 }
 
+short int Enemy::getAttackDamage(){
+    return attack_damage;
+}

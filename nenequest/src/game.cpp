@@ -1,11 +1,4 @@
 #include "../headers/game.hpp"
-#include "../headers/lifebar.hpp"
-#include "../headers/randomCloud.hpp"
-#include "../headers/background.hpp"
-#include "../headers/enemy.hpp"
-#include "../headers/boar.hpp"
-#include "../headers/dragon.hpp"
-
 
 using namespace std;
 using namespace sf;
@@ -20,7 +13,7 @@ int Game::run(RenderWindow &app) {
 
 
 	// LifeBar
-    LifeBar life(100);
+    life = LifeBar(100);
 	life.setPosition(300, 100);
 
 	Texture knightHeadTex;
@@ -88,4 +81,26 @@ int Game::run(RenderWindow &app) {
 	}
 
 	return (-1);
+}
+
+//Collision detection
+void Game::checkCollision(){
+
+    for(unsigned int i = 0; i < players.size(); i++){
+        for(unsigned int j = 0; j < enemies.size(); j++){
+            if(players.at(i).detectHit(enemies.at(j))){
+                life.decrease(enemies.at(j).getAttackDamage());
+            }
+        }
+        /*for(int j = 0; j < onigiris.size(); j++){
+            if(players.at(i)->detectHit(enemies.at(j))){
+                life.decrease(enemies.at(j).getAttackDamage());
+            }
+        }
+        for(int j = 0; j < weapons.size(); j++){
+            if(players.at(i)->detectHit(enemies.at(j))){
+
+            }
+        }*/
+    }
 }

@@ -4,6 +4,10 @@
 using namespace std;
 using namespace sf;
 
+LifeBar::LifeBar(){
+
+}
+
 LifeBar::LifeBar(short int max) {
     this->max = max;
     this->value = this->max;
