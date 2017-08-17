@@ -34,9 +34,9 @@ int Game::run(RenderWindow &app) {
     Background background = Background(app.getSize());
 
 	//Test cloud
-	RandomCloud cloud;
-	cloud.setPosition(500, 500);
-	cloud.generateBorder();
+	//RandomCloud cloud;
+	//cloud.setPosition(500, 500);
+	//cloud.generateBorder();
 
 	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-1,0));
 	Dragon dragon = Dragon(Vector2f(1000,500));
@@ -68,7 +68,7 @@ int Game::run(RenderWindow &app) {
 
 		boar1.update(elapsedTime);
 		dragon.update(elapsedTime);
-
+		background.update();
 
 		app.clear(Color::White);
         app.draw(background);
@@ -78,9 +78,9 @@ int Game::run(RenderWindow &app) {
 		app.draw(knightHead);
 
 		//Test cloud part 2
-		cloud.update();
-		if (cloud.isAlive())
-			app.draw(cloud);
+		//cloud.update();
+		//if (cloud.isAlive())
+		//	app.draw(cloud);
 		
 		
 		app.display();

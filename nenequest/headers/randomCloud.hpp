@@ -18,6 +18,7 @@ class RandomCloud : public sf::Drawable, sf::Transformable {
 		sf::RectangleShape cloudBody;
 		std::list<sf::CircleShape> cloudBorder;
 		sf::Clock clock;
+		sf::Vector2f position;
 		bool alive = true;
 
 	public:
@@ -30,15 +31,22 @@ class RandomCloud : public sf::Drawable, sf::Transformable {
 		}
 
 		virtual void setPosition(float x, float y) {
-			this->cloudBody.setPosition(x, y);
+			this->position.x = x;
+			this->position.y = y;
+			this->setPosition();
+		}
+
+		virtual void setPosition() {
+			this->cloudBody.setPosition(this->position);
 			for (sf::CircleShape var : this->cloudBorder) {
-				var.setPosition(x, y);
+				var.setPosition(this->position);
 			}
 		}
 
 		void generateBorder();
 		void update();
 		bool isAlive();
+		void translate(float x, float y);
 };
 
 #endif

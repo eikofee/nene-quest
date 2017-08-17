@@ -38,3 +38,9 @@ void RandomCloud::update() {
 bool RandomCloud::isAlive() {
 	return this->alive;
 }
+
+void RandomCloud::translate(float x, float y) {
+	this->position.x += x;
+	this->position.y += y;
+	this->setPosition();
+}
