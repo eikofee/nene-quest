@@ -13,8 +13,12 @@ class RandomCloud : public sf::Drawable, sf::Transformable {
 		static const int BORDER_SIZE_MIN = 30;
 		static const int BORDER_SIZE_MAX = 45;
 		static const int BORDER_NUMBER = 12;
+		static const int BORDER_VARI = 10;
+		static const int LIFETIME = 10;
 		sf::RectangleShape cloudBody;
 		std::list<sf::CircleShape> cloudBorder;
+		sf::Clock clock;
+		bool alive = true;
 
 	public:
 		RandomCloud();
@@ -33,6 +37,8 @@ class RandomCloud : public sf::Drawable, sf::Transformable {
 		}
 
 		void generateBorder();
+		void update();
+		bool isAlive();
 };
 
 #endif
