@@ -36,8 +36,8 @@ int Game::run(RenderWindow &app) {
 
 	Dragon dragon = Dragon(Vector2f(1000,200));
 	BonusHp onigiri = BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
-    ItemWeapon sword = ItemWeapon(ItemWeapon::SWORD, Vector2f(700,840));
-    ItemWeapon axe = ItemWeapon(ItemWeapon::AXE, Vector2f(520,630));
+    ItemWeapon sword = ItemWeapon(Sword, Vector2f(700,840));
+    ItemWeapon axe = ItemWeapon(Axe, Vector2f(520,630));
 
     //Clock
 	Clock clock;
