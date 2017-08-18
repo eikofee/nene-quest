@@ -10,6 +10,9 @@
 #include "../headers/boar.hpp"
 #include "../headers/dragon.hpp"
 #include "../headers/player.hpp"
+#include "bonusHp.hpp"
+#include "../headers/itemWeapon.hpp"
+
 
 
 class Game : public Screen {
@@ -22,6 +25,7 @@ class Game : public Screen {
 
         std::vector<Enemy> enemies;
         std::vector<Player> players;
+        std::vector<BonusHp> bonuses_hp;
         LifeBar life;
 
 };
