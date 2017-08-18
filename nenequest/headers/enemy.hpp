@@ -18,6 +18,7 @@ class Enemy : public MovableEntity
         short int attack_damage;
 
 
+
     private:
 };
 

@@ -52,6 +52,7 @@ int Game::run(RenderWindow &app) {
 			if (event.type == Event::KeyPressed) {
 				switch (event.key.code) {
                     case Keyboard::Up:
+                        dragon.breathFire();
                         boar1.stun();
                         break;
                     case Keyboard::Down:

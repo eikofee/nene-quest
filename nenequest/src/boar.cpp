@@ -7,7 +7,7 @@ Boar::Boar(Vector2u windowSize, Vector2f position, Vector2f g_speed){
 
 	texture.loadFromFile("img/enemy_boar_anim.png");
 	sprite.setTexture(texture);
-    sprite.setTextureRect(IntRect(0,0,256,256));
+    sprite.setTextureRect(IntRect(0,0,texture.getSize().x,texture.getSize().y/2));
     sprite.setPosition(position);
 
 	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
@@ -24,11 +24,11 @@ Boar::~Boar(){
 void Boar::progressAnimation(){
     if(animation_state == 0){
         animation_state = 1;
-        sprite.setTextureRect(IntRect(0,256,256,512));
+        sprite.setTextureRect(IntRect(0,texture.getSize().y/2,texture.getSize().x,texture.getSize().y));
     }
     else{
         animation_state = 0;
-        sprite.setTextureRect(IntRect(0,0,256,256));
+        sprite.setTextureRect(IntRect(0,0,texture.getSize().x,texture.getSize().y/2));
     }
 }
 
