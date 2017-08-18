@@ -19,13 +19,16 @@ Background::Background(Vector2u v) {
 }
 
 void Background::update() {
-	for (int i = 0; i < this->clouds.size(); i++) {
-		auto c = this->clouds.at(i);
-		c.update();
-		if (c.isAlive())
-			this->clouds.at(i).translate(-3, 0);
+	std::vector<RandomCloud>::iterator i = this->clouds.begin();
+	while (i != this->clouds.end()) {
+		bool active = (*i).isAlive();
+		if (active)
+		{
+			(*i).translate(-3, 0);
+			++i;
+		}
 		else
-			this->clouds.erase(clouds.begin() + i);
+			this->clouds.erase(i++);
 	}
 
 	this->createClouds();
