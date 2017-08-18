@@ -8,7 +8,7 @@ Flame::Flame()
 }
 
 Flame::Flame(Vector2f position, float f){
-    loc = position;
+    initial_location = position;
     fact = f;
 
 	texture.loadFromFile("img/icon_fire.png");
@@ -25,13 +25,13 @@ Flame::Flame(Vector2f position, float f){
 }
 
 void Flame::update(float elapsedTime){
-    float x = (this->getPosition().x - loc.x) / 25;
+    float x = (this->getPosition().x - initial_location.x) / 25;
 
-    lifeSpan += elapsedTime;
+    lifespan += elapsedTime;
 
-    this->setPosition(this->getPosition().x + elapsedTime*speed.x/10,loc.y + 2*fact *sin(lifeSpan/(9*fact)));
+    this->setPosition(this->getPosition().x + elapsedTime*speed.x/10,initial_location.y + 2*fact *sin(lifespan/(9*fact)));
 
-    if(cos(lifeSpan/(9*fact)) > 0 && sprite.getScale().x <= 1)
+    if(cos(lifespan/(9*fact)) > 0 && sprite.getScale().x <= 1)
         sprite.setScale(sprite.getScale().x + 0.01, sprite.getScale().y + 0.01);
     else{
         span_left += elapsedTime;

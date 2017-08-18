@@ -1,11 +1,11 @@
 #ifndef BONUSHP_H
 #define BONUSHP_H
 
-#include "../headers/movableEntity.hpp"
+#include "../headers/bonus.hpp"
 #include <SFML/Graphics.hpp>
 
 
-class BonusHp : public MovableEntity
+class BonusHp : public Bonus
 {
     public:
         static const short int ONIGIRI = 1;

@@ -19,7 +19,9 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 }
 
 Dragon::~Dragon(){
-    //dtor
+    for(int i = 0;i < flames.size();i++){
+        delete(flames.at(i));
+    }
 }
 
  void Dragon::update(float elapsedTime){

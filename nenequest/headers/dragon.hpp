@@ -22,7 +22,7 @@ class Dragon : public Enemy {
         int movement_timer = 0;
         bool fire_breathing = false;
         void progressAnimation();
-        short int flame_timer;
+        short int flame_timer = 0;
 };
 
 #endif // DRAGON_H

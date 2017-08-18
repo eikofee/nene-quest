@@ -15,9 +15,9 @@ class Flame : public MovableEntity {
 
     private :
         float span_left = 0;
-        float lifeSpan = 0;
+        float lifespan = 0;
         float fact;
-        sf::Vector2f loc;
+        sf::Vector2f initial_location;
         bool is_dead = false;
 };
 

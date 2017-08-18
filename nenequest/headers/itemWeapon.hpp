@@ -2,12 +2,12 @@
 #define ITEMWEAPON_H
 
 
-#include "../headers/movableEntity.hpp"
+#include "../headers/bonus.hpp"
 #include "../headers/weaponType.hpp"
 #include <SFML/Graphics.hpp>
 
 
-class ItemWeapon : public MovableEntity
+class ItemWeapon : public Bonus
 {
     public:
         ItemWeapon(WeaponType type, sf::Vector2f position);

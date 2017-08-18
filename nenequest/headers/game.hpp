@@ -14,6 +14,8 @@
 #include "../headers/itemWeapon.hpp"
 #include "../headers/flame.hpp"
 #include "../headers/weaponType.hpp"
+#include "../headers/breakableObject.hpp"
+#include "../headers/bonus.hpp"
 
 
 
@@ -32,7 +34,7 @@ class Game : public Screen {
         std::vector<BonusHp*> bonuses_hp;
         std::vector<ItemWeapon*> item_weapons;
 
-        static const int SCROLL_SPEED = -3;
+        static constexpr float SCROLL_SPEED = -0.1;
 
         LifeBar life;
 

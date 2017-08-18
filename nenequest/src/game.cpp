@@ -48,6 +48,12 @@ int Game::run(RenderWindow &app) {
     ItemWeapon sword = ItemWeapon(Sword, Vector2f(700,840));
     ItemWeapon axe = ItemWeapon(Axe, Vector2f(520,630));
 
+    bonuses_hp.push_back(&onigiri);
+    item_weapons.push_back(&axe);
+    item_weapons.push_back(&sword);
+
+    BreakableObject barrel = BreakableObject(Chest, Vector2f(520,630));
+
     //Clock
 	Clock clock;
 
@@ -118,6 +124,8 @@ int Game::run(RenderWindow &app) {
             player.move(Vector2f(-0.5, 0), elapsedTime);
 		}
 
+        scroll(elapsedTime);
+
 		boar1.update(elapsedTime);
 		dragon.update(elapsedTime);
 		background.update();
@@ -132,6 +140,7 @@ int Game::run(RenderWindow &app) {
 		app.draw(axe);
 		app.draw(sword);
         app.draw(player);
+        app.draw(barrel);
 
 		//Test cloud part 2
 		//cloud.update();
@@ -158,7 +167,8 @@ void Game::checkCollision(){
             if(players.at(i)->detectHit(*enemies.at(j))){
 
                 life.increase(bonuses_hp.at(j)->getHealedAmount());
-                bonuses_hp.erase(bonuses_hp.begin()+i);
+                delete(bonuses_hp.at(j));
+                bonuses_hp.erase(bonuses_hp.begin()+j);
             }
         }
         for(unsigned int j = 0; j < item_weapons.size(); j++){
@@ -166,7 +176,8 @@ void Game::checkCollision(){
 
                 //item_weapons.push_back(new ItemWeapon(players.at(i)->getEquippedWeapon, players.at(i)->getPosition()))
                 //player->equip();
-                item_weapons.erase(item_weapons.begin()+i);
+                delete(item_weapons.at(j));
+                item_weapons.erase(item_weapons.begin()+j);
 
             }
         }
@@ -175,8 +186,8 @@ void Game::checkCollision(){
 
  void Game::scroll(float elapsedTime){
     for(BonusHp* var : bonuses_hp)
-        var->move(Vector2f((float)SCROLL_SPEED, 0), elapsedTime);
+        var->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
     for(ItemWeapon* var : item_weapons)
-        var->move(Vector2f((float)SCROLL_SPEED, 0), elapsedTime);
+        var->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
 
  }

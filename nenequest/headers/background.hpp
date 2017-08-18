@@ -22,8 +22,8 @@ class Background : public sf::Drawable, sf::Transformable {
 		static const int MOUNTAIN_VAR_Y_OFFSET = 30;
 		std::vector<RandomCloud*> clouds;
 		std::vector<RandomMountain*> mountains;
-		float nextCloud =0;
-		float nextMountain=0;
+		float nextCloud = 0;
+		float nextMountain = 0;
 		sf::Clock cloudClock;
 		sf::Clock mountainClock;
 

@@ -6,6 +6,7 @@ BonusHp::BonusHp(short int bonusType, Vector2f position) {
 
     switch (bonusType) {
         case ONIGIRI:
+            bonus_type = Item_Onigiri;
             texture.loadFromFile("img/item_onigiri.png");
             sprite.setTexture(texture);
 
