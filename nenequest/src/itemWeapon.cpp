@@ -2,26 +2,13 @@
 
 using namespace sf;
 
-ItemWeapon::ItemWeapon(short int weaponType, Vector2f position) {
+ItemWeapon::ItemWeapon(WeaponType type, Vector2f position) {
 
-    switch (weaponType) {
-        case SWORD:
-            texture.loadFromFile("img/icon_sword.png");
-            sprite.setTexture(texture);
-            break;
-        case AXE:
-            texture.loadFromFile("img/obj_barrel.png");
-            sprite.setTexture(texture);
-            break;
-        case BOW:
-            texture.loadFromFile("img/obj_barrel.png");
-            sprite.setTexture(texture);
-            break;
-        default:
-            break;
-    }
+    weapon_type = type;
 
-    weapon_type = weaponType;
+    texture.loadFromFile(getWeaponPath(type));
+    sprite.setTexture(texture);
+
     this->setPosition(position.x, position.y);
 }
 
@@ -29,6 +16,6 @@ ItemWeapon::~ItemWeapon() {
     //dtor
 }
 
-short int ItemWeapon::getWeaponType(){
+WeaponType ItemWeapon::getWeaponType(){
     return weapon_type;
 }

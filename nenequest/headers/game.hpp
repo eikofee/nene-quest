@@ -13,6 +13,7 @@
 #include "../headers/bonusHp.hpp"
 #include "../headers/itemWeapon.hpp"
 #include "../headers/flame.hpp"
+#include "../headers/weaponType.hpp"
 
 
 
@@ -21,13 +22,17 @@ class Game : public Screen {
         Game();
         virtual int run(sf::RenderWindow &app);
 
+
     private:
         void checkCollision();
+        void scroll(float elapsedTime);
 
         std::vector<Enemy*> enemies;
         std::vector<Player*> players;
         std::vector<BonusHp*> bonuses_hp;
         std::vector<ItemWeapon*> item_weapons;
+
+        static const int SCROLL_SPEED = -3;
 
         LifeBar life;
 

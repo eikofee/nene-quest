@@ -3,24 +3,21 @@
 
 
 #include "../headers/movableEntity.hpp"
+#include "../headers/weaponType.hpp"
 #include <SFML/Graphics.hpp>
 
 
 class ItemWeapon : public MovableEntity
 {
     public:
-        static const short int SWORD = 1;
-        static const short int AXE = 2;
-        static const short int BOW = 3;
-
-        ItemWeapon(short int weaponType, sf::Vector2f position);
+        ItemWeapon(WeaponType type, sf::Vector2f position);
         virtual ~ItemWeapon();
-        short int getWeaponType();
+        WeaponType getWeaponType();
 
     protected:
 
     private:
-        short int weapon_type;
+        WeaponType weapon_type;
 };
 
 #endif // ITEMWEAPON_H

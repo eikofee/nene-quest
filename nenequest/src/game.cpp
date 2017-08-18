@@ -20,6 +20,7 @@ int Game::run(RenderWindow &app) {
 	Texture knightHeadTex;
 	knightHeadTex.loadFromFile("img/icon_p1.png");
 	Sprite knightHead(knightHeadTex);
+
 	knightHead.setOrigin(knightHeadTex.getSize().x/2, knightHeadTex.getSize().x/2);
 	knightHead.setPosition(life.getPosition());
 	knightHead.move(-life.LIFEBAR_WIDTH/2, -10);
@@ -36,8 +37,8 @@ int Game::run(RenderWindow &app) {
 
 	Dragon dragon = Dragon(Vector2f(1000,200));
 	BonusHp onigiri = BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
-    ItemWeapon sword = ItemWeapon(ItemWeapon::SWORD, Vector2f(700,840));
-    ItemWeapon axe = ItemWeapon(ItemWeapon::AXE, Vector2f(520,630));
+    ItemWeapon sword = ItemWeapon(Sword, Vector2f(700,840));
+    ItemWeapon axe = ItemWeapon(Axe, Vector2f(520,630));
 
     //Clock
 	Clock clock;
@@ -121,3 +122,11 @@ void Game::checkCollision(){
         }
     }
 }
+
+ void Game::scroll(float elapsedTime){
+    for(BonusHp* var : bonuses_hp)
+        var->move(Vector2f((float)SCROLL_SPEED, 0), elapsedTime);
+    for(ItemWeapon* var : item_weapons)
+        var->move(Vector2f((float)SCROLL_SPEED, 0), elapsedTime);
+
+ }
