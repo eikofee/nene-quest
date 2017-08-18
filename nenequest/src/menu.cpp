@@ -5,12 +5,12 @@ using namespace std;
 using namespace sf;
 
 Menu::Menu() {
-	playing = false;
+	this->playing = false;
 }
 
 short int Menu::validateMenu(short int menuIndex) {
     if (menuIndex == 0) {
-        playing = true;
+        this->playing = true;
         return 1;
     }
     else
@@ -27,8 +27,7 @@ int Menu::run(RenderWindow &app) {
     logoTex.loadFromFile("img/titlescreen.png");
     logoTex.setSmooth(true);
 
-    Sprite logo;
-    logo.setTexture(logoTex);
+    Sprite logo(logoTex);
     logo.setOrigin(Vector2f(logoTex.getSize().x/2, logoTex.getSize().y/2));
     logo.setPosition(app.getSize().x/2, app.getSize().y/2);
     logo.move(0, -200);

@@ -37,8 +37,8 @@ void Background::createClouds() {
 		RandomCloud* nc = new RandomCloud();
 		nc->setPosition(v.x + 250 /*cloud width*/, rand() % this->CLOUD_SPAWN_Y_BOTTOM + this->CLOUD_SPAWN_Y_TOP);
 		nc->generateBorder();
-		this->clouds.insert(clouds.begin(), *nc);
 
+		this->clouds.insert(clouds.begin(), *nc);
 		this->nextCloud = rand() % (this->CLOUD_SPAWN_INTERVAL_RANDOM * 2) - this->CLOUD_SPAWN_INTERVAL_RANDOM + this->CLOUD_SPAWN_INTERVAL;
 		this->clock.restart();
 	}

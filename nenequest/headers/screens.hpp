@@ -6,5 +6,6 @@
 #include "screen.hpp"
 #include "menu.hpp"
 #include "game.hpp"
+#include "gameover.hpp"
 
 #endif
