@@ -10,7 +10,7 @@ Background::Background(Vector2u v) {
     int x = v.x;
     int y = v.y;
 
-    this->sky = RectangleShape(Vector2f(x, y/3));
+    this->sky = RectangleShape(Vector2f(x, y/2.5f));
     this->sky.setFillColor(Color(115, 195, 226));
 
     this->ground = RectangleShape(Vector2f(x, y - this->sky.getSize().y));
@@ -19,10 +19,7 @@ Background::Background(Vector2u v) {
 }
 
 void Background::update() {
-	//std::vector<RandomCloud*>::iterator i = this->clouds.begin();
-	//while (i != this->clouds.end()) {
-	for (int i = 0; i < this->clouds.size(); i++){
-		//bool active = (*i)->isAlive();
+	for (int i = 0; i < this->clouds.size(); i++) {
 		bool active = this->clouds.at(i)->isAlive();
 		if (active) {
 			this->clouds.at(i)->translate(-3, 0);
@@ -33,14 +30,27 @@ void Background::update() {
 			this->clouds.erase(this->clouds.begin() + i);
 			i--;
 		}
+	}
 
+	for (int i = 0; i < this->mountains.size(); i++) {
+		bool active = this->mountains.at(i)->isAlive();
+		if (active) {
+			this->mountains.at(i)->translate(-3, 0);
+			this->mountains.at(i)->update();
+		}
+		else {
+			delete(this->mountains.at(i));
+			this->mountains.erase(this->mountains.begin() + i);
+			i--;
+		}
 	}
 
 	this->createClouds();
+	this->createMountains();
 }
 
 void Background::createClouds() {
-	float t = this->clock.getElapsedTime().asSeconds();
+	float t = this->cloudClock.getElapsedTime().asSeconds();
 	if (t >= this->nextCloud) {
 		RandomCloud* nc = new RandomCloud();
 		nc->setPosition(v.x + 250 /*cloud width*/, rand() % this->CLOUD_SPAWN_Y_BOTTOM + this->CLOUD_SPAWN_Y_TOP);
@@ -48,6 +58,18 @@ void Background::createClouds() {
 		this->clouds.insert(clouds.begin(), nc);
 
 		this->nextCloud = rand() % (this->CLOUD_SPAWN_INTERVAL_RANDOM * 2) - this->CLOUD_SPAWN_INTERVAL_RANDOM + this->CLOUD_SPAWN_INTERVAL;
-		this->clock.restart();
+		this->cloudClock.restart();
+	}
+}
+
+void Background::createMountains() {
+	float t = this->mountainClock.getElapsedTime().asSeconds();
+	if (t >= this->nextMountain) {
+		RandomMountain* nm = new RandomMountain();
+		nm->setPosition(v.x + 250 /*cloud width*/, this->sky.getSize().y + MOUNTAIN_VAR_Y_OFFSET);
+		this->mountains.insert(mountains.begin(), nm);
+
+		this->nextMountain = rand() % (this->MOUNTAIN_SPAWN_INTERVAL_RANDOM * 2) - this->MOUNTAIN_SPAWN_INTERVAL_RANDOM + this->MOUNTAIN_SPAWN_INTERVAL;
+		this->mountainClock.restart();
 	}
 }
