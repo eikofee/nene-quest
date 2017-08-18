@@ -16,7 +16,7 @@ class Background : public sf::Drawable, sf::Transformable {
 		static const int CLOUD_SPAWN_INTERVAL_RANDOM = 2;
 		static const int CLOUD_SPAWN_Y_TOP = 0;
 		static const int CLOUD_SPAWN_Y_BOTTOM = 200;
-		std::vector<RandomCloud> clouds;
+		std::vector<RandomCloud*> clouds;
 		float nextCloud;
 		sf::Clock clock;
 
@@ -27,7 +27,7 @@ class Background : public sf::Drawable, sf::Transformable {
             target.draw(this->sky);
             target.draw(this->ground);
 			for (auto rc : this->clouds) {
-				target.draw(rc);
+				target.draw(*rc);
 			}
         }
 

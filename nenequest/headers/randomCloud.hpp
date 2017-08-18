@@ -15,15 +15,16 @@ class RandomCloud : public sf::Drawable, sf::Transformable {
 		static const int BORDER_NUMBER = 12;
 		static const int BORDER_VARI = 10;
 		static const int LIFETIME = 10;
-		sf::RectangleShape cloudBody;
-		std::list<sf::CircleShape*> cloudBorder;
+		sf::RectangleShape* cloudBody;
+		std::vector<sf::CircleShape*> cloudBorder;
 		sf::Clock clock;
 		bool alive = true;
 
 	public:
 		RandomCloud();
+		~RandomCloud();
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
-			target.draw(this->cloudBody);
+			target.draw(*(this->cloudBody));
 			for (sf::CircleShape* var : this->cloudBorder) {
 				target.draw(*var);
 			}
@@ -34,7 +35,7 @@ class RandomCloud : public sf::Drawable, sf::Transformable {
 		}
 
 		virtual void setPosition(sf::Vector2f v) {
-			this->cloudBody.setPosition(v);
+			this->cloudBody->setPosition(v);
 			for (sf::CircleShape* var : this->cloudBorder) {
 				var->setPosition(v);
 			}

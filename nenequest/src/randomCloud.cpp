@@ -5,9 +5,19 @@ using namespace std;
 using namespace sf;
 
 RandomCloud::RandomCloud() {
-	this->cloudBody = RectangleShape(Vector2f(this->MAX_WIDTH, this->MAX_HEIGHT));
-	this->cloudBody.setFillColor(Color::White);
-	this->cloudBody.setOrigin(this->cloudBody.getSize().x / 2, this->cloudBody.getSize().y / 2);
+	this->cloudBody = new RectangleShape(Vector2f(this->MAX_WIDTH, this->MAX_HEIGHT));
+	this->cloudBody->setFillColor(Color::White);
+	this->cloudBody->setOrigin(this->cloudBody->getSize().x / 2, this->cloudBody->getSize().y / 2);
+}
+
+RandomCloud::~RandomCloud() {
+	delete this->cloudBody;
+	for (int i = 0; i < this->cloudBorder.size(); i++) {
+		delete(this->cloudBorder.at(i));
+		this->cloudBorder.erase(this->cloudBorder.begin() + i);
+		i--;
+	}
+
 }
 
 void RandomCloud::generateBorder() {
@@ -22,7 +32,7 @@ void RandomCloud::generateBorder() {
 			nc->getRadius() + sin(currentRad) * (rand() % (this->BORDER_VARI * 2) - this->BORDER_VARI + this->MAX_HEIGHT/2)
 		);
 
-		nc->setPosition(this->cloudBody.getPosition());
+		nc->setPosition(this->cloudBody->getPosition());
 		this->cloudBorder.push_back(nc);
 		currentRad += radStep;
 	}
@@ -34,7 +44,7 @@ void RandomCloud::update() {
 	/*if (this->clock.getElapsedTime().asSeconds() >= this->LIFETIME)
 		this->alive = false;*/
 
-	if (this->cloudBody.getPosition().x < (0 - this->MAX_WIDTH - this->BORDER_SIZE_MAX))
+	if (this->cloudBody->getPosition().x < (0 - this->MAX_WIDTH - this->BORDER_SIZE_MAX))
 		this->alive = false;
 }
 
@@ -43,7 +53,7 @@ bool RandomCloud::isAlive() {
 }
 
 void RandomCloud::translate(float x, float y) {
-	this->cloudBody.move(x, y);
+	this->cloudBody->move(x, y);
 	for (auto var : this->cloudBorder)
 		var->move(x, y);
 }

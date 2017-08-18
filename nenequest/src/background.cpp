@@ -19,13 +19,21 @@ Background::Background(Vector2u v) {
 }
 
 void Background::update() {
-	for (int i = 0; i < this->clouds.size(); i++) {
-		auto c = this->clouds.at(i);
-		c.update();
-		if (c.isAlive())
-			this->clouds.at(i).translate(-3, 0);
-		else
-			this->clouds.erase(clouds.begin() + i);
+	//std::vector<RandomCloud*>::iterator i = this->clouds.begin();
+	//while (i != this->clouds.end()) {
+	for (int i = 0; i < this->clouds.size(); i++){
+		//bool active = (*i)->isAlive();
+		bool active = this->clouds.at(i)->isAlive();
+		if (active) {
+			this->clouds.at(i)->translate(-3, 0);
+			this->clouds.at(i)->update();
+		}
+		else {
+			delete(this->clouds.at(i));
+			this->clouds.erase(this->clouds.begin() + i);
+			i--;
+		}
+
 	}
 
 	this->createClouds();
@@ -37,8 +45,8 @@ void Background::createClouds() {
 		RandomCloud* nc = new RandomCloud();
 		nc->setPosition(v.x + 250 /*cloud width*/, rand() % this->CLOUD_SPAWN_Y_BOTTOM + this->CLOUD_SPAWN_Y_TOP);
 		nc->generateBorder();
+		this->clouds.insert(clouds.begin(), nc);
 
-		this->clouds.insert(clouds.begin(), *nc);
 		this->nextCloud = rand() % (this->CLOUD_SPAWN_INTERVAL_RANDOM * 2) - this->CLOUD_SPAWN_INTERVAL_RANDOM + this->CLOUD_SPAWN_INTERVAL;
 		this->clock.restart();
 	}
