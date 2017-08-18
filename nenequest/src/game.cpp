@@ -1,4 +1,6 @@
 #include "../headers/game.hpp"
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 using namespace sf;
@@ -40,6 +42,8 @@ int Game::run(RenderWindow &app) {
     //Clock
 	Clock clock;
 
+
+
     // ---------------- Main Loop ----------------
 	while(running) {
 
@@ -62,6 +66,7 @@ int Game::run(RenderWindow &app) {
 				}
 			}
 		}
+
 
 		boar1.update(elapsedTime);
 		dragon.update(elapsedTime);

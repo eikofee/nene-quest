@@ -10,8 +10,9 @@
 #include "../headers/boar.hpp"
 #include "../headers/dragon.hpp"
 #include "../headers/player.hpp"
-#include "bonusHp.hpp"
+#include "../headers/bonusHp.hpp"
 #include "../headers/itemWeapon.hpp"
+#include "../headers/flame.hpp"
 
 
 

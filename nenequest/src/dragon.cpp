@@ -4,6 +4,8 @@ using namespace sf;
 
 Dragon::Dragon(Vector2f position){
 
+    srand(NULL);
+
 	texture.loadFromFile("img/enemy_dragon.png");
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y));
@@ -28,11 +30,27 @@ Dragon::~Dragon(){
      }
 
     if(movement_timer++ > 50){
+
         speed = Vector2f( -speed.x, speed.y);
         movement_timer = 0;
     }
-
     this->move(elapsedTime);
+
+    if(fire_breathing)
+        if(flame_timer++ > 15){
+            flames.push_back(new Flame(Vector2f(sprite.getPosition().x +100 , sprite.getPosition().y + 100 + (float)(rand()%100) ), 50 + (float)(rand()%70)));
+            flame_timer=0;
+        }
+
+    for(int i = 0;i < flames.size();i++){
+
+        flames.at(i)->update(elapsedTime);
+        if(flames.at(i)->isDead()){
+            delete(flames.at(i));
+            flames.erase(flames.begin()+i);
+        }
+    }
+
 
     if(hp < 0);
         //destroy dragon
@@ -66,4 +84,10 @@ Dragon::~Dragon(){
 
 void Dragon::breathFire(){
     fire_breathing = !fire_breathing;
+}
+
+void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+    target.draw(sprite, states);
+    for(Flame* var : flames)
+        target.draw(*var);
 }

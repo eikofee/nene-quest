@@ -34,14 +34,15 @@ void Boar::progressAnimation(){
 
  void Boar::update(float elapsedTime) {
 
-     if(clock.getElapsedTime().asSeconds() > 0.1){
-        progressAnimation();
-        clock.restart();
-     }
 
     //Move the boar if he isn't stunned
     if(!is_stunned){
         this->move(elapsedTime);
+        if(clock.getElapsedTime().asSeconds() > 0.1){
+            progressAnimation();
+            clock.restart();
+     }
+
     }
     else{
         if(--stun_timer <= 0)

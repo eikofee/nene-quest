@@ -10,6 +10,7 @@ class Enemy : public MovableEntity
         Enemy();
         virtual ~Enemy();
         short int getAttackDamage();
+        void update(float elapsedTime);
 
     protected:
         short int hp;

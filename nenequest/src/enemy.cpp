@@ -15,3 +15,8 @@ Enemy::~Enemy() {
 short int Enemy::getAttackDamage(){
     return attack_damage;
 }
+
+ void Enemy::update(float elapsedTime){
+
+    this->move(elapsedTime);
+ }
