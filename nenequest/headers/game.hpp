@@ -23,9 +23,11 @@ class Game : public Screen {
     private:
         void checkCollision();
 
-        std::vector<Enemy> enemies;
-        std::vector<Player> players;
-        std::vector<BonusHp> bonuses_hp;
+        std::vector<Enemy*> enemies;
+        std::vector<Player*> players;
+        std::vector<BonusHp*> bonuses_hp;
+        std::vector<ItemWeapon*> item_weapons;
+
         LifeBar life;
 
 };
