@@ -1,5 +1,4 @@
 #include "../headers/entity.hpp"
-
 using namespace sf;
 
 bool Entity::detectHit(Entity entity){

@@ -4,9 +4,7 @@
 
 using namespace sf;
 
-Enemy::Enemy(){
-
-}
+Enemy::Enemy(int hp) : LivingEntity (hp) {}
 
 Enemy::~Enemy() {
     //dtor

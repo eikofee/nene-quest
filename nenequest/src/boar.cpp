@@ -3,7 +3,7 @@
 
 using namespace sf;
 
-Boar::Boar(Vector2u windowSize, Vector2f position, Vector2f g_speed){
+Boar::Boar(Vector2u windowSize, Vector2f position, Vector2f g_speed) : Enemy (3) {
 
 	texture.loadFromFile("img/enemy_boar_anim.png");
 	sprite.setTexture(texture);
@@ -53,7 +53,7 @@ void Boar::progressAnimation(){
     if(hitbox.getGlobalBounds().left + hitbox.getGlobalBounds().width < 0 || hitbox.getGlobalBounds().left > window_size.x);
         //delete(this);
 
-    if(hp < 0);
+    if(!this->isAlive());
         //Destroy boar
 }
 void Boar::stun() {

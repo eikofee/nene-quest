@@ -3,13 +3,12 @@
 using namespace std;
 using namespace sf;
 
-Weapon::Weapon(WeaponType t, Vector2f position)//string path, Vector2f position, int damage)
+Weapon::Weapon(WeaponType t)
 {
     this->type = t;
 
     texture.loadFromFile(getWeaponPath(t));
 	sprite.setTexture(texture);
-    sprite.setPosition(position);
 
     sprite.setOrigin(getWeaponOrigin(t));
 	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));

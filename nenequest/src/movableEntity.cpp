@@ -22,15 +22,15 @@ Vector2f MovableEntity::getSpeed(){
     return speed;
 }
 
- void MovableEntity::move(float elapsedTime){
+void MovableEntity::move(float elapsedTime){
 
 
  	hitbox.move(speed.x * elapsedTime, speed.y*elapsedTime);
  	sprite.move(speed.x * elapsedTime, speed.y*elapsedTime);
- }
+}
 
-  void MovableEntity::move(Vector2f g_speed, float elapsedTime){
+void MovableEntity::move(Vector2f g_speed, float elapsedTime){
 
  	hitbox.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
  	sprite.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
- }
+}

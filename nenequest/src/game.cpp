@@ -1,5 +1,6 @@
 #include "../headers/game.hpp"
 #include <stdlib.h>
+#include <iostream>
 #include <time.h>
 
 using namespace std;
@@ -12,6 +13,13 @@ Game::Game() {
 int Game::run(RenderWindow &app) {
 	Event event;
 	bool running = true;
+
+	// Player
+	Player player = Player(new Weapon(Axe), Vector2f(1000,400));
+    bool moving_up = false;
+    bool moving_down = false;
+    bool moving_right = false;
+    bool moving_left = false;
 
 	// LifeBar
     life = LifeBar(100);
@@ -35,15 +43,13 @@ int Game::run(RenderWindow &app) {
 
 	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-1,0));
 
-	Dragon dragon = Dragon(Vector2f(1000,200));
+	Dragon dragon = Dragon(20, Vector2f(1000,200));
 	BonusHp onigiri = BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
     ItemWeapon sword = ItemWeapon(Sword, Vector2f(700,840));
     ItemWeapon axe = ItemWeapon(Axe, Vector2f(520,630));
 
     //Clock
 	Clock clock;
-
-
 
     // ---------------- Main Loop ----------------
 	while(running) {
@@ -54,20 +60,63 @@ int Game::run(RenderWindow &app) {
 			if (event.type == Event::Closed) {
 				return (-1);
 			}
-			if (event.type == Event::KeyPressed) {
-				switch (event.key.code) {
+			switch (event.type)
+			{
+			    case (Event::KeyPressed):
+			        switch (event.key.code) {
                     case Keyboard::Up:
+                        moving_up = true;
+                        break;
+                    case Keyboard::Down:
+                        moving_down = true;
+                        break;
+                    case Keyboard::Right:
+                        moving_right = true;
+                        break;
+                    case Keyboard::Left:
+                        moving_left = true;
+                        break;
+                    default:
                         dragon.breathFire();
                         boar1.stun();
                         break;
+			        }
+			        break;
+                case (Event::KeyReleased):
+                    switch (event.key.code) {
+                    case Keyboard::Up:
+                        moving_up = false;
+                        break;
                     case Keyboard::Down:
+                        moving_down = false;
+                        break;
+                    case Keyboard::Right:
+                        moving_right = false;
+                        break;
+                    case Keyboard::Left:
+                        moving_left = false;
                         break;
                     default:
                         break;
-				}
+			        }
+                    break;
+                case (Event::Closed):
+                    app.close();
+                    return -1;
+                default:
+                    break;
 			}
 		}
 
+        if (moving_up) {
+            player.move(Vector2f(0,-0.5), elapsedTime);
+		} if (moving_down) {
+            player.move(Vector2f(0,0.5), elapsedTime);
+		} if (moving_right) {
+            player.move(Vector2f(0.5,0), elapsedTime);
+		} if (moving_left) {
+            player.move(Vector2f(-0.5, 0), elapsedTime);
+		}
 
 		boar1.update(elapsedTime);
 		dragon.update(elapsedTime);
@@ -82,6 +131,7 @@ int Game::run(RenderWindow &app) {
 		app.draw(onigiri);
 		app.draw(axe);
 		app.draw(sword);
+        app.draw(player);
 
 		//Test cloud part 2
 		//cloud.update();

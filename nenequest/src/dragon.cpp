@@ -2,7 +2,7 @@
 
 using namespace sf;
 
-Dragon::Dragon(Vector2f position){
+Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 
     srand(NULL);
 
@@ -52,7 +52,7 @@ Dragon::~Dragon(){
     }
 
 
-    if(hp < 0);
+    if(!this->isAlive());
         //destroy dragon
 
  }

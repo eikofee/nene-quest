@@ -1,18 +1,33 @@
-#ifndef PLAYER_H
-#define PLAYER_H
+#ifndef PLAYER_HPP_INCLUDED
+#define PLAYER_HPP_INCLUDED
 
-#include"../headers/movableentity.hpp"
+#include "../headers/movableentity.hpp"
+#include "../headers/weapon.hpp"
+#include "../headers/livingEntity.hpp"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
-class Player : public MovableEntity
+static int PLAYER_HP = 10;
+
+class Player : public MovableEntity, public LivingEntity
 {
     public:
-        Player();
+        Player(Weapon* weapon, sf::Vector2f(position));
         virtual ~Player();
+        // Weapon
+        Weapon* getWeapon();
+        void attack();
+        void equip(Weapon* w);
 
-    protected:
+        // Life management
+		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
+        virtual void move(sf::Vector2f g_speed, float elapsedTime);
+
 
     private:
+        sf::Vector2f speed = sf::Vector2f(-10,0);
+        bool is_jumping = false;
+        Weapon* weapon;
 };
 
-#endif // PLAYER_H
+#endif // PLAYER_HPP_INCLUDED

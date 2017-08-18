@@ -9,7 +9,7 @@
 class Dragon : public Enemy {
 
     public:
-        Dragon(sf::Vector2f position = sf::Vector2f(0,0));
+        Dragon(int hp, sf::Vector2f position = sf::Vector2f(0,0));
         virtual ~Dragon();
         virtual void update(float elapsedTime);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
