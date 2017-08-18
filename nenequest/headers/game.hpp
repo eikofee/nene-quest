@@ -13,6 +13,7 @@
 #include "../headers/bonusHp.hpp"
 #include "../headers/itemWeapon.hpp"
 #include "../headers/flame.hpp"
+#include "../headers/weaponType.hpp"
 
 
 
