@@ -23,3 +23,6 @@ void Entity::setPosition(int x, int y)
 	hitbox.setPosition(x,y);
 }
 
+Vector2f Entity::getPosition() {
+    return sprite.getPosition();
+}

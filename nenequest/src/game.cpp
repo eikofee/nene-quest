@@ -81,7 +81,6 @@ int Game::run(RenderWindow &app) {
 		//if (cloud.isAlive())
 		//	app.draw(cloud);
 
-
 		app.display();
 
 	}
@@ -94,19 +93,25 @@ void Game::checkCollision(){
 
     for(unsigned int i = 0; i < players.size(); i++){
         for(unsigned int j = 0; j < enemies.size(); j++){
-            if(players.at(i).detectHit(enemies.at(j))){
-				life.decrease(enemies.at(j).getAttackDamage());
+            if(players.at(i)->detectHit(*enemies.at(j))){
+				life.decrease(enemies.at(j)->getAttackDamage());
             }
         }
-        for(int j = 0; j < bonuses_hp.size(); j++){
-            if(players.at(i).detectHit(enemies.at(j))){
-                life.increase(bonuses_hp.at(j).getHealedAmount());
+        for(unsigned int j = 0; j < bonuses_hp.size(); j++){
+            if(players.at(i)->detectHit(*enemies.at(j))){
+
+                life.increase(bonuses_hp.at(j)->getHealedAmount());
+                bonuses_hp.erase(bonuses_hp.begin()+i);
             }
-        }/*
-        for(int j = 0; j < weapons.size(); j++){
-            if(players.at(i)->detectHit(enemies.at(j))){
+        }
+        for(unsigned int j = 0; j < item_weapons.size(); j++){
+            if(players.at(i)->detectHit(*item_weapons.at(j))){
+
+                //item_weapons.push_back(new ItemWeapon(players.at(i)->getEquippedWeapon, players.at(i)->getPosition()))
+                //player->equip();
+                item_weapons.erase(item_weapons.begin()+i);
 
             }
-        }*/
+        }
     }
 }
