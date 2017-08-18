@@ -8,7 +8,7 @@ RandomMountain::RandomMountain() {
 	float edge = rand() % (MAX_HEIGHT - MIN_HEIGHT) + MIN_HEIGHT;
 	float angle = rand() % (2 * RANDOM_ANGLE) - RANDOM_ANGLE;
 	this->body = new RectangleShape(Vector2f(edge, edge));
-	this->body->setFillColor(Color::Color(0xB7, 0xCA, 0x74));
+	this->body->setFillColor(Color(0xB7, 0xCA, 0x74));
 	this->body->setOrigin(this->body->getSize().x / 2, this->body->getSize().y / 2);
 	this->body->setRotation(45 + angle);
 }

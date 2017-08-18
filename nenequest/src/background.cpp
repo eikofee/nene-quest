@@ -22,7 +22,7 @@ void Background::update() {
 	for (int i = 0; i < this->clouds.size(); i++) {
 		bool active = this->clouds.at(i)->isAlive();
 		if (active) {
-			this->clouds.at(i)->translate(-3, 0);
+			this->clouds.at(i)->translate(-2, 0);
 			this->clouds.at(i)->update();
 		}
 		else {
