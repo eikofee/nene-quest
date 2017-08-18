@@ -11,10 +11,12 @@ RandomCloud::RandomCloud() {
 }
 
 RandomCloud::~RandomCloud() {
-	//delete this->cloudBody;
-	//std::list<CircleShape*>::iterator i = this->cloudBorder.begin();
-	//while (i != this->cloudBorder.end())
-	//	this->cloudBorder.erase(i++);
+	delete this->cloudBody;
+	for (int i = 0; i < this->cloudBorder.size(); i++) {
+		delete(this->cloudBorder.at(i));
+		this->cloudBorder.erase(this->cloudBorder.begin() + i);
+		i--;
+	}
 
 }
 

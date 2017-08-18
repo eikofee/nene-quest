@@ -16,7 +16,7 @@ class RandomCloud : public sf::Drawable, sf::Transformable {
 		static const int BORDER_VARI = 10;
 		static const int LIFETIME = 10;
 		sf::RectangleShape* cloudBody;
-		std::list<sf::CircleShape*> cloudBorder;
+		std::vector<sf::CircleShape*> cloudBorder;
 		sf::Clock clock;
 		bool alive = true;
 
