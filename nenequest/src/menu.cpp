@@ -13,6 +13,8 @@ short int Menu::validateMenu(short int menuIndex) {
         this->playing = true;
         return 1;
     }
+    else if (menuIndex == 1)
+        return 2;
     else
         return (-1);
 }
