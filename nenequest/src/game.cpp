@@ -11,7 +11,6 @@ int Game::run(RenderWindow &app) {
 	Event event;
 	bool running = true;
 
-
 	// LifeBar
     life = LifeBar(100);
 	life.setPosition(300, 100);
@@ -32,7 +31,11 @@ int Game::run(RenderWindow &app) {
 	//cloud.generateBorder();
 
 	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-1,0));
-	Dragon dragon = Dragon(Vector2f(1000,500));
+
+	Dragon dragon = Dragon(Vector2f(1000,200));
+	BonusHp onigiri = BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
+    ItemWeapon sword = ItemWeapon(ItemWeapon::SWORD, Vector2f(700,840));
+    ItemWeapon axe = ItemWeapon(ItemWeapon::AXE, Vector2f(520,630));
 
     //Clock
 	Clock clock;
@@ -69,13 +72,16 @@ int Game::run(RenderWindow &app) {
 		app.draw(dragon);
 		app.draw(life);
 		app.draw(knightHead);
+		app.draw(onigiri);
+		app.draw(axe);
+		app.draw(sword);
 
 		//Test cloud part 2
 		//cloud.update();
 		//if (cloud.isAlive())
 		//	app.draw(cloud);
-		
-		
+
+
 		app.display();
 
 	}
@@ -89,14 +95,14 @@ void Game::checkCollision(){
     for(unsigned int i = 0; i < players.size(); i++){
         for(unsigned int j = 0; j < enemies.size(); j++){
             if(players.at(i).detectHit(enemies.at(j))){
-				;// life.decrease(enemies.at(j).getAttackDamage());
+				life.decrease(enemies.at(j).getAttackDamage());
             }
         }
-        /*for(int j = 0; j < onigiris.size(); j++){
-            if(players.at(i)->detectHit(enemies.at(j))){
-                life.decrease(enemies.at(j).getAttackDamage());
+        for(int j = 0; j < bonuses_hp.size(); j++){
+            if(players.at(i).detectHit(enemies.at(j))){
+                life.increase(bonuses_hp.at(j).getHealedAmount());
             }
-        }
+        }/*
         for(int j = 0; j < weapons.size(); j++){
             if(players.at(i)->detectHit(enemies.at(j))){
 

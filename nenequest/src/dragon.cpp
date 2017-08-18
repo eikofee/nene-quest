@@ -4,7 +4,7 @@ using namespace sf;
 
 Dragon::Dragon(Vector2f position){
 
-	texture.loadFromFile("img/icon_p2.png");
+	texture.loadFromFile("img/enemy_dragon.png");
 	sprite.setTexture(texture);
     sprite.setPosition(position);
 
