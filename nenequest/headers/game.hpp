@@ -37,8 +37,6 @@ class Game : public Screen {
         static constexpr float SCROLL_SPEED = -0.1;
 
         LifeBar life;
-
-        float change_weapon_timer = 0;
         float player_invulnerability_timer = 0;
 
 };

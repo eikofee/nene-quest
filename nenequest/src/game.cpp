@@ -117,9 +117,7 @@ int Game::run(RenderWindow &app) {
                     break;
 			}
 		}
-		/*printf("barrel %f %f oni %f %f contains %d \n", barrel.getHitbox().getGlobalBounds().width, barrel.getHitbox().getGlobalBounds().height,
-                    onigiri->getHitbox().getGlobalBounds().width, onigiri->getHitbox().getGlobalBounds().height, barrel.getHitbox().getGlobalBounds().intersects(onigiri->getHitbox().getGlobalBounds()));
-        */
+
         if (moving_up) {
             player.move(Vector2f(0,-0.5), elapsedTime);
 		} if (moving_down) {
@@ -169,6 +167,7 @@ int Game::run(RenderWindow &app) {
 //Collision detection
 void Game::checkCollision(float elapsedTime){
 
+    //Collisions with enemies
     for(unsigned int i = 0; i < players.size(); i++){
         if(player_invulnerability_timer <= 0){
             for(unsigned int j = 0; j < enemies.size(); j++){
@@ -181,6 +180,8 @@ void Game::checkCollision(float elapsedTime){
         else{
             player_invulnerability_timer -= elapsedTime;
         }
+
+        //Collisions with bonus hp
         for(unsigned int j = 0; j < bonuses_hp.size(); j++){
             if(players.at(i)->detectHit(*bonuses_hp.at(j))){
 
@@ -190,27 +191,31 @@ void Game::checkCollision(float elapsedTime){
             }
         }
 
-        if(change_weapon_timer <= 0){
-            for(unsigned int j = 0; j < item_weapons.size(); j++){
-                if(players.at(i)->detectHit(*item_weapons.at(j))){
-
+        //Collisions with weapon items
+        for(unsigned int j = 0; j < item_weapons.size(); j++){
+            if(players.at(i)->detectHit(*item_weapons.at(j))){
+                if(! item_weapons.at(j)->checkIfDropped()){
                     WeaponType weaponType = item_weapons.at(j)->getWeaponType();
+                    if(players.at(i)->getWeapon()->getWeaponType() != weaponType){
 
                     //Drop old weapon
-                    item_weapons.push_back(new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition()));
+                    ItemWeapon* tmp = new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition());
+                    tmp->setDropped(true);
+                    item_weapons.push_back(tmp);
                     delete(item_weapons.at(j));
                     item_weapons.erase(item_weapons.begin()+j);
 
                     //Equip new weapon
                     players.at(i)->equip(new Weapon(weaponType));
 
-                    change_weapon_timer = 1000;
+                    }
                 }
             }
+            else{
+                item_weapons.at(j)->setDropped(false);
+            }
         }
-        else{
-            change_weapon_timer -= elapsedTime;
-        }
+
     }
 }
 

@@ -30,3 +30,11 @@ ItemWeapon::~ItemWeapon() {
 WeaponType ItemWeapon::getWeaponType(){
     return weapon_type;
 }
+
+bool ItemWeapon::checkIfDropped(){
+    return is_dropped;
+}
+
+bool ItemWeapon::setDropped(bool v){
+    is_dropped = v;
+}
