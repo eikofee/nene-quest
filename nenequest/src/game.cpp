@@ -20,6 +20,7 @@ int Game::run(RenderWindow &app) {
     bool moving_down = false;
     bool moving_right = false;
     bool moving_left = false;
+    players.push_back(&player);
 
 	// LifeBar
     life = LifeBar(100);
@@ -41,16 +42,19 @@ int Game::run(RenderWindow &app) {
 	//cloud.setPosition(500, 500);
 	//cloud.generateBorder();
 
-	Boar boar1 = Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-1,0));
+	Boar* boar1 = new Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-1,0));
+	Dragon* dragon = new Dragon(20, Vector2f(1000,200));
+	BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
+    ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(700,840));
+    ItemWeapon* axe = new ItemWeapon(Axe, Vector2f(520,630));
 
-	Dragon dragon = Dragon(20, Vector2f(1000,200));
-	BonusHp onigiri = BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
-    ItemWeapon sword = ItemWeapon(Sword, Vector2f(700,840));
-    ItemWeapon axe = ItemWeapon(Axe, Vector2f(520,630));
+    bonuses_hp.push_back(onigiri);
+    item_weapons.push_back(axe);
+    item_weapons.push_back(sword);
+    item_weapons.push_back(new ItemWeapon(GreatSword, Vector2f(300,630)));
+    enemies.push_back(dragon);
+    enemies.push_back(boar1);
 
-    bonuses_hp.push_back(&onigiri);
-    item_weapons.push_back(&axe);
-    item_weapons.push_back(&sword);
 
     BreakableObject barrel = BreakableObject(Chest, Vector2f(520,630));
 
@@ -83,8 +87,8 @@ int Game::run(RenderWindow &app) {
                         moving_left = true;
                         break;
                     default:
-                        dragon.breathFire();
-                        boar1.stun();
+                        dragon->breathFire();
+                        boar1->stun();
                         break;
 			        }
 			        break;
@@ -113,7 +117,9 @@ int Game::run(RenderWindow &app) {
                     break;
 			}
 		}
-
+		/*printf("barrel %f %f oni %f %f contains %d \n", barrel.getHitbox().getGlobalBounds().width, barrel.getHitbox().getGlobalBounds().height,
+                    onigiri->getHitbox().getGlobalBounds().width, onigiri->getHitbox().getGlobalBounds().height, barrel.getHitbox().getGlobalBounds().intersects(onigiri->getHitbox().getGlobalBounds()));
+        */
         if (moving_up) {
             player.move(Vector2f(0,-0.5), elapsedTime);
 		} if (moving_down) {
@@ -124,23 +130,29 @@ int Game::run(RenderWindow &app) {
             player.move(Vector2f(-0.5, 0), elapsedTime);
 		}
 
-        scroll(elapsedTime);
+        //scroll(elapsedTime);
 
-		boar1.update(elapsedTime);
-		dragon.update(elapsedTime);
+		boar1->update(elapsedTime);
+		dragon->update(elapsedTime);
 		background.update();
+
+		checkCollision(elapsedTime);
 
 		app.clear(Color::White);
         app.draw(background);
-		app.draw(boar1);
-		app.draw(dragon);
+		app.draw(*boar1);
+		app.draw(*dragon);
 		app.draw(life);
 		app.draw(knightHead);
-		app.draw(onigiri);
-		app.draw(axe);
-		app.draw(sword);
         app.draw(player);
         app.draw(barrel);
+
+        for(BonusHp* var : bonuses_hp)
+            app.draw(*var);
+
+        for(ItemWeapon* var : item_weapons)
+            app.draw(*var);
+
 
 		//Test cloud part 2
 		//cloud.update();
@@ -155,31 +167,49 @@ int Game::run(RenderWindow &app) {
 }
 
 //Collision detection
-void Game::checkCollision(){
+void Game::checkCollision(float elapsedTime){
 
     for(unsigned int i = 0; i < players.size(); i++){
-        for(unsigned int j = 0; j < enemies.size(); j++){
-            if(players.at(i)->detectHit(*enemies.at(j))){
-				life.decrease(enemies.at(j)->getAttackDamage());
+        if(player_invulnerability_timer <= 0){
+            for(unsigned int j = 0; j < enemies.size(); j++){
+                if(players.at(i)->detectHit(*enemies.at(j))){
+                    life.decrease(enemies.at(j)->getAttackDamage());
+                    player_invulnerability_timer = 200;
+                }
             }
         }
+        else{
+            player_invulnerability_timer -= elapsedTime;
+        }
         for(unsigned int j = 0; j < bonuses_hp.size(); j++){
-            if(players.at(i)->detectHit(*enemies.at(j))){
+            if(players.at(i)->detectHit(*bonuses_hp.at(j))){
 
-                life.increase(bonuses_hp.at(j)->getHealedAmount());
+                life.decrease(bonuses_hp.at(j)->getHealedAmount());
                 delete(bonuses_hp.at(j));
                 bonuses_hp.erase(bonuses_hp.begin()+j);
             }
         }
-        for(unsigned int j = 0; j < item_weapons.size(); j++){
-            if(players.at(i)->detectHit(*item_weapons.at(j))){
 
-                //item_weapons.push_back(new ItemWeapon(players.at(i)->getEquippedWeapon, players.at(i)->getPosition()))
-                //player->equip();
-                delete(item_weapons.at(j));
-                item_weapons.erase(item_weapons.begin()+j);
+        if(change_weapon_timer <= 0){
+            for(unsigned int j = 0; j < item_weapons.size(); j++){
+                if(players.at(i)->detectHit(*item_weapons.at(j))){
 
+                    WeaponType weaponType = item_weapons.at(j)->getWeaponType();
+
+                    //Drop old weapon
+                    item_weapons.push_back(new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition()));
+                    delete(item_weapons.at(j));
+                    item_weapons.erase(item_weapons.begin()+j);
+
+                    //Equip new weapon
+                    players.at(i)->equip(new Weapon(weaponType));
+
+                    change_weapon_timer = 1000;
+                }
             }
+        }
+        else{
+            change_weapon_timer -= elapsedTime;
         }
     }
 }

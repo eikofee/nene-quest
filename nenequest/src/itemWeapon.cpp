@@ -17,6 +17,9 @@ ItemWeapon::ItemWeapon(WeaponType type, Vector2f position) {
     texture.loadFromFile(getWeaponPath(type));
     sprite.setTexture(texture);
 
+    updateHitboxSize();
+    updateHitboxPosition();
+
     this->setPosition(position.x, position.y);
 }
 

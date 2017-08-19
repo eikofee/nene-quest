@@ -16,7 +16,7 @@ class Enemy : public MovableEntity, public LivingEntity
     protected:
         sf::Clock clock;
         short int animation_state = 0;
-        short int attack_damage;
+        short int attack_damage = 0;
 
 
 

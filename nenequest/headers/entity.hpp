@@ -18,6 +18,9 @@ class Entity : public sf::Drawable
 		sf::Sprite sprite;
 		sf::Texture texture;
 
+		void updateHitboxSize();
+		void updateHitboxPosition();
+
 	private:
 };
 

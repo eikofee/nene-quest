@@ -14,8 +14,8 @@ BreakableObject::BreakableObject(ObjectType o, Vector2f position) {
 	sprite.setTexture(texture);
     sprite.setPosition(position);
 
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-	hitbox.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
+    updateHitboxSize();
+    updateHitboxPosition();
 
 }
 

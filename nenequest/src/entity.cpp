@@ -25,3 +25,11 @@ void Entity::setPosition(int x, int y)
 Vector2f Entity::getPosition() {
     return sprite.getPosition();
 }
+
+void Entity::updateHitboxPosition(){
+	hitbox.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
+}
+
+void Entity::updateHitboxSize(){
+	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
+}

@@ -11,8 +11,9 @@ Player::Player(Weapon* w, Vector2f position) : LivingEntity(PLAYER_HP) {
 	texture.loadFromFile("img/icon_p2.png");
 	sprite.setTexture(texture);
     sprite.setPosition(position);
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-	hitbox.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
+
+    updateHitboxSize();
+    updateHitboxPosition();
 
 	// Weapon placement
     this->weapon->setPosition(this->getPosition().x,this->getPosition().y);
@@ -36,6 +37,7 @@ void Player::attack()
 void Player::equip(Weapon* w)
 {
     this->weapon = w;
+    this->weapon->setPosition(this->getPosition().x,this->getPosition().y);
 }
 
 

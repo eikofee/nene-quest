@@ -24,13 +24,12 @@ Vector2f MovableEntity::getSpeed(){
 
 void MovableEntity::move(float elapsedTime){
 
-
- 	hitbox.move(speed.x * elapsedTime, speed.y*elapsedTime);
  	sprite.move(speed.x * elapsedTime, speed.y*elapsedTime);
+ 	updateHitboxPosition();
 }
 
 void MovableEntity::move(Vector2f g_speed, float elapsedTime){
 
- 	hitbox.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
  	sprite.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
+    updateHitboxPosition();
 }

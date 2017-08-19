@@ -11,8 +11,8 @@ Weapon::Weapon(WeaponType t)
 	sprite.setTexture(texture);
 
     sprite.setOrigin(getWeaponOrigin(t));
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-	hitbox.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
+    updateHitboxSize();
+    updateHitboxPosition();
 
     this->damage = damage;
 }

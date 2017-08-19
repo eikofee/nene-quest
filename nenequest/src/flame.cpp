@@ -17,8 +17,8 @@ Flame::Flame(Vector2f position, float f){
     sprite.setPosition(position);
     sprite.scale(0.5,0.5);
 
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-	hitbox.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
+    updateHitboxSize();
+    updateHitboxPosition();
 
 	speed = Vector2f(-2.7,1);
 

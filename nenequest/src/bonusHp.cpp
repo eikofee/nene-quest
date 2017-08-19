@@ -16,7 +16,9 @@ BonusHp::BonusHp(short int bonusType, Vector2f position) {
             break;
     }
 
-    this->setPosition(position.x, position.y);
+    sprite.setPosition(position.x, position.y);
+    updateHitboxSize();
+    updateHitboxPosition();
 }
 
 BonusHp::~BonusHp() {

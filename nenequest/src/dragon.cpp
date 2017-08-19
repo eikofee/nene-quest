@@ -6,13 +6,15 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 
     srand(NULL);
 
+    attack_damage = 2;
+
 	texture.loadFromFile("img/enemy_dragon.png");
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y));
     sprite.setPosition(position);
 	flame_timer = 0;
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-	hitbox.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
+    updateHitboxSize();
+    updateHitboxPosition();
 
 	speed = Vector2f(0.1,0);
 
