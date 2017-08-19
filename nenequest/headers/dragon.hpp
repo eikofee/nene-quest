@@ -18,6 +18,12 @@ class Dragon : public Enemy {
     protected:
 
     private:
+        static int const DRAGON_DAMAGE = 2;
+        static int const MOVEMENT_DURATION = 1000; //Milliseconds
+        static int const DELAY_BETWEEN_FLAMES = 230; //Milliseconds
+        static float constexpr ANIMATION_DELAY = 0.5;//Seconds
+        static float constexpr DRAGON_SPEED = 0.1;//Pixels/milliseconds
+
         std::vector<Flame*> flames;
         int movement_timer = 0;
         bool fire_breathing = false;

@@ -12,7 +12,7 @@ RectangleShape Entity::getHitbox(){
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-
+    target.draw(hitbox, states);
 	target.draw(sprite, states);
 }
 
@@ -27,6 +27,7 @@ Vector2f Entity::getPosition() {
 }
 
 void Entity::updateHitboxPosition(){
+    hitbox.setFillColor(Color::Red);
 	hitbox.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
 }
 
