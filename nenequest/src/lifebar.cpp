@@ -32,6 +32,8 @@ void LifeBar::increase(short int amount) {
         this->value += amount;
         updateBar();
     }
+    else
+        this->value = this->max;
 }
 
 void LifeBar::decrease(short int amount) {
@@ -39,9 +41,10 @@ void LifeBar::decrease(short int amount) {
         this->value -= amount;
         updateBar();
     }
+    else
+        this->value = 0;
 }
 
-short int LifeBar::getValue()
-{
+short int LifeBar::getValue() {
     return this->value;
 }
