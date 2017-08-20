@@ -28,6 +28,7 @@ class LifeBar : public sf::Drawable, sf::Transformable {
         void increase(short int amount);
         void decrease(short int amount);
         void updateBar();
+        short int getValue();
 };
 
 #endif

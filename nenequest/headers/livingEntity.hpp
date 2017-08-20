@@ -5,17 +5,11 @@
 class LivingEntity {
 
     public:
-        LivingEntity(int life);
+        LivingEntity(int hp);
         bool isAlive();
-        virtual void take_damage(int dmg) {
-            this->hp -= dmg;
-        }
-        int getHp();
-
+        void take_damage(int amount);
     private:
         int hp;
-
-
 };
 
 #endif // BOAR_HPP

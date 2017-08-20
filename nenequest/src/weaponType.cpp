@@ -8,9 +8,9 @@ sf::Vector2f getWeaponOrigin(WeaponType w) {
         case Axe:
             return sf::Vector2f(90,190);
         case Sword:
-            return sf::Vector2f(80,270);
+            return sf::Vector2f(100,270);
         case GreatSword:
-            return sf::Vector2f(35,260);
+            return sf::Vector2f(100,260);
     }
     return sf::Vector2f(1,1);
 }
@@ -31,7 +31,7 @@ std::string getWeaponPath(WeaponType w) {
     }
 }
 
-int getWeaponDamaga(WeaponType w)
+int getWeaponDamage(WeaponType w)
 {
      switch (w) {
         case Bow:

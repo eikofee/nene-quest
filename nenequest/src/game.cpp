@@ -23,16 +23,19 @@ int Game::run(RenderWindow &app) {
     players.push_back(&player);
 
 	// LifeBar
-    life = LifeBar(100);
-	life.setPosition(300, 100);
+    //life = LifeBar(100);
+	//life.setPosition(300, 100);
 
+    /**
+        FIXME : Kostia, déplacer le code de knightHead dans la classe "LifeBar"
+    **/
 	Texture knightHeadTex;
 	knightHeadTex.loadFromFile("img/icon_p1.png");
 	Sprite knightHead(knightHeadTex);
 
 	knightHead.setOrigin(knightHeadTex.getSize().x/2, knightHeadTex.getSize().x/2);
-	knightHead.setPosition(life.getPosition());
-	knightHead.move(-life.LIFEBAR_WIDTH/2, -10);
+	knightHead.setPosition(player.getLife().getPosition());
+	knightHead.move(-player.getLife().LIFEBAR_WIDTH/2, -10);
 
 	// Background
     Background background = Background(app.getSize());
@@ -86,6 +89,9 @@ int Game::run(RenderWindow &app) {
                     case Keyboard::Left:
                         moving_left = true;
                         break;
+                    case Keyboard::Space:
+                        player.attack();
+                        break;
                     default:
                         dragon->breathFire();
                         boar1->stun();
@@ -138,9 +144,7 @@ int Game::run(RenderWindow &app) {
 
         app.clear(Color::White);
         app.draw(background);
-        app.draw(life);
         app.draw(knightHead);
-
 
         for(BreakableObject* var : breakable_objects)
             app.draw(*var);

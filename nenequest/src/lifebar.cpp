@@ -40,3 +40,8 @@ void LifeBar::decrease(short int amount) {
         updateBar();
     }
 }
+
+short int LifeBar::getValue()
+{
+    return this->value;
+}

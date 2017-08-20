@@ -1,16 +1,16 @@
 #include "../headers/livingEntity.hpp"
 
-LivingEntity::LivingEntity(int life)
+LivingEntity::LivingEntity(int hp)
 {
-    this->hp = life;
+    this->hp = hp;
 }
 
 bool LivingEntity::isAlive()
 {
-    return this->hp >= 1;
+    return this->hp > 0;
 }
 
-int LivingEntity::getHp()
+void LivingEntity::take_damage(int amount)
 {
-    return this->hp;
+    this->hp = this->hp - amount;
 }
