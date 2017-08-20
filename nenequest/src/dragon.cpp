@@ -6,17 +6,19 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 
     srand(NULL);
 
-    attack_damage = 2;
+    attack_damage = DRAGON_DAMAGE;
 
 	texture.loadFromFile("img/enemy_dragon.png");
 	sprite.setTexture(texture);
-    sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y));
+    sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y/2));
     sprite.setPosition(position);
 	flame_timer = 0;
-    updateHitboxSize();
+
+	hitbox.setSize(Vector2f(sprite.getLocalBounds().width *0.75, sprite.getLocalBounds().height*0.5));
+	hitbox.setOrigin(-sprite.getGlobalBounds().width*0.27,-sprite.getGlobalBounds().height*0.5 );
     updateHitboxPosition();
 
-	speed = Vector2f(0.1,0);
+	speed = Vector2f(DRAGON_SPEED,0);
 
 }
 
@@ -28,37 +30,36 @@ Dragon::~Dragon(){
 
  void Dragon::update(float elapsedTime){
 
-      if(clock.getElapsedTime().asSeconds() > 0.5){
+    if(clock.getElapsedTime().asSeconds() > ANIMATION_DELAY){
         progressAnimation();
         clock.restart();
-     }
+    }
 
-    if(movement_timer++ > 50){
+    //Move dragon back and forth
+    movement_timer += elapsedTime;
+    if(movement_timer > MOVEMENT_DURATION){
 
         speed = Vector2f( -speed.x, speed.y);
         movement_timer = 0;
     }
     this->move(elapsedTime);
 
+    //Breathe fire
+    flame_timer += elapsedTime;
     if(fire_breathing)
-        if(flame_timer++ > 15){
+        if(flame_timer > DELAY_BETWEEN_FLAMES){
             flames.push_back(new Flame(Vector2f(sprite.getPosition().x +100 , sprite.getPosition().y + 100 + (float)(rand()%100) ), 50 + (float)(rand()%70)));
             flame_timer=0;
         }
 
+    //Delete old flames
     for(int i = 0;i < flames.size();i++){
-
         flames.at(i)->update(elapsedTime);
         if(flames.at(i)->isDead()){
             delete(flames.at(i));
             flames.erase(flames.begin()+i);
         }
     }
-
-
-    if(!this->isAlive());
-        //destroy dragon
-
  }
 
  void Dragon::progressAnimation(){
@@ -91,7 +92,9 @@ void Dragon::breathFire(){
 }
 
 void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+    //target.draw(hitbox, states);
     target.draw(sprite, states);
+
     for(Flame* var : flames)
         target.draw(*var);
 }

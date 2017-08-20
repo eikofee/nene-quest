@@ -4,11 +4,10 @@
 using namespace sf;
 
 Player::Player(Weapon* w, Vector2f position) : LivingEntity(PLAYER_HP) {
-
     this->weapon = w;
 
     // Player
-	texture.loadFromFile("img/icon_p2.png");
+	texture.loadFromFile("img/obj_barrel.png");
 	sprite.setTexture(texture);
     sprite.setPosition(position);
 
@@ -49,7 +48,6 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 
 void Player::move(Vector2f g_speed, float elapsedTime){
-
     hitbox.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
     sprite.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
 

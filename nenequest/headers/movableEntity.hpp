@@ -14,6 +14,7 @@ class MovableEntity : public Entity {
 		void move(sf::Vector2f g_speed, float elapsedTime);
 		void setSpeed(sf::Vector2f g_speed);
 		sf::Vector2f getSpeed();
+		bool isOnScreen(sf::Vector2i windowSize);
 
     protected:
         sf::Vector2f speed;

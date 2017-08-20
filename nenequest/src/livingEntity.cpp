@@ -1,4 +1,4 @@
-#include "../headers/../headers/livingEntity.hpp"
+#include "../headers/livingEntity.hpp"
 
 LivingEntity::LivingEntity(int life)
 {

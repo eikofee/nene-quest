@@ -42,10 +42,10 @@ int Game::run(RenderWindow &app) {
 	//cloud.setPosition(500, 500);
 	//cloud.generateBorder();
 
-	Boar* boar1 = new Boar(app.getSize(), Vector2f(app.getSize().x - 100, app.getSize().y/2), Vector2f(-1,0));
+	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 100, app.getSize().y/2));
 	Dragon* dragon = new Dragon(20, Vector2f(1000,200));
 	BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
-    ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(700,840));
+    ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(800,600));
     ItemWeapon* axe = new ItemWeapon(Axe, Vector2f(520,630));
 
     bonuses_hp.push_back(onigiri);
@@ -58,6 +58,7 @@ int Game::run(RenderWindow &app) {
 
     BreakableObject barrel = BreakableObject(Chest, Vector2f(520,630));
 
+
     //Clock
 	Clock clock;
 
@@ -66,14 +67,14 @@ int Game::run(RenderWindow &app) {
 
     float elapsedTime = clock.restart().asMilliseconds();
 
-		while(app.pollEvent(event)) {
-			if (event.type == Event::Closed) {
-				return (-1);
-			}
-			switch (event.type)
-			{
-			    case (Event::KeyPressed):
-			        switch (event.key.code) {
+        while(app.pollEvent(event)) {
+            if (event.type == Event::Closed) {
+                return (-1);
+            }
+            switch (event.type)
+            {
+                case (Event::KeyPressed):
+                    switch (event.key.code) {
                     case Keyboard::Up:
                         moving_up = true;
                         break;
@@ -90,8 +91,8 @@ int Game::run(RenderWindow &app) {
                         dragon->breathFire();
                         boar1->stun();
                         break;
-			        }
-			        break;
+                    }
+                    break;
                 case (Event::KeyReleased):
                     switch (event.key.code) {
                     case Keyboard::Up:
@@ -108,40 +109,40 @@ int Game::run(RenderWindow &app) {
                         break;
                     default:
                         break;
-			        }
+                    }
                     break;
                 case (Event::Closed):
                     app.close();
                     return -1;
                 default:
                     break;
-			}
-		}
+            }
+        }
 
         if (moving_up) {
             player.move(Vector2f(0,-0.5), elapsedTime);
-		} if (moving_down) {
+        } if (moving_down) {
             player.move(Vector2f(0,0.5), elapsedTime);
-		} if (moving_right) {
+        } if (moving_right) {
             player.move(Vector2f(0.5,0), elapsedTime);
-		} if (moving_left) {
+        } if (moving_left) {
             player.move(Vector2f(-0.5, 0), elapsedTime);
-		}
+        }
 
         //scroll(elapsedTime);
 
-		boar1->update(elapsedTime);
-		dragon->update(elapsedTime);
-		background.update();
+        boar1->update(elapsedTime);
+        dragon->update(elapsedTime);
+        background.update();
 
-		checkCollision(elapsedTime);
+        checkCollision(elapsedTime);
 
-		app.clear(Color::White);
+        app.clear(Color::White);
         app.draw(background);
-		app.draw(*boar1);
-		app.draw(*dragon);
-		app.draw(life);
-		app.draw(knightHead);
+        app.draw(*boar1);
+        app.draw(*dragon);
+        app.draw(life);
+        app.draw(knightHead);
         app.draw(player);
         app.draw(barrel);
 
@@ -152,12 +153,12 @@ int Game::run(RenderWindow &app) {
             app.draw(*var);
 
 
-		//Test cloud part 2
-		//cloud.update();
-		//if (cloud.isAlive())
-		//	app.draw(cloud);
+        //Test cloud part 2
+        //cloud.update();
+        //if (cloud.isAlive())
+        //	app.draw(cloud);
 
-		app.display();
+        app.display();
 
 	}
 
@@ -195,18 +196,19 @@ void Game::checkCollision(float elapsedTime){
         for(unsigned int j = 0; j < item_weapons.size(); j++){
             if(players.at(i)->detectHit(*item_weapons.at(j))){
                 if(! item_weapons.at(j)->checkIfDropped()){
+
                     WeaponType weaponType = item_weapons.at(j)->getWeaponType();
                     if(players.at(i)->getWeapon()->getWeaponType() != weaponType){
 
-                    //Drop old weapon
-                    ItemWeapon* tmp = new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition());
-                    tmp->setDropped(true);
-                    item_weapons.push_back(tmp);
-                    delete(item_weapons.at(j));
-                    item_weapons.erase(item_weapons.begin()+j);
+                        //Drop old weapon
+                        ItemWeapon* tmp = new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition());
+                        tmp->setDropped(true);
+                        item_weapons.push_back(tmp);
+                        delete(item_weapons.at(j));
+                        item_weapons.erase(item_weapons.begin()+j);
 
-                    //Equip new weapon
-                    players.at(i)->equip(new Weapon(weaponType));
+                        //Equip new weapon
+                        players.at(i)->equip(new Weapon(weaponType));
 
                     }
                 }
