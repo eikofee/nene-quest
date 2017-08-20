@@ -33,8 +33,9 @@ void GameOver::updateText() {
     Time elapsed = this->clockText.getElapsedTime();
     if(elapsed.asMilliseconds() >= 10) {
 		for (auto w : this->letters) {
-			if (w->getPosition().y < this->textLimitY)
-				w->move(0, 10);
+			//if (w->getPosition().y < this->textLimitY)
+				//w->move(0, 10);
+				w->move(0, fminf((this->textLimitY - w->getPosition().y) / 6, 30));
 		}
 
 		this->clockText.restart();
@@ -52,7 +53,7 @@ int GameOver::run(RenderWindow &app) {
     halo.setPosition(app.getSize().x/2, app.getSize().y/2*1.25);
 
 	for (int i = 0; i < 18; i++) {
-		this->letters.at(i)->setPosition(app.getSize().x/2 - (1.4*this->ww) + (this->ww/((i % 9 > 3 ? 3.5 : 2.65))) * (i % 9) + (this->ww/ 2.65 * (i % 9 > 3 ? 2 : 0)), 0 - (i % 9) * h);
+		this->letters.at(i)->setPosition(app.getSize().x/2 - (1.3*this->ww) + (this->ww/((i % 9 > 3 ? 3.5 : 2.65))) * (i % 9) + (this->ww/ 1.7 * (i % 9 > 3 ? 1 : 0)), 0 - (i % 9) * h *0.5);
 
 	}
     this->textLimitY = (halo.getGlobalBounds().top)/2.0;

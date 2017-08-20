@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "screen.hpp"
 #include "gameover.hpp"
+#include <math.h>
 
 class GameOver : public Screen {
     private:
