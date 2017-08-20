@@ -10,8 +10,10 @@ class Entity : public sf::Drawable
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
 		void setPosition(int x, int y);
 		sf::Vector2f getPosition();
+		sf::Vector2f getSpriteSize();
 		sf::RectangleShape getHitbox();
         bool detectHit(Entity entity);
+
 
 	protected:
 		sf::RectangleShape hitbox;

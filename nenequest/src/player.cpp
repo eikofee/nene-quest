@@ -26,7 +26,8 @@ Player::Player(Weapon* w, Vector2f position) { // 150,170
     sprite.setTextureRect(IntRect(0, 0, texture.getSize().x/2, texture.getSize().y/3));
     sprite.setPosition(position);
 
-    updateHitboxSize();
+	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height*0.5));
+	hitbox.setOrigin(0,-sprite.getGlobalBounds().height*0.5 );
     updateHitboxPosition();
 
 	// Weapon placement
@@ -56,8 +57,6 @@ void Player::equip(Weapon* w)
     this->weapon = w;
     this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
 }
-
-
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite, states);
@@ -122,4 +121,11 @@ bool Player::isJumping()
 void Player::switchJump()
 {
     this->is_jumping = !this->is_jumping;
+}
+
+void Player::setPosition(float x, float y){
+    this->sprite.setPosition(x, y);
+    this->hitbox.setPosition(x, y);
+
+    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
 }

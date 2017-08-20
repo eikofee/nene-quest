@@ -59,6 +59,7 @@ int Game::run(RenderWindow &app) {
 
     BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
     breakable_objects.push_back(barrel);
+    breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(1200, 600)));
 
 
     //Clock
@@ -167,10 +168,10 @@ int Game::run(RenderWindow &app) {
                 do{
                     BreakableObject* tmp = getCollidingObject(&player);
                     if(playerSpeed.y > 0){
-                        player.setPosition(player.getPosition().x, tmp->getPosition().y - player.getHitbox().getGlobalBounds().height -1);
+                        player.setPosition(player.getPosition().x, tmp->getPosition().y - player.getHitbox().getGlobalBounds().height*2 - 1);
                     }
                     else{
-                        player.setPosition(player.getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height +1);
+                        player.setPosition(player.getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height - player.getHitbox().getGlobalBounds().height +1);
                     }
 
                 }while(playerIsColliding(&player));

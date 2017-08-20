@@ -14,7 +14,7 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
     sprite.setPosition(position);
 	flame_timer = 0;
 
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width *0.75, sprite.getLocalBounds().height*0.5));
+	hitbox.setSize(Vector2f(sprite.getLocalBounds().width *0.73, sprite.getLocalBounds().height*0.5));
 	hitbox.setOrigin(-sprite.getGlobalBounds().width*0.27,-sprite.getGlobalBounds().height*0.5 );
     updateHitboxPosition();
 
@@ -92,6 +92,7 @@ void Dragon::breathFire(){
 }
 
 void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+    //target.draw(hitbox, states);
     target.draw(sprite, states);
 
     for(Flame* var : flames)

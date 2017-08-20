@@ -27,6 +27,7 @@ class Player : public MovableEntity
         // override
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
         virtual void move(sf::Vector2f g_speed, float elapsedTime);
+        virtual void setPosition(float x, float y);
 
         // Jumping
         bool isJumping();
@@ -40,7 +41,7 @@ class Player : public MovableEntity
         sf::Vector2f speed = sf::Vector2f(-10,0);
         bool is_jumping = false;
         sf::Clock clock;
-        static constexpr float ANIMATION_DELAY = 0.2;
+        static constexpr float ANIMATION_DELAY = 0.1;
         void update_animation();
 
 

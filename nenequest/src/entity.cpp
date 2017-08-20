@@ -34,3 +34,7 @@ void Entity::updateHitboxPosition(){
 void Entity::updateHitboxSize(){
 	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
 }
+
+Vector2f Entity::getSpriteSize(){
+    return Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);
+}
