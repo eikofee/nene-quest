@@ -34,7 +34,7 @@ void MovableEntity::move(Vector2f g_speed, float elapsedTime){
     updateHitboxPosition();
 }
 
-bool MovableEntity::isOnScreen(Vector2i windowSize){
+bool MovableEntity::isOnScreen(Vector2u windowSize){
     if(hitbox.getGlobalBounds().left + hitbox.getGlobalBounds().width < 0 || hitbox.getGlobalBounds().left > windowSize.x)
         return false;
     if(hitbox.getGlobalBounds().top + hitbox.getGlobalBounds().height > windowSize.y || hitbox.getGlobalBounds().top < 0)

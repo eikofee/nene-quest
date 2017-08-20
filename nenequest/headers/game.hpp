@@ -18,7 +18,6 @@
 #include "../headers/bonus.hpp"
 
 
-
 class Game : public Screen {
     public:
         Game();
@@ -26,13 +25,15 @@ class Game : public Screen {
 
 
     private:
-        void checkCollision(float elapsedTime);
+        void checkCollision(float elapsedTime, sf::Vector2u windowSize);
         void scroll(float elapsedTime);
 
         std::vector<Enemy*> enemies;
         std::vector<Player*> players;
         std::vector<BonusHp*> bonuses_hp;
         std::vector<ItemWeapon*> item_weapons;
+        std::vector<BreakableObject*> breakable_objects;
+
 
         static constexpr float SCROLL_SPEED = -0.1;
 
