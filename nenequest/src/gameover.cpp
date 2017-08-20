@@ -5,10 +5,17 @@ using namespace std;
 using namespace sf;
 
 GameOver::GameOver() {
-    Texture* texteTex = new Texture();
-    texteTex->loadFromFile("img/gameover/gameover_text.jpg");
-    this->texte = new Sprite(*texteTex);
-    this->texte->setOrigin(texteTex->getSize().x/2, texteTex->getSize().y/2);
+	Texture* letterTex = new Texture();
+	letterTex->loadFromFile("img/gameover/gameover_text.jpg");
+	this->ww = letterTex->getSize().x / 9;
+	this->h = letterTex->getSize().y;
+	for (int i = 0; i < 8; i++) {
+		Sprite* s = new Sprite(*letterTex);
+		s->setTextureRect(IntRect(ww * i, 0, ww, h));
+		s->setOrigin(letterTex->getSize().x/2, letterTex->getSize().y/2);
+		this->letters.insert(this->letters.begin() + i, s);
+
+	}
 }
 
 void GameOver::updateSprite(Sprite* s, Vector2f origin) {
@@ -23,11 +30,13 @@ void GameOver::updateSprite(Sprite* s, Vector2f origin) {
 
 void GameOver::updateText() {
     Time elapsed = this->clockText.getElapsedTime();
-    if (!this->textFinished && this->texte->getPosition().y >= this->textLimitY)
-        this->textFinished = true;
-    if (!this->textFinished && elapsed.asMilliseconds() >= 10) {
-        this->texte->move(0, 5);
-        this->clockText.restart();
+    if(elapsed.asMilliseconds() >= 10) {
+		for (auto w : this->letters) {
+			if (w->getPosition().y < this->textLimitY)
+				w->move(0, 5);
+		}
+
+		this->clockText.restart();
     }
 }
 
@@ -41,7 +50,10 @@ int GameOver::run(RenderWindow &app) {
     halo.setOrigin(haloTex.getSize().x/2, haloTex.getSize().y/2);
     halo.setPosition(app.getSize().x/2, app.getSize().y/2*1.25);
 
-    this->texte->setPosition(app.getSize().x/2, 0);
+	for (int i = 0; i < 8; i++) {
+		this->letters.at(i)->setPosition(app.getSize().x/2 + this->ww * i, 0 - i * h);
+
+	}
     this->textLimitY = (halo.getGlobalBounds().top)/2.0;
 
     Texture p1DownTex;
@@ -75,7 +87,9 @@ int GameOver::run(RenderWindow &app) {
 		this->updateSprite(p1Down, halo.getPosition());
 		app.draw(*p1Down);
 		this->updateText();
-		app.draw(*this->texte);
+		for (auto w : this->letters)
+			app.draw(*w);
+
 		app.display();
 	}
 

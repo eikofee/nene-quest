@@ -14,7 +14,7 @@ class ItemWeapon : public Bonus
         virtual ~ItemWeapon();
         WeaponType getWeaponType();
         bool checkIfDropped();
-        bool setDropped(bool v);
+        void setDropped(bool v);
 
     protected:
 

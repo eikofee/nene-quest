@@ -11,8 +11,10 @@ class GameOver : public Screen {
         sf::Clock clockSprite;
         sf::Clock clockText;
         float textLimitY;
-        sf::Sprite* texte;
+        std::vector<sf::Sprite*> letters;
         bool textFinished = false;
+		int ww;
+		int h;
     public:
         GameOver();
         virtual int run(sf::RenderWindow &app);

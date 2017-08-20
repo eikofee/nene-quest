@@ -35,6 +35,6 @@ bool ItemWeapon::checkIfDropped(){
     return is_dropped;
 }
 
-bool ItemWeapon::setDropped(bool v){
+void ItemWeapon::setDropped(bool v){
     is_dropped = v;
 }
