@@ -22,7 +22,7 @@ class Player : public MovableEntity
         void equip(Weapon* w);
 
         // Life management
-        LifeBar getLife();
+        LifeBar* getLife();
 
         // override
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
@@ -35,6 +35,9 @@ class Player : public MovableEntity
     private:
         bool is_attacking = false;
         bool animation_state = false;
+
+    private:
+        sf::Vector2f speed = sf::Vector2f(-10,0);
         bool is_jumping = false;
         sf::Clock clock;
         static constexpr float ANIMATION_DELAY = 0.2;
@@ -42,7 +45,6 @@ class Player : public MovableEntity
 
 
         LifeBar life;
-        sf::Vector2f speed = sf::Vector2f(-10,0);
         Weapon* weapon;
 };
 

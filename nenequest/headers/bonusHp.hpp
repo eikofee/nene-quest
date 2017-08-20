@@ -16,6 +16,7 @@ class BonusHp : public Bonus
     protected:
 
     private:
+        static const int ONIGIRI_HEALED_AMOUNT = 10;
         short int healed_amount;
 };
 

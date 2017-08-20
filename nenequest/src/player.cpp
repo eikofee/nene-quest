@@ -108,9 +108,9 @@ void Player::move(Vector2f g_speed, float elapsedTime){
     this->getWeapon()->move(g_speed, elapsedTime);
 }
 
-LifeBar Player::getLife()
+LifeBar* Player::getLife()
 {
-    return this->life;
+    return &this->life;
 }
 
 

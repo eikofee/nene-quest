@@ -27,6 +27,8 @@ class Game : public Screen {
     private:
         void checkCollision(float elapsedTime, sf::Vector2u windowSize);
         void scroll(float elapsedTime);
+        bool playerIsColliding(Player* p);
+        BreakableObject* getCollidingObject(Player* p);
 
         std::vector<Enemy*> enemies;
         std::vector<Player*> players;
@@ -36,6 +38,8 @@ class Game : public Screen {
 
 
         static constexpr float SCROLL_SPEED = -0.1;
+        static constexpr float PLAYER_SPEED = 0.5;
+        static const int SCROLLING_DAMAGE = 10;
 
         LifeBar life;
         float player_invulnerability_timer = 0;

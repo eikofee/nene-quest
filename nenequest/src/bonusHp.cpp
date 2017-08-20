@@ -10,7 +10,7 @@ BonusHp::BonusHp(short int bonusType, Vector2f position) {
             texture.loadFromFile("img/item_onigiri.png");
             sprite.setTexture(texture);
 
-            healed_amount = 10;
+            healed_amount = ONIGIRI_HEALED_AMOUNT;
             break;
         default:
             break;

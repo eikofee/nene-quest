@@ -92,7 +92,6 @@ void Dragon::breathFire(){
 }
 
 void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    //target.draw(hitbox, states);
     target.draw(sprite, states);
 
     for(Flame* var : flames)
