@@ -26,6 +26,8 @@ class Game : public Screen {
         void checkCollision(float elapsedTime, sf::Vector2u windowSize);
         void scroll(float elapsedTime);
         bool playerIsColliding(Player* p);
+        void playerMove(bool moving_up, bool moving_down, bool moving_left, bool moving_right, float elapsedTime, sf::Vector2u windowSize, float skyHeight);
+
         BreakableObject* getCollidingObject(Player* p);
 
         std::vector<Enemy*> enemies;

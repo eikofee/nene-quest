@@ -23,7 +23,7 @@ void Entity::setPosition(int x, int y)
 }
 
 Vector2f Entity::getPosition() {
-    return sprite.getPosition();
+    return hitbox.getPosition();
 }
 
 void Entity::updateHitboxPosition(){
@@ -37,4 +37,9 @@ void Entity::updateHitboxSize(){
 
 Vector2f Entity::getSpriteSize(){
     return Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);
+}
+
+void Entity::updateSpritePosition(){
+    //hitbox.setFillColor(Color::Red);
+	sprite.setPosition(hitbox.getGlobalBounds().left, hitbox.getGlobalBounds().top);
 }

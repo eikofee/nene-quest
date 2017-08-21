@@ -23,6 +23,9 @@ class Entity : public sf::Drawable
 		void updateHitboxSize();
 		void updateHitboxPosition();
 
+		void updateSpritePosition();
+
+
 	private:
 };
 

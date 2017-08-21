@@ -73,3 +73,7 @@ void Background::createMountains() {
 		this->mountainClock.restart();
 	}
 }
+
+float Background::getSkyHeight(){
+    return this->sky.getLocalBounds().height;
+}

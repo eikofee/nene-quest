@@ -24,14 +24,14 @@ Vector2f MovableEntity::getSpeed(){
 
 void MovableEntity::move(float elapsedTime){
 
- 	sprite.move(speed.x * elapsedTime, speed.y*elapsedTime);
- 	updateHitboxPosition();
+ 	hitbox.move(speed.x * elapsedTime, speed.y*elapsedTime);
+ 	updateSpritePosition();
 }
 
 void MovableEntity::move(Vector2f g_speed, float elapsedTime){
 
- 	sprite.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
-    updateHitboxPosition();
+ 	hitbox.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
+    updateSpritePosition();
 }
 
 bool MovableEntity::isOnScreen(Vector2u windowSize){

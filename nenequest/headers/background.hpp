@@ -27,6 +27,7 @@ class Background : public sf::Drawable, sf::Transformable {
 		sf::Clock cloudClock;
 		sf::Clock mountainClock;
 
+
     public:
         Background(sf::Vector2u v);
 
@@ -45,6 +46,7 @@ class Background : public sf::Drawable, sf::Transformable {
             this->sky.setPosition(x, y);
             this->ground.setPosition(x, y);
         }
+        float getSkyHeight();
 
 		void update();
 		void createClouds();
