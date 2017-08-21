@@ -24,14 +24,15 @@ Player::Player(Weapon* w, Vector2f position) { // 150,170
 	texture.loadFromFile("img/player1.png");
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, 0, texture.getSize().x/2, texture.getSize().y/3));
-    sprite.setPosition(position);
 
+    hitbox.setPosition(position);
 	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height*0.5));
-	hitbox.setOrigin(0,-sprite.getGlobalBounds().height*0.5 );
-    updateHitboxPosition();
+
+	sprite.setOrigin(0,sprite.getGlobalBounds().height*0.5 );
+    updateSpritePosition();
 
 	// Weapon placement
-    this->weapon->setPosition(position.x + 220, position.y + 180);
+    this->weapon->setPosition(position.x + 220, position.y + 180 - sprite.getGlobalBounds().height*0.5);
 
 }
 
@@ -55,10 +56,11 @@ void Player::attack()
 void Player::equip(Weapon* w)
 {
     this->weapon = w;
-    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
+    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    target.draw(hitbox, states);
     target.draw(sprite, states);
     target.draw(*this->weapon, states);
     target.draw(this->life, states);
@@ -127,5 +129,5 @@ void Player::setPosition(float x, float y){
     this->sprite.setPosition(x, y);
     this->hitbox.setPosition(x, y);
 
-    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
+    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5);
 }

@@ -11,10 +11,11 @@ Boar::Boar(Vector2f position) : Enemy (3) {
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0,0,texture.getSize().x,texture.getSize().y/2));
 
-    sprite.setPosition(position);
-    hitbox.setFillColor(Color::Red);
-    updateHitboxSize();
-    updateHitboxPosition();
+    hitbox.setPosition(position);
+	hitbox.setSize(Vector2f(sprite.getLocalBounds().width*0.8, sprite.getLocalBounds().height*0.5));
+
+	sprite.setOrigin(sprite.getGlobalBounds().width *0.07,sprite.getGlobalBounds().height*0.3 );
+    updateSpritePosition();
 
 	speed = Vector2f(-BOAR_SPEED, 0);
 

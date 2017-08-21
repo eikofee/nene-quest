@@ -28,21 +28,21 @@ void LifeBar::updateBar() {
 }
 
 void LifeBar::increase(short int amount) {
-    if (this->value+amount <= this->max) {
-        this->value += amount;
-        updateBar();
-    }
-    else
+
+    this->value += amount;
+    if (this->value > this->max) {
         this->value = this->max;
+    }
+    updateBar();
 }
 
 void LifeBar::decrease(short int amount) {
-    if (this->value-amount >= 0) {
-        this->value -= amount;
-        updateBar();
-    }
-    else
+
+    this->value -= amount;
+    if (this->value < 0) {
         this->value = 0;
+    }
+    updateBar();
 }
 
 short int LifeBar::getValue() {

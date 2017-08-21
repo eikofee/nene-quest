@@ -11,12 +11,12 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 	texture.loadFromFile("img/enemy_dragon.png");
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y/2));
-    sprite.setPosition(position);
-	flame_timer = 0;
 
+    hitbox.setPosition(position);
 	hitbox.setSize(Vector2f(sprite.getLocalBounds().width *0.73, sprite.getLocalBounds().height*0.5));
-	hitbox.setOrigin(-sprite.getGlobalBounds().width*0.27,-sprite.getGlobalBounds().height*0.5 );
-    updateHitboxPosition();
+
+	sprite.setOrigin(sprite.getGlobalBounds().width*0.27,sprite.getGlobalBounds().height*0.5 );
+    updateSpritePosition();
 
 	speed = Vector2f(DRAGON_SPEED,0);
 
@@ -48,7 +48,8 @@ Dragon::~Dragon(){
     flame_timer += elapsedTime;
     if(fire_breathing)
         if(flame_timer > DELAY_BETWEEN_FLAMES){
-            flames.push_back(new Flame(Vector2f(sprite.getPosition().x +100 , sprite.getPosition().y + 100 + (float)(rand()%100) ), 50 + (float)(rand()%70)));
+            flames.push_back(new Flame(Vector2f(sprite.getPosition().x - sprite.getOrigin().x + 100 ,
+                                                        sprite.getPosition().y -sprite.getOrigin().y + 100 + (float)(rand()%100) ), 50 + (float)(rand()%70)));
             flame_timer=0;
         }
 

@@ -15,7 +15,7 @@ int Game::run(RenderWindow &app) {
 	bool running = true;
 
 	// Player
-	Player player = Player(new Weapon(Axe), Vector2f(1000,400));
+	Player player = Player(new Weapon(Axe), Vector2f(1000,600));
     bool moving_up = false;
     bool moving_down = false;
     bool moving_right = false;
@@ -45,8 +45,8 @@ int Game::run(RenderWindow &app) {
 	//cloud.setPosition(500, 500);
 	//cloud.generateBorder();
 
-	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 100, app.getSize().y/2));
-	Dragon* dragon = new Dragon(20, Vector2f(1000,200));
+	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
+	Dragon* dragon = new Dragon(20, Vector2f(1200,600));
 	BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
     ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(800,600));
 
@@ -125,60 +125,13 @@ int Game::run(RenderWindow &app) {
             }
         }
 
-        //scroll(elapsedTime);
+        scroll(elapsedTime);
 
         boar1->update(elapsedTime);
         dragon->update(elapsedTime);
         background.update();
 
-
-        Vector2f playerSpeed = Vector2f(0,0);
-
-        if (moving_up) {
-            playerSpeed.y -= PLAYER_SPEED;
-        } if (moving_down) {
-            playerSpeed.y += PLAYER_SPEED;
-        } if (moving_right) {
-            playerSpeed.x += PLAYER_SPEED;
-        } if (moving_left) {
-            playerSpeed.x -= PLAYER_SPEED;
-        }
-
-        if(playerSpeed.x != 0){
-            player.move(Vector2f(playerSpeed.x, 0), elapsedTime);
-            if(playerIsColliding(&player)){
-                //Do/While in case the player collide several object at the same time
-                do{
-                    BreakableObject* tmp = getCollidingObject(&player);
-                    if(playerSpeed.x > 0){
-                        player.setPosition(tmp->getPosition().x - player.getHitbox().getGlobalBounds().width -1, player.getPosition().y);
-                    }
-                    else{
-                        player.setPosition(tmp->getPosition().x + tmp->getHitbox().getGlobalBounds().width +1, player.getPosition().y);
-                    }
-
-                }while(playerIsColliding(&player));
-            }
-        }
-
-        if(playerSpeed.y != 0){
-            player.move(Vector2f(0, playerSpeed.y), elapsedTime);
-            if(playerIsColliding(&player)){
-                //Do/While in case the player collide several object at the same time
-                do{
-                    BreakableObject* tmp = getCollidingObject(&player);
-                    if(playerSpeed.y > 0){
-                        player.setPosition(player.getPosition().x, tmp->getPosition().y - player.getHitbox().getGlobalBounds().height*2 - 1);
-                    }
-                    else{
-                        player.setPosition(player.getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height - player.getHitbox().getGlobalBounds().height +1);
-                    }
-
-                }while(playerIsColliding(&player));
-            }
-        }
-
-
+        playerMove(moving_up, moving_down, moving_left, moving_right, elapsedTime, app.getSize(), background.getSkyHeight());
 
         checkCollision(elapsedTime, app.getSize());
 
@@ -200,13 +153,6 @@ int Game::run(RenderWindow &app) {
 
         for(Player* var : players)
             app.draw(*var);
-
-
-
-        //Test cloud part 2
-        //cloud.update();
-        //if (cloud.isAlive())
-        //	app.draw(cloud);
 
         app.display();
 
@@ -240,6 +186,8 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                 delete(bonuses_hp.at(j));
                 bonuses_hp.erase(bonuses_hp.begin()+j);
             }
+
+
             //Check for collisions between the player and the item
             else if(players.at(i)->detectHit(*bonuses_hp.at(j))){
 
@@ -284,31 +232,6 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                 item_weapons.at(j)->setDropped(false);
             }
         }
-
-        //Collision with breakable objects
-        for(unsigned int j = 0; j < breakable_objects.size(); j++){
-
-            //Check if the object is still on screen
-            if(!breakable_objects.at(j)->isOnScreen(windowSize)){
-                delete(breakable_objects.at(j));
-                breakable_objects.erase(breakable_objects.begin()+j);
-            }
-            //Check for collisions between the player and the object
-            else if(players.at(i)->detectHit(*breakable_objects.at(j))){
-                /*Bonus* tmp;
-                if(tmp = breakable_objects.at(j)->getDrops()){
-                    if(tmp->getBonusType() == Item_Onigiri)
-                        bonuses_hp.push_back((BonusHp*)tmp);
-                    else
-                        item_weapons.push_back((ItemWeapon*)tmp);
-                }
-
-                delete(breakable_objects.at(j));
-                breakable_objects.erase(breakable_objects.begin()+j);*/
-                //blockPlayer(players.at(i));
-            }
-        }
-
     }
 }
 
@@ -325,7 +248,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
         if(playerIsColliding(player)){
             //Move the player of 1 pixel to the left until he isn't in collision within any object
             do{
-                player->move(Vector2f(-1/elapsedTime, 0), elapsedTime);
+                player->setPosition(player->getPosition().x -1, player->getPosition().y);
 
                 //If the scrolling pushes the player into the border of the screen, destroy the item pushing him and damage the player
                 if(player->getPosition().x <= 0){
@@ -334,7 +257,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                             delete(breakable_objects.at(j));
                             breakable_objects.erase(breakable_objects.begin()+j);
                             life.decrease(SCROLLING_DAMAGE);
-                            player->move(Vector2f(1/elapsedTime, 0), elapsedTime);
+                            player->setPosition(0,player->getPosition().y);
                     }
 
                 }
@@ -360,4 +283,71 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
             return obj;
 
     return NULL;
+ }
+
+ void Game::playerMove(bool moving_up, bool moving_down, bool moving_left, bool moving_right, float elapsedTime, Vector2u windowSize, float skyHeight){
+        for(Player* player : players){
+             Vector2f playerSpeed = Vector2f(0,0);
+
+            if (moving_up) {
+                playerSpeed.y -= PLAYER_SPEED;
+            } if (moving_down) {
+                playerSpeed.y += PLAYER_SPEED;
+            } if (moving_right) {
+                playerSpeed.x += PLAYER_SPEED;
+            } if (moving_left) {
+                playerSpeed.x -= PLAYER_SPEED;
+            }
+
+            if(playerSpeed.x != 0){
+                player->move(Vector2f(playerSpeed.x, 0), elapsedTime);
+
+                //Check if the player isn't leaving the screen
+                if(player->getPosition().x + player->getHitbox().getLocalBounds().width > windowSize.x)
+                    player->setPosition(windowSize.x - player->getHitbox().getGlobalBounds().width, player->getPosition().y);
+                else if(player->getPosition().x + playerSpeed.x*elapsedTime < 0)
+                    player->setPosition(0, player->getPosition().y);
+
+                if(playerIsColliding(player)){
+                    //Do/While in case the player collide several object at the same time
+                    do{
+                        BreakableObject* tmp = getCollidingObject(player);
+                        if(playerSpeed.x > 0){
+                            player->setPosition(tmp->getPosition().x - player->getHitbox().getGlobalBounds().width, player->getPosition().y);
+                        }
+                        else{
+                            player->setPosition(tmp->getPosition().x + tmp->getHitbox().getGlobalBounds().width, player->getPosition().y);
+                        }
+
+                    }while(playerIsColliding(player));
+                }
+            }
+
+            if(playerSpeed.y != 0){
+                    printf("%f %f %f %f\n", player->getPosition().y , playerSpeed.y*elapsedTime , skyHeight, player->getHitbox().getPosition().y);
+                player->move(Vector2f(0, playerSpeed.y), elapsedTime);
+
+                //Check if the player isn't leaving the screen
+                if(player->getPosition().y + player->getHitbox().getGlobalBounds().height > windowSize.y)
+                    player->setPosition(player->getPosition().x, windowSize.y - player->getHitbox().getGlobalBounds().height);
+                else if(player->getPosition().y < skyHeight)
+                    player->setPosition(player->getPosition().x, skyHeight);
+
+                if(playerIsColliding(player)){
+                    //Do/While in case the player collide several object at the same time
+                    do{
+                        BreakableObject* tmp = getCollidingObject(player);
+                        if(playerSpeed.y > 0){
+                            player->setPosition(player->getPosition().x, tmp->getPosition().y - player->getHitbox().getGlobalBounds().height);
+                        }
+                        else{
+                            player->setPosition(player->getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height);
+                        }
+
+                    }while(playerIsColliding(player));
+                }
+
+            }
+        }
+
  }

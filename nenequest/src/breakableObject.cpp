@@ -12,11 +12,15 @@ BreakableObject::BreakableObject(ObjectType o, Vector2f position) {
     getObjectTexture(o);
 
 	sprite.setTexture(texture);
-    sprite.setPosition(position);
+    if(o == Chest){
+        hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height*0.5));
+        sprite.setOrigin(0,sprite.getGlobalBounds().height*0.5 );
+    }
+    else
+        updateHitboxSize();
 
-    updateHitboxSize();
-    updateHitboxPosition();
-
+    hitbox.setPosition(position);
+    updateSpritePosition();
 }
 
 BreakableObject::~BreakableObject() {
