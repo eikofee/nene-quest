@@ -1,16 +1,21 @@
 #include <SFML/Audio.hpp>
 #include "../headers/gameover.hpp"
+#include "../headers/gamemode.hpp"
 
 using namespace std;
 using namespace sf;
 
-GameOver::GameOver() {
-	std::string path = "img/gameover/";
-	std::string ext = ".png";
-	std::vector<std::string> texs = { "bg_u", "ba_u", "bm_u", "be_u", "o_u", "v_u", "e_u", "r_u", "!_u", "bg_o", "ba_o", "bm_o", "be_o", "o_o", "v_o", "e_o", "r_o", "!_o" };
+const string GameOver::GAMEOVER_PATH = "img/gameover/";
+const string GameOver::GAMEOVER_EXT = ".png";
+
+GameOver::GameOver(GameMode mode) {
+	vector<string> texs = {
+	    "bg_u", "ba_u", "bm_u", "be_u", "o_u", "v_u", "e_u", "r_u", "!_u",
+	    "bg_o", "ba_o", "bm_o", "be_o", "o_o", "v_o", "e_o", "r_o", "!_o"
+    };
 	for (int i = 0; i < 18; i++) {
 		Texture* letterTex = new Texture();
-		letterTex->loadFromFile(path + texs.at(i) + ext);
+		letterTex->loadFromFile(this->GAMEOVER_PATH + texs.at(i) + this->GAMEOVER_EXT);
 		this->ww = letterTex->getSize().x;
 		this->h = letterTex->getSize().y;
 		Sprite* s = new Sprite(*letterTex);
@@ -37,9 +42,13 @@ void GameOver::updateText() {
 				//w->move(0, 10);
 				w->move(0, fminf((this->textLimitY - w->getPosition().y) / 6, 30));
 		}
-
 		this->clockText.restart();
     }
+}
+
+void GameOver::freeGameOver() {
+    // TODO : free letters
+    delete this->p1Down;
 }
 
 int GameOver::run(RenderWindow &app) {
@@ -53,16 +62,18 @@ int GameOver::run(RenderWindow &app) {
     halo.setPosition(app.getSize().x/2, app.getSize().y/2*1.25);
 
 	for (int i = 0; i < 18; i++) {
-		this->letters.at(i)->setPosition(app.getSize().x/2 - (1.3*this->ww) + (this->ww/((i % 9 > 3 ? 3.5 : 2.65))) * (i % 9) + (this->ww/ 1.7 * (i % 9 > 3 ? 1 : 0)), 0 - (i % 9) * h *0.5);
-
+		this->letters.at(i)->setPosition(
+            app.getSize().x/2 - (1.3*this->ww) + (this->ww/((i % 9 > 3 ? 3.5 : 2.65))) * (i % 9) + (this->ww/ 1.7 * (i % 9 > 3 ? 1 : 0)),
+            0 - (i % 9) * h *0.5
+        );
 	}
     this->textLimitY = (halo.getGlobalBounds().top)/2.0;
 
     Texture p1DownTex;
 	p1DownTex.loadFromFile("img/gameover/p1_down.png");
-    Sprite* p1Down = new Sprite(p1DownTex);
-    p1Down->setOrigin(p1DownTex.getSize().x/2, p1DownTex.getSize().y/2);
-    p1Down->setPosition(halo.getPosition());
+    this->p1Down = new Sprite(p1DownTex);
+    this->p1Down->setOrigin(p1DownTex.getSize().x/2, p1DownTex.getSize().y/2);
+    this->p1Down->setPosition(halo.getPosition());
 
     SoundBuffer sfxBuffer;
     sfxBuffer.loadFromFile("sfx/gameover.ogg");
@@ -71,27 +82,21 @@ int GameOver::run(RenderWindow &app) {
 
     // ---------------- Main Loop ----------------
 	while(running) {
-
 		while(app.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				return (-1);
-
-            // Keyboard handling
-			if (event.type == Event::KeyPressed)
+			if (event.type == Event::KeyPressed || event.type == Event::MouseButtonPressed) {
+				this->freeGameOver();
 				return 1;
-            // Mouse handling
-            if (event.type == Event::MouseButtonPressed)
-                return 1;
+			}
 		}
 
 		app.clear(this->m_bgcolor);
 		app.draw(halo);
-		this->updateSprite(p1Down, halo.getPosition());
-		app.draw(*p1Down);
+		this->updateSprite(this->p1Down, halo.getPosition());
+		app.draw(*this->p1Down);
 		this->updateText();
-		for (auto w : this->letters)
-			app.draw(*w);
-
+		for (auto w : this->letters) app.draw(*w);
 		app.display();
 	}
 

@@ -17,12 +17,10 @@
 #include "../headers/breakableObject.hpp"
 #include "../headers/bonus.hpp"
 
-
 class Game : public Screen {
     public:
         Game();
         virtual int run(sf::RenderWindow &app);
-
 
     private:
         void checkCollision(float elapsedTime, sf::Vector2u windowSize);
@@ -36,14 +34,12 @@ class Game : public Screen {
         std::vector<ItemWeapon*> item_weapons;
         std::vector<BreakableObject*> breakable_objects;
 
-
         static constexpr float SCROLL_SPEED = -0.1;
         static constexpr float PLAYER_SPEED = 0.5;
         static const int SCROLLING_DAMAGE = 10;
 
         LifeBar life;
         float player_invulnerability_timer = 0;
-
 };
 
 #endif

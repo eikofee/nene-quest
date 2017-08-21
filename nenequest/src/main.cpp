@@ -12,12 +12,9 @@ int main() {
 	RenderWindow app(VideoMode::getDesktopMode(), "Nene Quest", Style::Close | Style::Titlebar);
     app.setFramerateLimit(60);
 
-	Menu s0;
-	screens.push_back(&s0);
-	Game s1;
-	screens.push_back(&s1);
-	GameOver s2;
-	screens.push_back(&s2);
+	screens.push_back(new Menu);
+	screens.push_back(new Game);
+	screens.push_back(new GameOver);
 
 	while (selectedScreen >= 0)
 		selectedScreen = screens[selectedScreen]->run(app);
