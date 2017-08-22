@@ -5,10 +5,10 @@
     TODO :
     - Placer l'arme correctement
     - Animation de l'attaque (rotation du sprite du Weapon)
-    - Empêcher de sortir de la fenêtre / allez trop haut-bas
-    - Detection avec les ennemis
-    - Frame immortalité lorsqu'on perd de la vie
-    - Saut (immortalité temporaire)
+    - Empêcher de sortir de la fenêtre / allez trop haut-bas => Fait dans game.cpp
+    - Detection avec les ennemis => Fait dans game.cpp
+    - Frame immortalité lorsqu'on perd de la vie => Fait dans game.cpp mais c'est mieux ici donc fait le +(animation clignotante dans l'idéal)
+    - Saut (immortalité temporaire) => Fait dans game.cpp
 **/
 
 using namespace sf;
@@ -60,6 +60,7 @@ void Player::equip(Weapon* w)
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+
     target.draw(sprite, states);
     target.draw(*this->weapon, states);
     target.draw(this->life, states);

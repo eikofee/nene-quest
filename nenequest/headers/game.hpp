@@ -29,6 +29,9 @@ class Game : public Screen {
         void scroll(float elapsedTime);
         bool playerIsColliding(Player* p);
         void playerMove(bool moving_up, bool moving_down, bool moving_left, bool moving_right, float elapsedTime, sf::Vector2u windowSize, float skyHeight);
+        void drawWithDepth(sf::RenderWindow* app);
+        static bool cmp(Entity* a, Entity* d);
+
 
         BreakableObject* getCollidingObject(Player* p);
 

@@ -125,7 +125,7 @@ int Game::run(RenderWindow &app) {
             }
         }
 
-        scroll(elapsedTime);
+        //scroll(elapsedTime);
 
         boar1->update(elapsedTime);
         dragon->update(elapsedTime);
@@ -139,7 +139,7 @@ int Game::run(RenderWindow &app) {
         app.draw(background);
         app.draw(knightHead);
 
-        for(BreakableObject* var : breakable_objects)
+        /*for(BreakableObject* var : breakable_objects)
             app.draw(*var);
 
         for(BonusHp* var : bonuses_hp)
@@ -149,11 +149,11 @@ int Game::run(RenderWindow &app) {
             app.draw(*var);
 
         for(Enemy* var : enemies)
-            app.draw(*var);
+            app.draw(*var);*/
 
-        for(Player* var : players)
-            app.draw(*var);
-
+        //for(Player* var : players)
+            //app.draw(*var);
+        drawWithDepth(&app);
         app.display();
 
 	}
@@ -166,70 +166,72 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 
     //Collisions with enemies
     for(unsigned int i = 0; i < players.size(); i++){
-        if(player_invulnerability_timer <= 0){
-            for(unsigned int j = 0; j < enemies.size(); j++){
-                if(players.at(i)->detectHit(*enemies.at(j))){
-                    players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
-                    player_invulnerability_timer = 200;
-                }
-            }
-        }
-        else{
-            player_invulnerability_timer -= elapsedTime;
-        }
-
-        //Collisions with bonus hp
-        for(unsigned int j = 0; j < bonuses_hp.size(); j++){
-
-            //Check if the item is still on screen
-            if(!bonuses_hp.at(j)->isOnScreen(windowSize)){
-                delete(bonuses_hp.at(j));
-                bonuses_hp.erase(bonuses_hp.begin()+j);
-            }
-
-
-            //Check for collisions between the player and the item
-            else if(players.at(i)->detectHit(*bonuses_hp.at(j))){
-
-                players.at(i)->getLife()->increase(bonuses_hp.at(j)->getHealedAmount());
-                delete(bonuses_hp.at(j));
-                bonuses_hp.erase(bonuses_hp.begin()+j);
-            }
-        }
-
-        //Collisions with weapon items
-        for(unsigned int j = 0; j < item_weapons.size(); j++){
-            //Check if the item is still on screen
-            if(!item_weapons.at(j)->isOnScreen(windowSize)){
-                delete(item_weapons.at(j));
-                item_weapons.erase(item_weapons.begin()+j);
-            }
-
-            //Check for collisions between the player and the item
-            else if(players.at(i)->detectHit(*item_weapons.at(j))){
-
-                if(! item_weapons.at(j)->checkIfDropped()){
-
-                    WeaponType weaponType = item_weapons.at(j)->getWeaponType();
-                    if(players.at(i)->getWeapon()->getWeaponType() != weaponType){
-
-                        //Drop old weapon
-                        ItemWeapon* tmp = new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition());
-
-                        //setDropped used to prevent the player from interacting with the item again when he's still standing on it
-                        tmp->setDropped(true);
-                        item_weapons.push_back(tmp);
-                        delete(item_weapons.at(j));
-                        item_weapons.erase(item_weapons.begin()+j);
-
-                        //Equip new weapon
-                        players.at(i)->equip(new Weapon(weaponType));
-
+        if(!players.at(i)->isJumping()){
+            if(player_invulnerability_timer <= 0){
+                for(unsigned int j = 0; j < enemies.size(); j++){
+                    if(players.at(i)->detectHit(*enemies.at(j))){
+                        players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
+                        player_invulnerability_timer = 200;
                     }
                 }
             }
             else{
-                item_weapons.at(j)->setDropped(false);
+                player_invulnerability_timer -= elapsedTime;
+            }
+
+            //Collisions with bonus hp
+            for(unsigned int j = 0; j < bonuses_hp.size(); j++){
+
+                //Check if the item is still on screen
+                if(!bonuses_hp.at(j)->isOnScreen(windowSize)){
+                    delete(bonuses_hp.at(j));
+                    bonuses_hp.erase(bonuses_hp.begin()+j);
+                }
+
+
+                //Check for collisions between the player and the item
+                else if(players.at(i)->detectHit(*bonuses_hp.at(j))){
+
+                    players.at(i)->getLife()->increase(bonuses_hp.at(j)->getHealedAmount());
+                    delete(bonuses_hp.at(j));
+                    bonuses_hp.erase(bonuses_hp.begin()+j);
+                }
+            }
+
+            //Collisions with weapon items
+            for(unsigned int j = 0; j < item_weapons.size(); j++){
+                //Check if the item is still on screen
+                if(!item_weapons.at(j)->isOnScreen(windowSize)){
+                    delete(item_weapons.at(j));
+                    item_weapons.erase(item_weapons.begin()+j);
+                }
+
+                //Check for collisions between the player and the item
+                else if(players.at(i)->detectHit(*item_weapons.at(j))){
+
+                    if(! item_weapons.at(j)->checkIfDropped()){
+
+                        WeaponType weaponType = item_weapons.at(j)->getWeaponType();
+                        if(players.at(i)->getWeapon()->getWeaponType() != weaponType){
+
+                            //Drop old weapon
+                            ItemWeapon* tmp = new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition());
+
+                            //setDropped used to prevent the player from interacting with the item again when he's still standing on it
+                            tmp->setDropped(true);
+                            item_weapons.push_back(tmp);
+                            delete(item_weapons.at(j));
+                            item_weapons.erase(item_weapons.begin()+j);
+
+                            //Equip new weapon
+                            players.at(i)->equip(new Weapon(weaponType));
+
+                        }
+                    }
+                }
+                else{
+                    item_weapons.at(j)->setDropped(false);
+                }
             }
         }
     }
@@ -286,68 +288,100 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
  }
 
  void Game::playerMove(bool moving_up, bool moving_down, bool moving_left, bool moving_right, float elapsedTime, Vector2u windowSize, float skyHeight){
-        for(Player* player : players){
-             Vector2f playerSpeed = Vector2f(0,0);
+    for(Player* player : players){
+         Vector2f playerSpeed = Vector2f(0,0);
 
-            if (moving_up) {
-                playerSpeed.y -= PLAYER_SPEED;
-            } if (moving_down) {
-                playerSpeed.y += PLAYER_SPEED;
-            } if (moving_right) {
-                playerSpeed.x += PLAYER_SPEED;
-            } if (moving_left) {
-                playerSpeed.x -= PLAYER_SPEED;
-            }
+        if (moving_up) {
+            playerSpeed.y -= PLAYER_SPEED;
+        } if (moving_down) {
+            playerSpeed.y += PLAYER_SPEED;
+        } if (moving_right) {
+            playerSpeed.x += PLAYER_SPEED;
+        } if (moving_left) {
+            playerSpeed.x -= PLAYER_SPEED;
+        }
 
-            if(playerSpeed.x != 0){
-                player->move(Vector2f(playerSpeed.x, 0), elapsedTime);
+        if(playerSpeed.x != 0){
+            player->move(Vector2f(playerSpeed.x, 0), elapsedTime);
 
-                //Check if the player isn't leaving the screen
-                if(player->getPosition().x + player->getHitbox().getLocalBounds().width > windowSize.x)
-                    player->setPosition(windowSize.x - player->getHitbox().getGlobalBounds().width, player->getPosition().y);
-                else if(player->getPosition().x + playerSpeed.x*elapsedTime < 0)
-                    player->setPosition(0, player->getPosition().y);
+            //Check if the player isn't leaving the screen
+            if(player->getPosition().x + player->getHitbox().getLocalBounds().width > windowSize.x)
+                player->setPosition(windowSize.x - player->getHitbox().getGlobalBounds().width, player->getPosition().y);
+            else if(player->getPosition().x + playerSpeed.x*elapsedTime < 0)
+                player->setPosition(0, player->getPosition().y);
 
-                if(playerIsColliding(player)){
-                    //Do/While in case the player collide several object at the same time
-                    do{
-                        BreakableObject* tmp = getCollidingObject(player);
-                        if(playerSpeed.x > 0){
-                            player->setPosition(tmp->getPosition().x - player->getHitbox().getGlobalBounds().width, player->getPosition().y);
-                        }
-                        else{
-                            player->setPosition(tmp->getPosition().x + tmp->getHitbox().getGlobalBounds().width, player->getPosition().y);
-                        }
+            if(playerIsColliding(player)){
+                //Do/While in case the player collide several object at the same time
+                do{
+                    BreakableObject* tmp = getCollidingObject(player);
+                    if(playerSpeed.x > 0){
+                        player->setPosition(tmp->getPosition().x - player->getHitbox().getGlobalBounds().width, player->getPosition().y);
+                    }
+                    else{
+                        player->setPosition(tmp->getPosition().x + tmp->getHitbox().getGlobalBounds().width, player->getPosition().y);
+                    }
 
-                    }while(playerIsColliding(player));
-                }
-            }
-
-            if(playerSpeed.y != 0){
-                    printf("%f %f %f %f\n", player->getPosition().y , playerSpeed.y*elapsedTime , skyHeight, player->getHitbox().getPosition().y);
-                player->move(Vector2f(0, playerSpeed.y), elapsedTime);
-
-                //Check if the player isn't leaving the screen
-                if(player->getPosition().y + player->getHitbox().getGlobalBounds().height > windowSize.y)
-                    player->setPosition(player->getPosition().x, windowSize.y - player->getHitbox().getGlobalBounds().height);
-                else if(player->getPosition().y < skyHeight)
-                    player->setPosition(player->getPosition().x, skyHeight);
-
-                if(playerIsColliding(player)){
-                    //Do/While in case the player collide several object at the same time
-                    do{
-                        BreakableObject* tmp = getCollidingObject(player);
-                        if(playerSpeed.y > 0){
-                            player->setPosition(player->getPosition().x, tmp->getPosition().y - player->getHitbox().getGlobalBounds().height);
-                        }
-                        else{
-                            player->setPosition(player->getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height);
-                        }
-
-                    }while(playerIsColliding(player));
-                }
-
+                }while(playerIsColliding(player));
             }
         }
 
+        if(playerSpeed.y != 0){
+            player->move(Vector2f(0, playerSpeed.y), elapsedTime);
+
+            //Check if the player isn't leaving the screen
+            if(player->getPosition().y + player->getHitbox().getGlobalBounds().height > windowSize.y)
+                player->setPosition(player->getPosition().x, windowSize.y - player->getHitbox().getGlobalBounds().height);
+            else if(player->getPosition().y < skyHeight)
+                player->setPosition(player->getPosition().x, skyHeight);
+
+            if(playerIsColliding(player)){
+                //Do/While in case the player collide several object at the same time
+                do{
+                    BreakableObject* tmp = getCollidingObject(player);
+                    if(playerSpeed.y > 0){
+                        player->setPosition(player->getPosition().x, tmp->getPosition().y - player->getHitbox().getGlobalBounds().height);
+                    }
+                    else{
+                        player->setPosition(player->getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height);
+                    }
+
+                }while(playerIsColliding(player));
+            }
+
+        }
+    }
  }
+
+ void Game::drawWithDepth(RenderWindow* app){
+
+    list<Entity*> entities;
+
+    for(BonusHp* var : bonuses_hp){
+        entities.push_back((Entity*)var);
+    }
+    for(ItemWeapon* var : item_weapons){
+        entities.push_back((Entity*)var);
+    }
+    for(Enemy* var : enemies){
+        entities.push_back((Entity*)var);
+    }
+    for(Player* var : players){
+        entities.push_back((Entity*)var);
+    }
+    for(BreakableObject* var : breakable_objects){
+        entities.push_back((Entity*)var);
+    }
+    entities.sort(cmp);
+
+    for(Entity* var : entities)
+        app->draw(*var);
+
+ }
+
+ bool Game::cmp(Entity* a, Entity* d) {
+    if(a->getPosition().y > d->getPosition().y) {
+        return false;
+    }
+    return true;
+}
+
