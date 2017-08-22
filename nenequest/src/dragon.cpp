@@ -1,12 +1,15 @@
 #include "../headers/dragon.hpp"
 
 using namespace sf;
+using namespace std;
+
 
 Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 
     srand(NULL);
 
     attack_damage = DRAGON_DAMAGE;
+    enemy_type = Enemy_Dragon;
 
 	texture.loadFromFile("img/enemy_dragon.png");
 	sprite.setTexture(texture);
@@ -93,9 +96,17 @@ void Dragon::breathFire(){
 }
 
 void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    //target.draw(hitbox, states);
+    //  target.draw(hitbox, states);
     target.draw(sprite, states);
 
     for(Flame* var : flames)
         target.draw(*var);
+}
+
+bool Dragon::isBreatingFire(){
+    return fire_breathing;
+}
+
+vector<Flame*> Dragon::getFlames(){
+    return flames;
 }

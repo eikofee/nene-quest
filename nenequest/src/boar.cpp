@@ -6,6 +6,7 @@ using namespace sf;
 Boar::Boar(Vector2f position) : Enemy (3) {
 
     attack_damage = BOAR_DAMAGE;
+    enemy_type = Enemy_Boar;
 
 	texture.loadFromFile("img/enemy_boar_anim.png");
 	sprite.setTexture(texture);

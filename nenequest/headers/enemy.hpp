@@ -5,6 +5,8 @@
 #include "../headers/livingEntity.hpp"
 #include <SFML/Graphics.hpp>
 
+enum EnemyType {Enemy_Dragon, Enemy_Boar};
+
 class Enemy : public MovableEntity, public LivingEntity
 {
     public:
@@ -12,13 +14,13 @@ class Enemy : public MovableEntity, public LivingEntity
         virtual ~Enemy();
         short int getAttackDamage();
         void update(float elapsedTime);
+        EnemyType getEnemyType();
 
     protected:
         sf::Clock clock;
         short int animation_state = 0;
         short int attack_damage = 0;
-
-
+        EnemyType enemy_type;
 
     private:
 };

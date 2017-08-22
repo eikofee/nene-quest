@@ -125,7 +125,7 @@ int Game::run(RenderWindow &app) {
             }
         }
 
-        //scroll(elapsedTime);
+        scroll(elapsedTime);
 
         boar1->update(elapsedTime);
         dragon->update(elapsedTime);
@@ -139,20 +139,6 @@ int Game::run(RenderWindow &app) {
         app.draw(background);
         app.draw(knightHead);
 
-        /*for(BreakableObject* var : breakable_objects)
-            app.draw(*var);
-
-        for(BonusHp* var : bonuses_hp)
-            app.draw(*var);
-
-        for(ItemWeapon* var : item_weapons)
-            app.draw(*var);
-
-        for(Enemy* var : enemies)
-            app.draw(*var);*/
-
-        //for(Player* var : players)
-            //app.draw(*var);
         drawWithDepth(&app);
         app.display();
 
@@ -164,14 +150,27 @@ int Game::run(RenderWindow &app) {
 //Collision detection
 void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 
-    //Collisions with enemies
     for(unsigned int i = 0; i < players.size(); i++){
         if(!players.at(i)->isJumping()){
+
+            //Collisions with enemies
             if(player_invulnerability_timer <= 0){
                 for(unsigned int j = 0; j < enemies.size(); j++){
                     if(players.at(i)->detectHit(*enemies.at(j))){
                         players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
                         player_invulnerability_timer = 200;
+                        break;
+                    }
+                    if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
+                       vector<Flame*> flames = ((Dragon*)enemies.at(j))->getFlames();
+                       for(Flame* flame : flames){
+                            if(players.at(i)->detectHit(*flame)){
+                               players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
+                               player_invulnerability_timer = 200;
+                               break;
+                            }
+                       }
+
                     }
                 }
             }

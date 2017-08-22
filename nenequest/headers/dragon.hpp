@@ -14,6 +14,8 @@ class Dragon : public Enemy {
         virtual void update(float elapsedTime);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
         void breathFire();
+        bool isBreatingFire();
+        std::vector<Flame*> getFlames();
 
     protected:
 
@@ -25,6 +27,7 @@ class Dragon : public Enemy {
         static float constexpr DRAGON_SPEED = 0.1;//Pixels/milliseconds
 
         std::vector<Flame*> flames;
+
         int movement_timer = 0;
         bool fire_breathing = false;
         void progressAnimation();

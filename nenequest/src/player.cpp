@@ -60,7 +60,7 @@ void Player::equip(Weapon* w)
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-
+    //target.draw(hitbox,states);
     target.draw(sprite, states);
     target.draw(*this->weapon, states);
     target.draw(this->life, states);

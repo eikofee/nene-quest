@@ -7,6 +7,7 @@
 class Flame : public MovableEntity {
 
     public :
+        static int const FLAMES_DAMAGE = 1;
         Flame();
         Flame(sf::Vector2f position, float f);
         virtual ~Flame();

@@ -18,3 +18,7 @@ short int Enemy::getAttackDamage(){
 
     this->move(elapsedTime);
  }
+
+ EnemyType Enemy::getEnemyType(){
+    return enemy_type;
+ }
