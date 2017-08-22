@@ -4,13 +4,15 @@
 #include <SFML/Graphics.hpp>
 #include "screen.hpp"
 #include "gameover.hpp"
+#include "gamemode.hpp"
 #include <math.h>
 
 class GameOver : public Screen {
     private:
+        GameMode mode;
         static const std::string GAMEOVER_PATH;
         static const std::string GAMEOVER_EXT;
-        sf::Sprite* p1Down;
+        std::vector<sf::Sprite*> playersDown;
         sf::Color m_bgcolor = sf::Color(62, 64, 121);
         sf::Clock clockSprite;
         sf::Clock clockText;
@@ -20,9 +22,9 @@ class GameOver : public Screen {
 		int ww;
 		int h;
     public:
-        GameOver();
+        GameOver(GameMode mode);
         virtual int run(sf::RenderWindow &app);
-        void updateSprite(sf::Sprite* s, sf::Vector2f origin);
+        void updateSprite(sf::Vector2f origin);
         void updateText();
         void freeGameOver();
 };

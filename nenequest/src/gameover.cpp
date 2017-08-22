@@ -8,7 +8,7 @@ using namespace sf;
 const string GameOver::GAMEOVER_PATH = "img/gameover/";
 const string GameOver::GAMEOVER_EXT = ".png";
 
-GameOver::GameOver() {
+GameOver::GameOver(GameMode mode) {
 	vector<string> texs = {
 	    "bg_u", "ba_u", "bm_u", "be_u", "o_u", "v_u", "e_u", "r_u", "!_u",
 	    "bg_o", "ba_o", "bm_o", "be_o", "o_o", "v_o", "e_o", "r_o", "!_o"
@@ -22,16 +22,20 @@ GameOver::GameOver() {
 		s->setOrigin(letterTex->getSize().x/2, letterTex->getSize().y/2);
 		this->letters.insert(this->letters.begin() + i, s);
 	}
+	this->mode = mode;
 }
 
-void GameOver::updateSprite(Sprite* s, Vector2f origin) {
+void GameOver::updateSprite(Vector2f origin) {
     Time elapsed = this->clockSprite.getElapsedTime();
     if (elapsed.asMilliseconds() >= 250) {
-        s->setPosition(origin);
+        for (auto s : this->playersDown)
+            s->setPosition(origin);
         this->clockSprite.restart();
     }
-    else if (elapsed.asMilliseconds() >= 125)
-        s->setPosition(origin.x+1, origin.y+1);
+    else if (elapsed.asMilliseconds() >= 125) {
+        for (auto s : this->playersDown)
+            s->setPosition(origin.x+1, origin.y+1);
+    }
 }
 
 void GameOver::updateText() {
@@ -48,7 +52,8 @@ void GameOver::updateText() {
 
 void GameOver::freeGameOver() {
     // TODO : free letters
-    delete this->p1Down;
+    for (auto p : this->playersDown)
+        delete p;
 }
 
 int GameOver::run(RenderWindow &app) {
@@ -71,9 +76,23 @@ int GameOver::run(RenderWindow &app) {
 
     Texture p1DownTex;
 	p1DownTex.loadFromFile("img/gameover/p1_down.png");
-    this->p1Down = new Sprite(p1DownTex);
-    this->p1Down->setOrigin(p1DownTex.getSize().x/2, p1DownTex.getSize().y/2);
-    this->p1Down->setPosition(halo.getPosition());
+    this->playersDown.push_back(new Sprite(p1DownTex));
+
+    Texture p2DownTex;
+
+    if (this->mode == TWO_PLAYER) {
+        p2DownTex.loadFromFile("img/gameover/p2_down.png");
+        this->playersDown.push_back(new Sprite(p2DownTex));
+
+        this->playersDown[0]->setOrigin(0, p1DownTex.getSize().y/2);
+        this->playersDown[0]->setPosition(halo.getPosition());
+        this->playersDown[1]->setOrigin(p2DownTex.getSize().x, p2DownTex.getSize().y/2);
+        this->playersDown[1]->setPosition(halo.getPosition());
+    }
+    else {
+        this->playersDown[0]->setOrigin(p1DownTex.getSize().x/2, p1DownTex.getSize().y/2);
+        this->playersDown[0]->setPosition(halo.getPosition());
+    }
 
     SoundBuffer sfxBuffer;
     sfxBuffer.loadFromFile("sfx/gameover.ogg");
@@ -93,8 +112,9 @@ int GameOver::run(RenderWindow &app) {
 
 		app.clear(this->m_bgcolor);
 		app.draw(halo);
-		this->updateSprite(this->p1Down, halo.getPosition());
-		app.draw(*this->p1Down);
+		this->updateSprite(halo.getPosition());
+		for (auto p : this->playersDown)
+            app.draw(*p);
 		this->updateText();
 		for (auto w : this->letters) app.draw(*w);
 		app.display();
