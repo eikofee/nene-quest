@@ -379,7 +379,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
  }
 
  bool Game::cmp(Entity* a, Entity* d) {
-    if(a->getPosition().y > d->getPosition().y) {
+    if(a->getPosition().y + a->getHitbox().getGlobalBounds().height > d->getPosition().y + d->getHitbox().getGlobalBounds().height) {
         return false;
     }
     return true;
