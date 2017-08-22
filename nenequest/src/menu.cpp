@@ -40,7 +40,6 @@ int Menu::run(RenderWindow &app) {
 
     // ---------------- Menu ----------------
     vector<Text*> menuButtons;
-    const int TEXT_SIZE = 90;
 
     Text onePlayerText;
     onePlayerText.setString(L"ひとりであそぶ");
@@ -57,7 +56,7 @@ int Menu::run(RenderWindow &app) {
     for (unsigned int i=0; i<menuButtons.size(); i++) {
         Text* t = menuButtons[i];
         t->setFont(font);
-        t->setCharacterSize(TEXT_SIZE);
+        t->setCharacterSize(this->TEXT_SIZE);
         t->setPosition(logo.getPosition());
         t->move(-300, 300);
         t->move(0, i*100);
@@ -70,8 +69,7 @@ int Menu::run(RenderWindow &app) {
     selectorTex.loadFromFile("img/cursor.png");
     selectorTex.setSmooth(true);
 
-    Sprite selector;
-    selector.setTexture(selectorTex);
+    Sprite selector(selectorTex);
     selector.setOrigin(Vector2f(selectorTex.getSize().x, 0));
     selector.setScale(0.3, 0.3);
     selector.setPosition(onePlayerText.getPosition());

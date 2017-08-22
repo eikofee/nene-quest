@@ -6,6 +6,7 @@
 
 class Menu : public Screen {
     private:
+        static const int TEXT_SIZE = 90;
         bool playing;
     public:
         Menu();
