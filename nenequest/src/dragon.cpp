@@ -49,7 +49,7 @@ Dragon::~Dragon(){
     if(fire_breathing)
         if(flame_timer > DELAY_BETWEEN_FLAMES){
             flames.push_back(new Flame(Vector2f(sprite.getPosition().x - sprite.getOrigin().x + 100 ,
-                                                        sprite.getPosition().y -sprite.getOrigin().y + 100 + (float)(rand()%100) ), 50 + (float)(rand()%70)));
+                                                        sprite.getPosition().y -sprite.getOrigin().y + 100 + (float)(rand()%100) ), 70 + (float)(rand()%130)));
             flame_timer=0;
         }
 
