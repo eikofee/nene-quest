@@ -8,7 +8,7 @@ using namespace sf;
 const string GameOver::GAMEOVER_PATH = "img/gameover/";
 const string GameOver::GAMEOVER_EXT = ".png";
 
-GameOver::GameOver(GameMode mode) {
+GameOver::GameOver() {
 	vector<string> texs = {
 	    "bg_u", "ba_u", "bm_u", "be_u", "o_u", "v_u", "e_u", "r_u", "!_u",
 	    "bg_o", "ba_o", "bm_o", "be_o", "o_o", "v_o", "e_o", "r_o", "!_o"
