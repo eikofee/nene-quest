@@ -12,7 +12,7 @@ class Entity : public sf::Drawable
 		sf::Vector2f getPosition();
 		sf::Vector2f getSpriteSize();
 		sf::RectangleShape getHitbox();
-        bool detectHit(Entity entity);
+        bool detectHit(Entity* entity);
 
 
 	protected:

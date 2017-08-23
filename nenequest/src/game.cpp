@@ -161,12 +161,12 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 
         for(Arrow* arrow : players.at(i)->getArrows()){
             for(unsigned int j = 0; j < enemies.size(); j++){
-                if(arrow->detectHit(*enemies.at(j))){
+                if(arrow->detectHit(enemies.at(j))){
                     arrow->kill();
                 }
             }
             for(unsigned int j = 0; j < breakable_objects.size(); j++){
-                if(arrow->detectHit(*breakable_objects.at(j))){
+                if(arrow->detectHit(breakable_objects.at(j))){
                     arrow->kill();
                 }
             }
@@ -181,7 +181,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                         enemies.erase(enemies.begin()+j);
                     }
                     else{
-                        if(players.at(i)->detectHit(*enemies.at(j))){
+                        if(players.at(i)->detectHit(enemies.at(j))){
                             players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
                             player_invulnerability_timer = 200;
                             break;
@@ -189,7 +189,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                         if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
                            vector<Flame*> flames = ((Dragon*)enemies.at(j))->getFlames();
                            for(Flame* flame : flames){
-                                if(players.at(i)->detectHit(*flame)){
+                                if(players.at(i)->detectHit(flame)){
                                    players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
                                    player_invulnerability_timer = 200;
                                    break;
@@ -207,7 +207,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
             for(unsigned int j = 0; j < bonuses_hp.size(); j++){
 
                 //Check for collisions between the player and the item
-                if(players.at(i)->detectHit(*bonuses_hp.at(j))){
+                if(players.at(i)->detectHit(bonuses_hp.at(j))){
 
                     players.at(i)->getLife()->increase(bonuses_hp.at(j)->getHealedAmount());
                     delete(bonuses_hp.at(j));
@@ -219,7 +219,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
             for(unsigned int j = 0; j < item_weapons.size(); j++){
 
                 //Check for collisions between the player and the item
-                if(players.at(i)->detectHit(*item_weapons.at(j))){
+                if(players.at(i)->detectHit(item_weapons.at(j))){
 
                     if(! item_weapons.at(j)->checkIfDropped()){
 
@@ -285,7 +285,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                 //If the scrolling pushes the player into the border of the screen, destroy the item pushing him and damage the player
                 if(player->getPosition().x <= 0){
                     for(unsigned int j = 0;j < breakable_objects.size();j++){
-                        if(player->detectHit(*breakable_objects.at(j)))
+                        if(player->detectHit(breakable_objects.at(j)))
                             delete(breakable_objects.at(j));
                             breakable_objects.erase(breakable_objects.begin()+j);
                             life.decrease(SCROLLING_DAMAGE);
@@ -301,7 +301,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 
  bool Game::playerIsColliding(Player* p){
     for(unsigned int j = 0; j < breakable_objects.size(); j++){
-        if(p->detectHit(*breakable_objects.at(j))){
+        if(p->detectHit(breakable_objects.at(j))){
             return true;
         }
     }
@@ -311,7 +311,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 
  BreakableObject* Game::getCollidingObject(Player* p){
     for(BreakableObject* obj : breakable_objects)
-        if(p->detectHit(*obj))
+        if(p->detectHit(obj))
             return obj;
 
     return NULL;

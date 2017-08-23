@@ -1,9 +1,9 @@
 #include "../headers/entity.hpp"
 using namespace sf;
 
-bool Entity::detectHit(Entity entity){
+bool Entity::detectHit(Entity* entity){
 
-	return entity.getHitbox().getGlobalBounds().intersects(hitbox.getGlobalBounds());
+	return entity->getHitbox().getGlobalBounds().intersects(hitbox.getGlobalBounds());
 }
 
 RectangleShape Entity::getHitbox(){

@@ -136,7 +136,7 @@ void Player::setPosition(float x, float y){
 }
 
 void Player::fireArrow(){
-    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5)));
+    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220 + 100, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5)));
 }
 
 vector<Arrow*> Player::getArrows(){
