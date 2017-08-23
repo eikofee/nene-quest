@@ -16,6 +16,7 @@
 #include "../headers/weaponType.hpp"
 #include "../headers/breakableObject.hpp"
 #include "../headers/bonus.hpp"
+#include"../headers/arrow.hpp"
 
 class Game : public Screen {
     public:
@@ -24,7 +25,7 @@ class Game : public Screen {
 
     private:
         void checkCollision(float elapsedTime, sf::Vector2u windowSize);
-        void scroll(float elapsedTime);
+        void scroll(float elapsedTime, sf::Vector2u windowSize);
         bool playerIsColliding(Player* p);
         void playerMove(bool moving_up, bool moving_down, bool moving_left, bool moving_right, float elapsedTime, sf::Vector2u windowSize, float skyHeight);
         void drawWithDepth(sf::RenderWindow* app);

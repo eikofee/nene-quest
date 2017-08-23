@@ -12,7 +12,7 @@
 **/
 
 using namespace sf;
-
+using namespace std;
 
 Player::Player(Weapon* w, Vector2f position) { // 150,170
 
@@ -64,6 +64,9 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite, states);
     target.draw(*this->weapon, states);
     target.draw(this->life, states);
+
+    for(Arrow* arrow : arrows)
+        target.draw(*arrow, states);
 }
 
 void Player::update_animation()
@@ -130,4 +133,23 @@ void Player::setPosition(float x, float y){
     this->hitbox.setPosition(x, y);
 
     this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5);
+}
+
+void Player::fireArrow(){
+    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5)));
+}
+
+vector<Arrow*> Player::getArrows(){
+    return arrows;
+}
+
+void Player::update(float elapsedTime){
+
+    for(unsigned int i = 0;i< arrows.size();i++){
+        arrows.at(i)->update(elapsedTime);
+        if(arrows.at(i)->isDead()){
+            delete(arrows.at(i));
+            arrows.erase(arrows.begin()+i);
+        }
+    }
 }

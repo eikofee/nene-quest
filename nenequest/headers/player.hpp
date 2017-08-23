@@ -3,8 +3,9 @@
 
 #include "../headers/movableentity.hpp"
 #include "../headers/weapon.hpp"
-#include "../headers/livingEntity.hpp"
 #include "../headers/lifebar.hpp"
+#include "../headers/arrow.hpp"
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -18,8 +19,11 @@ class Player : public MovableEntity
 
         // Weapon
         Weapon* getWeapon();
+        std::vector<Arrow*> getArrows();
         void attack();
+        void fireArrow();
         void equip(Weapon* w);
+        void update(float elapsedTime);
 
         // Life management
         LifeBar* getLife();
@@ -37,8 +41,8 @@ class Player : public MovableEntity
         bool is_attacking = false;
         bool animation_state = false;
 
-    private:
         sf::Vector2f speed = sf::Vector2f(-10,0);
+        std::vector<Arrow*> arrows;
         bool is_jumping = false;
         sf::Clock clock;
         static constexpr float ANIMATION_DELAY = 0.1;

@@ -11,7 +11,7 @@ class Flame : public MovableEntity {
         Flame();
         Flame(sf::Vector2f position, float f);
         virtual ~Flame();
-        virtual void update(float elapsedTime);
+        void update(float elapsedTime);
         bool isDead();
 
     private :

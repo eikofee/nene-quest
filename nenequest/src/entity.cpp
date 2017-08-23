@@ -27,7 +27,6 @@ Vector2f Entity::getPosition() {
 }
 
 void Entity::updateHitboxPosition(){
-    //hitbox.setFillColor(Color::Red);
 	hitbox.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top);
 }
 

@@ -61,7 +61,7 @@ int Game::run(RenderWindow &app) {
     breakable_objects.push_back(barrel);
     breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(1200, 600)));
 
-
+    Arrow arrow = Arrow(Vector2f(100, 700));
     //Clock
 	Clock clock;
 
@@ -92,10 +92,10 @@ int Game::run(RenderWindow &app) {
                         break;
                     case Keyboard::Space:
                         player.attack();
+                        player.fireArrow();
                         break;
                     default:
                         dragon->breathFire();
-                        boar1->stun();
                         break;
                     }
                     break;
@@ -125,11 +125,15 @@ int Game::run(RenderWindow &app) {
             }
         }
 
-        scroll(elapsedTime);
+        scroll(elapsedTime, app.getSize());
 
-        boar1->update(elapsedTime);
-        dragon->update(elapsedTime);
+        for(Enemy* enemy : enemies)
+            enemy->update(elapsedTime);
+
+        player.update(elapsedTime);
+
         background.update();
+        arrow.update(elapsedTime);
 
         playerMove(moving_up, moving_down, moving_left, moving_right, elapsedTime, app.getSize(), background.getSkyHeight());
 
@@ -140,7 +144,10 @@ int Game::run(RenderWindow &app) {
         app.draw(knightHead);
 
         drawWithDepth(&app);
+        app.draw(arrow);
         app.display();
+
+        printf("items : %d bonus %d ennemis %d armes %d \n", breakable_objects.size(), bonuses_hp.size(), enemies.size(), item_weapons.size());
 
 	}
 
@@ -151,26 +158,44 @@ int Game::run(RenderWindow &app) {
 void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 
     for(unsigned int i = 0; i < players.size(); i++){
+
+        for(Arrow* arrow : players.at(i)->getArrows()){
+            for(unsigned int j = 0; j < enemies.size(); j++){
+                if(arrow->detectHit(*enemies.at(j))){
+                    arrow->kill();
+                }
+            }
+            for(unsigned int j = 0; j < breakable_objects.size(); j++){
+                if(arrow->detectHit(*breakable_objects.at(j))){
+                    arrow->kill();
+                }
+            }
+        }
         if(!players.at(i)->isJumping()){
 
             //Collisions with enemies
             if(player_invulnerability_timer <= 0){
                 for(unsigned int j = 0; j < enemies.size(); j++){
-                    if(players.at(i)->detectHit(*enemies.at(j))){
-                        players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
-                        player_invulnerability_timer = 200;
-                        break;
+                    if(!enemies.at(j)->isOnScreen(windowSize)){
+                        delete(enemies.at(j));
+                        enemies.erase(enemies.begin()+j);
                     }
-                    if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
-                       vector<Flame*> flames = ((Dragon*)enemies.at(j))->getFlames();
-                       for(Flame* flame : flames){
-                            if(players.at(i)->detectHit(*flame)){
-                               players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
-                               player_invulnerability_timer = 200;
-                               break;
-                            }
-                       }
-
+                    else{
+                        if(players.at(i)->detectHit(*enemies.at(j))){
+                            players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
+                            player_invulnerability_timer = 200;
+                            break;
+                        }
+                        if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
+                           vector<Flame*> flames = ((Dragon*)enemies.at(j))->getFlames();
+                           for(Flame* flame : flames){
+                                if(players.at(i)->detectHit(*flame)){
+                                   players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
+                                   player_invulnerability_timer = 200;
+                                   break;
+                                }
+                           }
+                        }
                     }
                 }
             }
@@ -181,15 +206,8 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
             //Collisions with bonus hp
             for(unsigned int j = 0; j < bonuses_hp.size(); j++){
 
-                //Check if the item is still on screen
-                if(!bonuses_hp.at(j)->isOnScreen(windowSize)){
-                    delete(bonuses_hp.at(j));
-                    bonuses_hp.erase(bonuses_hp.begin()+j);
-                }
-
-
                 //Check for collisions between the player and the item
-                else if(players.at(i)->detectHit(*bonuses_hp.at(j))){
+                if(players.at(i)->detectHit(*bonuses_hp.at(j))){
 
                     players.at(i)->getLife()->increase(bonuses_hp.at(j)->getHealedAmount());
                     delete(bonuses_hp.at(j));
@@ -199,14 +217,9 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 
             //Collisions with weapon items
             for(unsigned int j = 0; j < item_weapons.size(); j++){
-                //Check if the item is still on screen
-                if(!item_weapons.at(j)->isOnScreen(windowSize)){
-                    delete(item_weapons.at(j));
-                    item_weapons.erase(item_weapons.begin()+j);
-                }
 
                 //Check for collisions between the player and the item
-                else if(players.at(i)->detectHit(*item_weapons.at(j))){
+                if(players.at(i)->detectHit(*item_weapons.at(j))){
 
                     if(! item_weapons.at(j)->checkIfDropped()){
 
@@ -236,13 +249,31 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     }
 }
 
- void Game::scroll(float elapsedTime){
-    for(BonusHp* var : bonuses_hp)
-        var->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
-    for(ItemWeapon* var : item_weapons)
-        var->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
-    for(BreakableObject* var : breakable_objects)
-        var->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
+ void Game::scroll(float elapsedTime, Vector2u windowSize){
+    for(unsigned int j = 0; j < item_weapons.size(); j++){
+        item_weapons.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
+        //Check if the item is still on screen
+        if(!item_weapons.at(j)->isOnScreen(windowSize)){
+            delete(item_weapons.at(j));
+            item_weapons.erase(item_weapons.begin()+j);
+        }
+    }
+    for(unsigned int j = 0; j < bonuses_hp.size(); j++){
+        bonuses_hp.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
+        //Check if the item is still on screen
+        if(!bonuses_hp.at(j)->isOnScreen(windowSize)){
+            delete(bonuses_hp.at(j));
+            bonuses_hp.erase(bonuses_hp.begin()+j);
+        }
+    }
+    for(unsigned int j = 0; j < breakable_objects.size(); j++){
+        breakable_objects.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
+        //Check if the item is still on screen
+        if(!breakable_objects.at(j)->isOnScreen(windowSize)){
+            delete(breakable_objects.at(j));
+            breakable_objects.erase(breakable_objects.begin()+j);
+        }
+    }
 
     //Check if player is pushed by the scrolling
     for(Player* player : players){

@@ -1,3 +1,5 @@
+#include<time.h>
+
 #include "../headers/dragon.hpp"
 
 using namespace sf;
@@ -6,7 +8,7 @@ using namespace std;
 
 Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 
-    srand(NULL);
+    srand(time(NULL));
 
     attack_damage = DRAGON_DAMAGE;
     enemy_type = Enemy_Dragon;
@@ -26,7 +28,7 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 }
 
 Dragon::~Dragon(){
-    for(int i = 0;i < flames.size();i++){
+    for(unsigned int i = 0;i < flames.size();i++){
         delete(flames.at(i));
     }
 }
@@ -57,7 +59,7 @@ Dragon::~Dragon(){
         }
 
     //Delete old flames
-    for(int i = 0;i < flames.size();i++){
+    for(unsigned int i = 0;i < flames.size();i++){
         flames.at(i)->update(elapsedTime);
         if(flames.at(i)->isDead()){
             delete(flames.at(i));

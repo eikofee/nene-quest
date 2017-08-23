@@ -13,7 +13,7 @@ class Enemy : public MovableEntity, public LivingEntity
         Enemy(int hp);
         virtual ~Enemy();
         short int getAttackDamage();
-        void update(float elapsedTime);
+        virtual void update(float elapsedTime);
         EnemyType getEnemyType();
 
     protected:
