@@ -65,8 +65,8 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(*this->weapon, states);
     target.draw(this->life, states);
 
-    for(Arrow* arrow : arrows)
-        target.draw(*arrow, states);
+    /*for(Arrow* arrow : arrows)
+        target.draw(*arrow, states);*/
 }
 
 void Player::update_animation()
@@ -136,7 +136,7 @@ void Player::setPosition(float x, float y){
 }
 
 void Player::fireArrow(){
-    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220 + 100, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5)));
+    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5)));
 }
 
 vector<Arrow*> Player::getArrows(){

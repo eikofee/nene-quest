@@ -406,6 +406,10 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     for(Entity* var : entities)
         app->draw(*var);
 
+    for(Player* player : players)
+        for(Arrow* arrow : player->getArrows())
+            app->draw(*arrow);
+
  }
 
  bool Game::cmp(Entity* a, Entity* d) {

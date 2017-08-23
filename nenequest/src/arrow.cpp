@@ -13,15 +13,19 @@ Arrow::Arrow(Vector2f position)
 
 	texture.loadFromFile("img/weapon_arrow.png");
 	sprite.setTexture(texture);
-	sprite.setOrigin(texture.getSize().x/2, texture.getSize().y/2);
+	sprite.setOrigin(texture.getSize().x/2, texture.getSize().y/1.5);
     sprite.setPosition(position);
-    //sprite.scale(0.5,0.5);
 
-    updateHitboxSize();
-    hitbox.setOrigin(texture.getSize().x/2, texture.getSize().y/2);
+    hitbox.setSize(Vector2f(texture.getSize().x/5, texture.getSize().y/1.8));
+    hitbox.setOrigin(0, texture.getSize().y/2 );
     updateHitboxPosition();
 
 	speed = Vector2f(0.8,-0.8);
+
+	damage_texture.loadFromFile("img/icon_damage.png");
+	damage_sprite.setTexture(damage_texture);
+	damage_sprite.setOrigin(-30, 90);
+	damage_sprite.setScale(0.7,0.7);
 }
 
 Arrow::~Arrow()
@@ -31,17 +35,25 @@ Arrow::~Arrow()
 
 void Arrow::update(float elapsedTime){
 
-    float g = 0.002;
+    if(!is_dying){
+        lifespan += elapsedTime;
 
-    lifespan += elapsedTime;
+        //Make the arrow follow a curve
+        this->setPosition(initial_location.x + lifespan*speed.x,initial_location.y + lifespan*speed.y + gravity*lifespan*lifespan/2);
+        sprite.setRotation(atan((speed.y + gravity*lifespan)/speed.x)*180/3.1415);
+        hitbox.setRotation(sprite.getRotation());
 
-    //Make the arrow follow a curve
-    this->setPosition(initial_location.x + lifespan*speed.x,initial_location.y + lifespan*speed.y + g*lifespan*lifespan/2);
-    sprite.setRotation(atan((speed.y + g*lifespan)/speed.x)*180/3.1415);
-    hitbox.setRotation(sprite.getRotation());
+        if(this->getPosition().y > initial_location.y + 300)
+            is_dead = true;
+    }
+    else{
+        if(lifespan > 0)
+            lifespan = 0;
+        lifespan-= elapsedTime;
 
-    if(this->getPosition().y > initial_location.y + 300)
-        is_dead = true;
+        if(lifespan < -150)
+            is_dead = true;
+    }
 }
 
 bool Arrow::isDead(){
@@ -49,5 +61,17 @@ bool Arrow::isDead(){
 }
 
 void Arrow::kill(){
-    is_dead = true;
+    damage_sprite.setRotation(hitbox.getRotation());
+    damage_sprite.setPosition(hitbox.getPosition().x, hitbox.getPosition().y);
+    is_dying = true;
+}
+
+void Arrow::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+
+    //target.draw(hitbox, states);
+    target.draw(sprite, states);
+
+    if(is_dying)
+        target.draw(damage_sprite, states);
+
 }
