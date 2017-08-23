@@ -7,7 +7,8 @@ Flame::Flame()
     //ctor
 }
 
-Flame::Flame(Vector2f position, float f){
+Flame::Flame(Vector2f position, float f, float g_depth){
+    depth = g_depth;
     initial_location = position;
     fact = f;
 

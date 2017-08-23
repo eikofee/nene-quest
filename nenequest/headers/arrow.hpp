@@ -2,12 +2,11 @@
 #define ARROW_HPP
 
 #include "../headers/movableEntity.hpp"
+#include "../headers/projectile.hpp"
 
-
-class Arrow : public MovableEntity
-{
+class Arrow : public Projectile {
     public:
-        Arrow(sf::Vector2f position);
+        Arrow(sf::Vector2f position, float g_depth);
         virtual ~Arrow();
         void update(float elapsedTime);
         bool isDead();

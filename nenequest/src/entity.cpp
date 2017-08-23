@@ -3,7 +3,9 @@ using namespace sf;
 
 bool Entity::detectHit(Entity* entity){
 
-	return entity->getHitbox().getGlobalBounds().intersects(hitbox.getGlobalBounds());
+    if(this->getDepth() + DEPTH_DIFF > entity->getDepth() && this->getDepth() - DEPTH_DIFF < entity->getDepth())
+        return entity->getHitbox().getGlobalBounds().intersects(hitbox.getGlobalBounds());
+    return false;
 }
 
 RectangleShape Entity::getHitbox(){
@@ -39,6 +41,13 @@ Vector2f Entity::getSpriteSize(){
 }
 
 void Entity::updateSpritePosition(){
-    //hitbox.setFillColor(Color::Red);
 	sprite.setPosition(hitbox.getGlobalBounds().left, hitbox.getGlobalBounds().top);
+}
+
+float Entity::getDepth(){
+    return hitbox.getGlobalBounds().top + hitbox.getGlobalBounds().height;
+}
+
+float Entity::getDrawDepth(){
+    return this->getDepth();
 }

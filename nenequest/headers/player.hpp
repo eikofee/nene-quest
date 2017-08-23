@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-static int PLAYER_HP = 10;
+static int PLAYER_HP = 100;
 
 class Player : public MovableEntity
 {

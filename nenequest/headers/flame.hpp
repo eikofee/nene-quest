@@ -2,14 +2,14 @@
 #define FLAME_H
 
 #include <SFML/Graphics.hpp>
-#include "../headers/movableEntity.hpp"
+#include "../headers/projectile.hpp"
 
-class Flame : public MovableEntity {
+class Flame : public Projectile {
 
     public :
         static int const FLAMES_DAMAGE = 1;
         Flame();
-        Flame(sf::Vector2f position, float f);
+        Flame(sf::Vector2f position, float f, float g_depth);
         virtual ~Flame();
         void update(float elapsedTime);
         bool isDead();

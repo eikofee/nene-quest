@@ -13,6 +13,8 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
     attack_damage = DRAGON_DAMAGE;
     enemy_type = Enemy_Dragon;
 
+    flame_timer = 0;
+
 	texture.loadFromFile("img/enemy_dragon.png");
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y/2));
@@ -54,7 +56,7 @@ Dragon::~Dragon(){
     if(fire_breathing)
         if(flame_timer > DELAY_BETWEEN_FLAMES){
             flames.push_back(new Flame(Vector2f(sprite.getPosition().x - sprite.getOrigin().x + 100 ,
-                                                        sprite.getPosition().y -sprite.getOrigin().y + 100 + (float)(rand()%100) ), 70 + (float)(rand()%130)));
+                                                        sprite.getPosition().y -sprite.getOrigin().y + 100 + (float)(rand()%100) ), 70 + (float)(rand()%130), this->getDepth()));
             flame_timer=0;
         }
 
@@ -101,8 +103,8 @@ void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     //  target.draw(hitbox, states);
     target.draw(sprite, states);
 
-    for(Flame* var : flames)
-        target.draw(*var);
+    //for(Flame* var : flames)
+        //target.draw(*var);
 }
 
 bool Dragon::isBreatingFire(){

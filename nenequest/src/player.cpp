@@ -26,13 +26,12 @@ Player::Player(Weapon* w, Vector2f position) { // 150,170
     sprite.setTextureRect(IntRect(0, 0, texture.getSize().x/2, texture.getSize().y/3));
 
     hitbox.setPosition(position);
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height*0.5));
+	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
 
-	sprite.setOrigin(0,sprite.getGlobalBounds().height*0.5 );
     updateSpritePosition();
 
 	// Weapon placement
-    this->weapon->setPosition(position.x + 220, position.y + 180 - sprite.getGlobalBounds().height*0.5);
+    this->weapon->setPosition(position.x + 220, position.y + 180);
 
 }
 
@@ -56,7 +55,7 @@ void Player::attack()
 void Player::equip(Weapon* w)
 {
     this->weapon = w;
-    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5);
+    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -132,11 +131,11 @@ void Player::setPosition(float x, float y){
     this->sprite.setPosition(x, y);
     this->hitbox.setPosition(x, y);
 
-    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5);
+    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
 }
 
 void Player::fireArrow(){
-    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220, this->getPosition().y + 180 - sprite.getGlobalBounds().height*0.5)));
+    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220, this->getPosition().y + 180), this->getDepth()));
 }
 
 vector<Arrow*> Player::getArrows(){

@@ -59,9 +59,9 @@ int Game::run(RenderWindow &app) {
 
     BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
     breakable_objects.push_back(barrel);
-    breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(1200, 600)));
+    breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(100,630)));
 
-    Arrow arrow = Arrow(Vector2f(100, 700));
+    Arrow arrow = Arrow(Vector2f(100, 700), 700);
     //Clock
 	Clock clock;
 
@@ -146,8 +146,6 @@ int Game::run(RenderWindow &app) {
         drawWithDepth(&app);
         app.draw(arrow);
         app.display();
-
-        printf("items : %d bonus %d ennemis %d armes %d \n", breakable_objects.size(), bonuses_hp.size(), enemies.size(), item_weapons.size());
 
 	}
 
@@ -361,19 +359,30 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
             //Check if the player isn't leaving the screen
             if(player->getPosition().y + player->getHitbox().getGlobalBounds().height > windowSize.y)
                 player->setPosition(player->getPosition().x, windowSize.y - player->getHitbox().getGlobalBounds().height);
-            else if(player->getPosition().y < skyHeight)
-                player->setPosition(player->getPosition().x, skyHeight);
+            else if(player->getPosition().y < skyHeight - player->getHitbox().getGlobalBounds().height/2)
+                player->setPosition(player->getPosition().x, skyHeight - player->getHitbox().getGlobalBounds().height/2);
 
             if(playerIsColliding(player)){
                 //Do/While in case the player collide several object at the same time
                 do{
                     BreakableObject* tmp = getCollidingObject(player);
-                    if(playerSpeed.y > 0){
-                        player->setPosition(player->getPosition().x, tmp->getPosition().y - player->getHitbox().getGlobalBounds().height);
+                    if(tmp->getHitbox().getGlobalBounds().height < Entity::DEPTH_DIFF){
+                        if(playerSpeed.y > 0){
+                            player->setPosition(player->getPosition().x, tmp->getPosition().y - player->getHitbox().getGlobalBounds().height);
+                        }
+                        else{
+                            player->setPosition(player->getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height -player->getHitbox().getGlobalBounds().height + Entity::DEPTH_DIFF);
+                        }
                     }
                     else{
-                        player->setPosition(player->getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height);
+                        if(playerSpeed.y > 0){
+                        player->setPosition(player->getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height - player->getHitbox().getGlobalBounds().height - Entity::DEPTH_DIFF);
+                        }
+                        else{
+                            player->setPosition(player->getPosition().x, tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height - player->getHitbox().getGlobalBounds().height + Entity::DEPTH_DIFF);
+                        }
                     }
+
 
                 }while(playerIsColliding(player));
             }
@@ -394,6 +403,9 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     }
     for(Enemy* var : enemies){
         entities.push_back((Entity*)var);
+        if(var->getEnemyType() == Enemy_Dragon)
+            for(Flame* flame : ((Dragon*)var)->getFlames())
+                entities.push_back((Entity*)flame);
     }
     for(Player* var : players){
         entities.push_back((Entity*)var);
@@ -401,19 +413,20 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     for(BreakableObject* var : breakable_objects){
         entities.push_back((Entity*)var);
     }
+    for(Player* player : players)
+        for(Arrow* arrow : player->getArrows())
+            entities.push_back((Entity*)arrow);
+
+
     entities.sort(cmp);
 
     for(Entity* var : entities)
         app->draw(*var);
 
-    for(Player* player : players)
-        for(Arrow* arrow : player->getArrows())
-            app->draw(*arrow);
-
  }
 
  bool Game::cmp(Entity* a, Entity* d) {
-    if(a->getPosition().y + a->getHitbox().getGlobalBounds().height > d->getPosition().y + d->getHitbox().getGlobalBounds().height) {
+    if(a->getDrawDepth() > d->getDrawDepth()) {
         return false;
     }
     return true;

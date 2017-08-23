@@ -6,8 +6,9 @@
 
 using namespace sf;
 
-Arrow::Arrow(Vector2f position)
+Arrow::Arrow(Vector2f position, float g_depth)
 {
+    depth = g_depth;
     initial_location = position;
     lifespan = 0;
 
@@ -43,7 +44,7 @@ void Arrow::update(float elapsedTime){
         sprite.setRotation(atan((speed.y + gravity*lifespan)/speed.x)*180/3.1415);
         hitbox.setRotation(sprite.getRotation());
 
-        if(this->getPosition().y > initial_location.y + 300)
+        if(this->getPosition().y > initial_location.y)
             is_dead = true;
     }
     else{
@@ -61,6 +62,7 @@ bool Arrow::isDead(){
 }
 
 void Arrow::kill(){
+    this->depth = 8000;
     damage_sprite.setRotation(hitbox.getRotation());
     damage_sprite.setPosition(hitbox.getPosition().x, hitbox.getPosition().y);
     is_dying = true;
