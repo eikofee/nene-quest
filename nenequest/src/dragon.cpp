@@ -66,12 +66,13 @@ Dragon::~Dragon(){
 
     //Breathe fire
     flame_timer += elapsedTime;
-    if(fire_breathing)
+    if(fire_breathing){
         if(flame_timer > DELAY_BETWEEN_FLAMES){
             flames.push_back(new Flame(Vector2f(sprite.getPosition().x - sprite.getOrigin().x + 100 ,
                                                         sprite.getPosition().y -sprite.getOrigin().y + 100 + (float)(rand()%100) ), 70 + (float)(rand()%130), this->getDepth()));
             flame_timer=0;
         }
+    }
 
     //Delete old flames
     for(unsigned int i = 0;i < flames.size();i++){
@@ -157,5 +158,5 @@ bool Dragon::detectHit(Entity* entity){
 }
 
 float Dragon::getDepth(){
-    return hitboxes.at(0).getGlobalBounds().top + hitboxes.at(0).getGlobalBounds().height;
+    return hitboxes.at(0).getGlobalBounds().top + hitboxes.at(0).getGlobalBounds().height +70;
 }

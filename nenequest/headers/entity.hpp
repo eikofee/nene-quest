@@ -7,7 +7,7 @@
 class Entity : public sf::Drawable
 {
 	public:
-	    static int const DEPTH_DIFF = 130;
+	    static int const DEPTH_DIFF = 130; //Maximal depth difference so that 2 entities can interact
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
 		virtual void setPosition(int x, int y);
 		sf::Vector2f getPosition();

@@ -15,12 +15,9 @@ int Game::run(RenderWindow &app) {
 	bool running = true;
 
 	// Player
-	Player player = Player(new Weapon(Axe), Vector2f(1000,600));
-    bool moving_up = false;
-    bool moving_down = false;
-    bool moving_right = false;
-    bool moving_left = false;
-    players.push_back(&player);
+	Player* player = new Player(new Weapon(Axe), Vector2f(1000,600));
+    players.push_back(player);
+    players.push_back(new Player(new Weapon(Sword), Vector2f(1000,800), true));
 
 	// LifeBar
     //life = LifeBar(100);
@@ -34,16 +31,11 @@ int Game::run(RenderWindow &app) {
 	Sprite knightHead(knightHeadTex);
 
 	knightHead.setOrigin(knightHeadTex.getSize().x/2, knightHeadTex.getSize().x/2);
-	knightHead.setPosition(player.getLife()->getPosition());
-	knightHead.move(-player.getLife()->LIFEBAR_WIDTH/2, -10);
+	knightHead.setPosition(player->getLife()->getPosition());
+	knightHead.move(-player->getLife()->LIFEBAR_WIDTH/2, -10);
 
 	// Background
     Background background = Background(app.getSize());
-
-	//Test cloud
-	//RandomCloud cloud;
-	//cloud.setPosition(500, 500);
-	//cloud.generateBorder();
 
 	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
 	Dragon* dragon = new Dragon(20, Vector2f(1200,600));
@@ -70,82 +62,127 @@ int Game::run(RenderWindow &app) {
 
     float elapsedTime = clock.restart().asMilliseconds();
 
-        while(app.pollEvent(event)) {
-            if (event.type == Event::Closed) {
-                return (-1);
-            }
-            switch (event.type)
-            {
-                case (Event::KeyPressed):
-                    switch (event.key.code) {
-                    case Keyboard::Up:
-                        moving_up = true;
-                        break;
-                    case Keyboard::Down:
-                        moving_down = true;
-                        break;
-                    case Keyboard::Right:
-                        moving_right = true;
-                        break;
-                    case Keyboard::Left:
-                        moving_left = true;
-                        break;
-                    case Keyboard::Space:
-                        player.attack();
-                        player.fireArrow();
-                        break;
-                    default:
-                        dragon->breathFire();
-                        break;
-                    }
+    while(app.pollEvent(event)) {
+        if (event.type == Event::Closed) {
+            return (-1);
+        }
+        switch (event.type)
+        {
+            case (Event::KeyPressed):
+                switch (event.key.code) {
+                case Keyboard::Up:
+                    players.at(0)->moving_up = true;
                     break;
-                case (Event::KeyReleased):
-                    switch (event.key.code) {
-                    case Keyboard::Up:
-                        moving_up = false;
-                        break;
-                    case Keyboard::Down:
-                        moving_down = false;
-                        break;
-                    case Keyboard::Right:
-                        moving_right = false;
-                        break;
-                    case Keyboard::Left:
-                        moving_left = false;
-                        break;
-                    default:
-                        break;
-                    }
+                case Keyboard::Down:
+                    players.at(0)->moving_down = true;
                     break;
-                case (Event::Closed):
-                    app.close();
-                    return -1;
+                case Keyboard::Right:
+                    players.at(0)->moving_right = true;
+                    break;
+                case Keyboard::Left:
+                    players.at(0)->moving_left = true;
+                    break;
+                case Keyboard::Space:
+                    players.at(0)->attack();
+                    players.at(0)->fireArrow();
+                    break;
+                default:
+                    dragon->breathFire();
+                    break;
+                }
+                break;
+            case (Event::KeyReleased):
+                switch (event.key.code) {
+                case Keyboard::Up:
+                    players.at(0)->moving_up = false;
+                    break;
+                case Keyboard::Down:
+                    players.at(0)->moving_down = false;
+                    break;
+                case Keyboard::Right:
+                    players.at(0)->moving_right = false;
+                    break;
+                case Keyboard::Left:
+                    players.at(0)->moving_left = false;
+                    break;
                 default:
                     break;
-            }
+                }
+                break;
+            default:
+                break;
         }
+        if(players.size() == 2)
+        switch (event.type)
+        {
+            case (Event::KeyPressed):
+                switch (event.key.code) {
+                case Keyboard::Z:
+                    players.at(1)->moving_up = true;
+                    break;
+                case Keyboard::S:
+                    players.at(1)->moving_down = true;
+                    break;
+                case Keyboard::D:
+                    players.at(1)->moving_right = true;
+                    break;
+                case Keyboard::Q:
+                    players.at(1)->moving_left = true;
+                    break;
+                case Keyboard::A:
+                    players.at(1)->attack();
+                    players.at(1)->fireArrow();
+                    break;
+                default:
+                    break;
+                }
+                break;
+            case (Event::KeyReleased):
+                switch (event.key.code) {
+                case Keyboard::Z:
+                    players.at(1)->moving_up = false;
+                    break;
+                case Keyboard::S:
+                    players.at(1)->moving_down = false;
+                    break;
+                case Keyboard::D:
+                    players.at(1)->moving_right = false;
+                    break;
+                case Keyboard::Q:
+                    players.at(1)->moving_left = false;
+                    break;
+                default:
+                    break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
-        scroll(elapsedTime, app.getSize());
+    scroll(elapsedTime, app.getSize());
 
-        for(Enemy* enemy : enemies)
-            enemy->update(elapsedTime);
+    for(Enemy* enemy : enemies)
+        enemy->update(elapsedTime);
 
-        player.update(elapsedTime);
+    for(Player* var : players){
+        var->update(elapsedTime);
+        playerMove(var, elapsedTime, app.getSize(), background.getSkyHeight());
+    }
 
-        background.update();
-        arrow.update(elapsedTime);
+    background.update();
+    arrow.update(elapsedTime);
 
-        playerMove(moving_up, moving_down, moving_left, moving_right, elapsedTime, app.getSize(), background.getSkyHeight());
 
-        checkCollision(elapsedTime, app.getSize());
+    checkCollision(elapsedTime, app.getSize());
 
-        app.clear(Color::White);
-        app.draw(background);
-        app.draw(knightHead);
+    app.clear(Color::White);
+    app.draw(background);
+    app.draw(knightHead);
 
-        drawWithDepth(&app);
-        app.draw(arrow);
-        app.display();
+    drawWithDepth(&app);
+    app.draw(arrow);
+    app.display();
 
 	}
 
@@ -228,9 +265,9 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
             for(unsigned int j = 0; j < item_weapons.size(); j++){
 
                 //Check for collisions between the player and the item
-                if(players.at(i)->detectHit(item_weapons.at(j))){
-
-                    if(! item_weapons.at(j)->checkIfDropped()){
+                if(players.at(i)->getLastDroppedItem() == NULL || !players.at(i)->detectHit(players.at(i)->getLastDroppedItem())){
+                    players.at(i)->setLastDroppedItem(NULL);
+                    if(item_weapons.at(j)->detectHit(players.at(i))){
 
                         WeaponType weaponType = item_weapons.at(j)->getWeaponType();
                         if(players.at(i)->getWeapon()->getWeaponType() != weaponType){
@@ -239,8 +276,14 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                             ItemWeapon* tmp = new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition());
 
                             //setDropped used to prevent the player from interacting with the item again when he's still standing on it
-                            tmp->setDropped(true);
                             item_weapons.push_back(tmp);
+                            players.at(i)->setLastDroppedItem(tmp);
+
+                            //If an other player is standing on the item, change it's last dropped item
+                            for(Player* var : players)
+                                if(var->getLastDroppedItem() == item_weapons.at(j))
+                                    var->setLastDroppedItem(tmp);
+
                             delete(item_weapons.at(j));
                             item_weapons.erase(item_weapons.begin()+j);
 
@@ -250,13 +293,11 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                         }
                     }
                 }
-                else{
-                    item_weapons.at(j)->setDropped(false);
-                }
             }
         }
     }
 }
+
 
  void Game::scroll(float elapsedTime, Vector2u windowSize){
     for(unsigned int j = 0; j < item_weapons.size(); j++){
@@ -326,17 +367,17 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     return NULL;
  }
 
- void Game::playerMove(bool moving_up, bool moving_down, bool moving_left, bool moving_right, float elapsedTime, Vector2u windowSize, float skyHeight){
+ void Game::playerMove(Player* player, float elapsedTime, Vector2u windowSize, float skyHeight){
     for(Player* player : players){
          Vector2f playerSpeed = Vector2f(0,0);
 
-        if (moving_up) {
+        if (player->moving_up) {
             playerSpeed.y -= PLAYER_SPEED;
-        } if (moving_down) {
+        } if (player->moving_down) {
             playerSpeed.y += PLAYER_SPEED;
-        } if (moving_right) {
+        } if (player->moving_right) {
             playerSpeed.x += PLAYER_SPEED;
-        } if (moving_left) {
+        } if (player->moving_left) {
             playerSpeed.x -= PLAYER_SPEED;
         }
 
@@ -442,6 +483,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     }
     return true;
 }
+
 void Game::dropItem(Bonus* drop, Vector2f dropPosition){
 
     if(drop->getBonusType() == Item_Onigiri)

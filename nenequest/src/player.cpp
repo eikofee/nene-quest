@@ -14,14 +14,19 @@
 using namespace sf;
 using namespace std;
 
-Player::Player(Weapon* w, Vector2f position) { // 150,170
+Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 
     this->weapon = w;
     this->life = LifeBar(PLAYER_HP);
-    this->life.setPosition(300,100);
-    // Player
 
-	texture.loadFromFile("img/player1.png");
+    if(!secondPlayer){
+        this->life.setPosition(300,100);
+        texture.loadFromFile("img/player1.png");
+    }
+    else{
+        this->life.setPosition(800,100);
+        texture.loadFromFile("img/player1.png");
+    }
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, 0, texture.getSize().x/2, texture.getSize().y/3));
 
@@ -63,9 +68,6 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(sprite, states);
     target.draw(*this->weapon, states);
     target.draw(this->life, states);
-
-    /*for(Arrow* arrow : arrows)
-        target.draw(*arrow, states);*/
 }
 
 void Player::update_animation()
@@ -151,4 +153,11 @@ void Player::update(float elapsedTime){
             arrows.erase(arrows.begin()+i);
         }
     }
+}
+
+void Player::setLastDroppedItem(ItemWeapon* item){
+    last_dropped_item = item;
+}
+ItemWeapon* Player::getLastDroppedItem(){
+    return last_dropped_item;
 }

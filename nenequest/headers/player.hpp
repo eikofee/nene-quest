@@ -5,6 +5,7 @@
 #include "../headers/weapon.hpp"
 #include "../headers/lifebar.hpp"
 #include "../headers/arrow.hpp"
+#include"../headers/itemWeapon.hpp"
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -14,7 +15,7 @@ static int PLAYER_HP = 100;
 class Player : public MovableEntity
 {
     public:
-        Player(Weapon* weapon, sf::Vector2f(position));
+        Player(Weapon* weapon, sf::Vector2f(position), bool secondPlayer = false);
         virtual ~Player();
 
         // Weapon
@@ -37,6 +38,14 @@ class Player : public MovableEntity
         bool isJumping();
         void switchJump();
 
+        bool moving_up = false;
+        bool moving_down = false;
+        bool moving_left = false;
+        bool moving_right = false;
+
+        void setLastDroppedItem(ItemWeapon* item);
+        ItemWeapon* getLastDroppedItem();
+
     private:
         bool is_attacking = false;
         bool animation_state = false;
@@ -47,6 +56,7 @@ class Player : public MovableEntity
         sf::Clock clock;
         static constexpr float ANIMATION_DELAY = 0.1;
         void update_animation();
+        ItemWeapon* last_dropped_item = NULL;
 
 
         LifeBar life;
