@@ -437,7 +437,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
  }
 
  bool Game::cmp(Entity* a, Entity* d) {
-    if(a->getDrawDepth() > d->getDrawDepth()) {
+    if(a->getDrawDepth() >= d->getDrawDepth()) {
         return false;
     }
     return true;

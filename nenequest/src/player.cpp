@@ -7,8 +7,8 @@
     - Animation de l'attaque (rotation du sprite du Weapon)
     - Empêcher de sortir de la fenêtre / allez trop haut-bas => Fait dans game.cpp
     - Detection avec les ennemis => Fait dans game.cpp
-    - Frame immortalité lorsqu'on perd de la vie => Fait dans game.cpp mais c'est mieux ici donc fait le +(animation clignotante dans l'idéal)
-    - Saut (immortalité temporaire) => Fait dans game.cpp
+    - Frame immortalitElorsqu'on perd de la vie => Fait dans game.cpp mais c'est mieux ici donc fait le +(animation clignotante dans l'idéal)
+    - Saut (immortalitEtemporaire) => Fait dans game.cpp
 **/
 
 using namespace sf;
