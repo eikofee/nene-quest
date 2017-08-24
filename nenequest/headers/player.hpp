@@ -59,7 +59,7 @@ class Player : public MovableEntity
         ItemWeapon* last_dropped_item = NULL;
 
 
-        LifeBar life;
+        LifeBar* life;
         Weapon* weapon;
 };
 

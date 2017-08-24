@@ -17,14 +17,13 @@ using namespace std;
 Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 
     this->weapon = w;
-    this->life = LifeBar(PLAYER_HP);
 
     if(!secondPlayer){
-        this->life.setPosition(300,100);
+        this->life = new LifeBar(PLAYER_HP, Vector2f(300,100));
         texture.loadFromFile("img/player1.png");
     }
     else{
-        this->life.setPosition(800,100);
+        this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), "img/icon_p2.png");
         texture.loadFromFile("img/player1.png");
     }
 	sprite.setTexture(texture);
@@ -67,7 +66,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     //target.draw(hitbox,states);
     target.draw(sprite, states);
     target.draw(*this->weapon, states);
-    target.draw(this->life, states);
+    target.draw(*this->life, states);
 }
 
 void Player::update_animation()
@@ -115,7 +114,7 @@ void Player::move(Vector2f g_speed, float elapsedTime){
 
 LifeBar* Player::getLife()
 {
-    return &this->life;
+    return this->life;
 }
 
 
