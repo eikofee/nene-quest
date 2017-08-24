@@ -18,6 +18,7 @@ class BreakableObject : public MovableEntity
     protected:
 
     private:
+        static const int BARREL_DROP_CHANCE = 8; //Chances out of 10
         void getObjectTexture(ObjectType o);
         ObjectType object_type;
 };

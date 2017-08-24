@@ -21,6 +21,19 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 
     hitbox.setPosition(position);
 	hitbox.setSize(Vector2f(sprite.getLocalBounds().width *0.73, sprite.getLocalBounds().height*0.5));
+    hitbox.setFillColor(Color::Red);
+
+	hitboxes.push_back(RectangleShape(Vector2f(530,120)));
+	hitboxes.at(0).setOrigin(-50, -110);
+
+    hitboxes.push_back(RectangleShape(Vector2f(220,290)));
+	hitboxes.at(1).setOrigin(-50, 180);
+
+    hitboxes.push_back(RectangleShape(Vector2f(310,180)));
+	hitboxes.at(2).setOrigin(170, 270);
+
+	for(unsigned int i =0;i < hitboxes.size();i++)
+        hitboxes.at(i).setPosition(position);
 
 	sprite.setOrigin(sprite.getGlobalBounds().width*0.27,sprite.getGlobalBounds().height*0.5 );
     updateSpritePosition();
@@ -96,15 +109,16 @@ Dragon::~Dragon(){
 }
 
 void Dragon::breathFire(){
+    flame_timer = 0;
     fire_breathing = !fire_breathing;
 }
 
 void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    //  target.draw(hitbox, states);
-    target.draw(sprite, states);
 
-    //for(Flame* var : flames)
-        //target.draw(*var);
+    //target.draw(hitbox, states);
+    /*for(RectangleShape var : hitboxes)
+        target.draw(var, states);*/
+    target.draw(sprite, states);
 }
 
 bool Dragon::isBreatingFire(){
@@ -113,4 +127,35 @@ bool Dragon::isBreatingFire(){
 
 vector<Flame*> Dragon::getFlames(){
     return flames;
+}
+
+void Dragon::setPosition(int x, int y){
+    sprite.setPosition(x,y);
+    for(unsigned int i =0;i < hitboxes.size();i++)
+        hitboxes.at(i).setPosition(x,y);
+}
+void Dragon::move(float elapsedTime){
+    sprite.move(speed.x*elapsedTime, speed.y*elapsedTime);
+    for(unsigned int i =0;i < hitboxes.size();i++)
+        hitboxes.at(i).move(speed.x*elapsedTime, speed.y*elapsedTime);
+
+}
+void Dragon::move(sf::Vector2f g_speed, float elapsedTime){
+    sprite.move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
+    for(unsigned int i =0;i < hitboxes.size();i++)
+        hitboxes.at(i).move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
+
+}
+
+bool Dragon::detectHit(Entity* entity){
+
+    if(this->getDepth() + Entity::DEPTH_DIFF > entity->getDepth() && this->getDepth() - Entity::DEPTH_DIFF < entity->getDepth())
+        for(unsigned int i =0;i < hitboxes.size();i++)
+            if(entity->getHitbox().getGlobalBounds().intersects(hitboxes.at(i).getGlobalBounds()))
+                return true;
+    return false;
+}
+
+float Dragon::getDepth(){
+    return hitboxes.at(0).getGlobalBounds().top + hitboxes.at(0).getGlobalBounds().height;
 }

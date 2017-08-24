@@ -7,13 +7,13 @@
 class Entity : public sf::Drawable
 {
 	public:
-	    static int const DEPTH_DIFF = 150;
+	    static int const DEPTH_DIFF = 130;
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
-		void setPosition(int x, int y);
+		virtual void setPosition(int x, int y);
 		sf::Vector2f getPosition();
 		sf::Vector2f getSpriteSize();
 		sf::RectangleShape getHitbox();
-        bool detectHit(Entity* entity);
+        virtual bool detectHit(Entity* entity);
         virtual float getDepth();
         virtual float getDrawDepth();
 

@@ -16,6 +16,11 @@ class Dragon : public Enemy {
         void breathFire();
         bool isBreatingFire();
         std::vector<Flame*> getFlames();
+        virtual void setPosition(int x, int y);
+        virtual void move(float elapsedTime);
+		virtual void move(sf::Vector2f g_speed, float elapsedTime);
+        virtual bool detectHit(Entity* entity);
+        virtual float getDepth();
 
     protected:
 
@@ -27,6 +32,8 @@ class Dragon : public Enemy {
         static float constexpr DRAGON_SPEED = 0.1;//Pixels/milliseconds
 
         std::vector<Flame*> flames;
+        std::vector<sf::RectangleShape> hitboxes;
+
 
         int movement_timer = 0;
         bool fire_breathing = false;

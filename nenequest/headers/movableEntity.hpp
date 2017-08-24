@@ -10,8 +10,8 @@ class MovableEntity : public Entity {
     public:
         MovableEntity();
         virtual ~MovableEntity();
-        void move(float elapsedTime);
-		void move(sf::Vector2f g_speed, float elapsedTime);
+        virtual void move(float elapsedTime);
+		virtual void move(sf::Vector2f g_speed, float elapsedTime);
 		void setSpeed(sf::Vector2f g_speed);
 		sf::Vector2f getSpeed();
 		bool isOnScreen(sf::Vector2u windowSize);

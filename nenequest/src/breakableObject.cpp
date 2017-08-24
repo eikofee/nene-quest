@@ -55,7 +55,7 @@ Bonus* BreakableObject::getDrops(){
         return bonus;
 
     else if(object_type == Barrel){
-        if(rand() % 10 > 6)
+        if(rand() % 10 < BARREL_DROP_CHANCE)
             return bonus;
         else
             return NULL;

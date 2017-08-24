@@ -30,6 +30,7 @@ class Game : public Screen {
         void playerMove(bool moving_up, bool moving_down, bool moving_left, bool moving_right, float elapsedTime, sf::Vector2u windowSize, float skyHeight);
         void drawWithDepth(sf::RenderWindow* app);
         static bool cmp(Entity* a, Entity* d);
+        void dropItem(Bonus* drop, sf::Vector2f dropPosition);
 
 
         BreakableObject* getCollidingObject(Player* p);

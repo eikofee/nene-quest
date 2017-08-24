@@ -59,7 +59,7 @@ int Game::run(RenderWindow &app) {
 
     BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
     breakable_objects.push_back(barrel);
-    breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(100,630)));
+    breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(700,630)));
 
     Arrow arrow = Arrow(Vector2f(100, 700), 700);
     //Clock
@@ -159,13 +159,24 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 
         for(Arrow* arrow : players.at(i)->getArrows()){
             for(unsigned int j = 0; j < enemies.size(); j++){
-                if(arrow->detectHit(enemies.at(j))){
+                if(enemies.at(j)->detectHit(arrow)){
                     arrow->kill();
                 }
             }
             for(unsigned int j = 0; j < breakable_objects.size(); j++){
                 if(arrow->detectHit(breakable_objects.at(j))){
                     arrow->kill();
+
+                    if(Bonus* tmp = breakable_objects.at(j)->getDrops()){
+                        Vector2f dropPosition = Vector2f(breakable_objects.at(j)->getHitbox().getGlobalBounds().left
+                                                        , breakable_objects.at(j)->getHitbox().getGlobalBounds().top + breakable_objects.at(j)->getHitbox().getGlobalBounds().height -100);
+                        dropItem(tmp, dropPosition);
+                    }
+
+
+                    delete(breakable_objects.at(j));
+                    breakable_objects.erase(breakable_objects.begin()+j);
+
                 }
             }
         }
@@ -179,7 +190,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                         enemies.erase(enemies.begin()+j);
                     }
                     else{
-                        if(players.at(i)->detectHit(enemies.at(j))){
+                        if(enemies.at(j)->detectHit(players.at(i))){
                             players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
                             player_invulnerability_timer = 200;
                             break;
@@ -431,4 +442,20 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     }
     return true;
 }
+void Game::dropItem(Bonus* drop, Vector2f dropPosition){
+
+    if(drop->getBonusType() == Item_Onigiri)
+        bonuses_hp.push_back(new BonusHp(BonusHp::ONIGIRI, dropPosition));
+    else{
+        if(drop->getBonusType() == Item_Axe)
+            item_weapons.push_back(new ItemWeapon(Axe, dropPosition));
+        else if(drop->getBonusType() == Item_Bow)
+            item_weapons.push_back(new ItemWeapon(Bow, dropPosition));
+        else if(drop->getBonusType() == Item_Greatsword)
+            item_weapons.push_back(new ItemWeapon(GreatSword, dropPosition));
+        else if(drop->getBonusType() == Item_Sword)
+            item_weapons.push_back(new ItemWeapon(Sword, dropPosition));
+    }
+}
+
 
