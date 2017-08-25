@@ -8,7 +8,7 @@ class LivingEntity {
         LivingEntity(int hp);
         bool isAlive();
         void take_damage(int amount);
-    private:
+    protected:
         int hp;
 };
 

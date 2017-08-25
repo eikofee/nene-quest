@@ -6,7 +6,7 @@ using namespace sf;
 using namespace std;
 
 
-Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
+Dragon::Dragon(Vector2f position) : Enemy (DRAGON_HP) {
 
     srand(time(NULL));
 
@@ -18,24 +18,25 @@ Dragon::Dragon(int hp, Vector2f position) : Enemy (hp) {
 	texture.loadFromFile("img/enemy_dragon.png");
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y/2));
+    sprite.setPosition(position);
 
     hitbox.setPosition(position);
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width *0.73, sprite.getLocalBounds().height*0.5));
+	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
     hitbox.setFillColor(Color::Red);
 
 	hitboxes.push_back(RectangleShape(Vector2f(530,120)));
-	hitboxes.at(0).setOrigin(-50, -110);
+	hitboxes.at(0).setOrigin(-270, -410);
 
     hitboxes.push_back(RectangleShape(Vector2f(220,290)));
-	hitboxes.at(1).setOrigin(-50, 180);
+	hitboxes.at(1).setOrigin(-270, -120);
 
     hitboxes.push_back(RectangleShape(Vector2f(310,180)));
-	hitboxes.at(2).setOrigin(170, 270);
+	hitboxes.at(2).setOrigin(-50, -30);
 
 	for(unsigned int i =0;i < hitboxes.size();i++)
         hitboxes.at(i).setPosition(position);
 
-	sprite.setOrigin(sprite.getGlobalBounds().width*0.27,sprite.getGlobalBounds().height*0.5 );
+	//sprite.setOrigin(sprite.getGlobalBounds().width*0.27,sprite.getGlobalBounds().height*0.5 );
     updateSpritePosition();
 
 	speed = Vector2f(DRAGON_SPEED,0);
@@ -48,30 +49,74 @@ Dragon::~Dragon(){
     }
 }
 
- void Dragon::update(float elapsedTime){
+ void Dragon::update(float elapsedTime, Vector2u windowSize){
 
-    if(clock.getElapsedTime().asSeconds() > ANIMATION_DELAY){
-        progressAnimation();
-        clock.restart();
-    }
+    if(this->isAlive()){
 
-    //Move dragon back and forth
-    movement_timer += elapsedTime;
-    if(movement_timer > MOVEMENT_DURATION){
+        //Move dragon back and forth
+        movement_timer += elapsedTime;
+        if(movement_timer > MOVEMENT_DURATION){
 
-        speed = Vector2f( -speed.x, speed.y);
-        movement_timer = 0;
-    }
-    this->move(elapsedTime);
-
-    //Breathe fire
-    flame_timer += elapsedTime;
-    if(fire_breathing){
-        if(flame_timer > DELAY_BETWEEN_FLAMES){
-            flames.push_back(new Flame(Vector2f(sprite.getPosition().x - sprite.getOrigin().x + 100 ,
-                                                        sprite.getPosition().y -sprite.getOrigin().y + 100 + (float)(rand()%100) ), 70 + (float)(rand()%130), this->getDepth()));
-            flame_timer=0;
+            speed = Vector2f( -speed.x, speed.y);
+            movement_timer = 0;
         }
+        this->move(elapsedTime);
+
+        //Breathe fire
+        flame_timer += elapsedTime;
+        if(fire_breathing){
+            if(flame_timer > DELAY_BETWEEN_FLAMES){
+                flames.push_back(new Flame(Vector2f(sprite.getPosition().x - sprite.getOrigin().x + 100 ,
+                                                            sprite.getPosition().y -sprite.getOrigin().y + 100 + (float)(rand()%100) ), 70 + (float)(rand()%130), this->getDepth()));
+                flame_timer=0;
+            }
+        }
+
+
+        if(!this->isOnScreen(windowSize))
+            is_dead = true;
+    }
+    //Dying animation
+    else{
+        fire_breathing = true;
+        //Delete the hitbox at the start of the dying animation
+        if(dying_timer == 0){
+            for(unsigned int i =0;i < hitboxes.size();i++)
+                hitboxes.at(i).setSize(Vector2f(0,0));
+            sprite.setOrigin(350 ,400);
+            sprite.move( 350, 400);
+            dying_timer = 1;
+            movement_timer = 0;
+            speed = Vector2f(3,3);
+            flame_timer = 1000;
+        }
+        else if(dying_timer < DEAD_ANIMATION_DURATION){
+            dying_timer += elapsedTime;
+            if(sprite.getRotation() < 90)
+                sprite.setRotation(90 * dying_timer / DEAD_ANIMATION_DURATION *6);
+            else{
+                sprite.move(speed.x,speed.y);
+                movement_timer += elapsedTime;
+                if(movement_timer > 40){
+                    speed.x = -speed.x;
+                    movement_timer = 0;
+                }
+                flame_timer += elapsedTime;
+                if(flame_timer > 600){
+                    flames.push_back(new Flame(Vector2f(sprite.getPosition().x + 270, sprite.getPosition().y - 150), 70, this->getDepth(), true));
+                    flame_timer=0;
+                }
+
+            }
+
+        }
+
+
+    }
+    //Update animation
+    if(clock.getElapsedTime().asSeconds() > ANIMATION_DELAY){
+            progressAnimation();
+            clock.restart();
     }
 
     //Delete old flames
@@ -82,6 +127,7 @@ Dragon::~Dragon(){
             flames.erase(flames.begin()+i);
         }
     }
+
  }
 
  void Dragon::progressAnimation(){
@@ -116,8 +162,8 @@ void Dragon::breathFire(){
 
 void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
-    //target.draw(hitbox, states);
-    /*for(RectangleShape var : hitboxes)
+    /*target.draw(hitbox, states);
+    for(RectangleShape var : hitboxes)
         target.draw(var, states);*/
     target.draw(sprite, states);
 }

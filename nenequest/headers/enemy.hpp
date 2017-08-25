@@ -13,14 +13,18 @@ class Enemy : public MovableEntity, public LivingEntity
         Enemy(int hp);
         virtual ~Enemy();
         short int getAttackDamage();
-        virtual void update(float elapsedTime);
+        virtual void update(float elapsedTime, sf::Vector2u windowSize);
         EnemyType getEnemyType();
+        bool isDead();
 
     protected:
         sf::Clock clock;
         short int animation_state = 0;
         short int attack_damage = 0;
         EnemyType enemy_type;
+        static int const DRAGON_HP = 20;
+        static int const BOAR_HP = 3;
+        bool is_dead = false;
 
     private:
 };

@@ -3,7 +3,7 @@
 
 using namespace sf;
 
-Boar::Boar(Vector2f position) : Enemy (3) {
+Boar::Boar(Vector2f position) : Enemy (BOAR_HP) {
 
     attack_damage = BOAR_DAMAGE;
     enemy_type = Enemy_Boar;
@@ -38,7 +38,7 @@ void Boar::progressAnimation(){
     }
 }
 
- void Boar::update(float elapsedTime) {
+ void Boar::update(float elapsedTime, Vector2u windowSize) {
 
 
     //Move the boar if it isn't stunned
@@ -55,6 +55,9 @@ void Boar::progressAnimation(){
         if(stun_timer <= 0)
             is_stunned = false;
     }
+
+    if(!this->isOnScreen(windowSize) || !this->isAlive())
+        is_dead = true;
 }
 
 void Boar::stun() {

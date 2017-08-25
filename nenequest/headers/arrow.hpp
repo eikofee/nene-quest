@@ -6,6 +6,7 @@
 
 class Arrow : public Projectile {
     public:
+        static int const ARROW_DAMAGE = 1;
         Arrow(sf::Vector2f position, float g_depth);
         virtual ~Arrow();
         void update(float elapsedTime);

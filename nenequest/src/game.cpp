@@ -31,7 +31,7 @@ int Game::run(RenderWindow &app) {
     Background background = Background(app.getSize());
 
 	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
-	Dragon* dragon = new Dragon(20, Vector2f(1200,600));
+	Dragon* dragon = new Dragon(Vector2f(1000,400));
 	BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
     ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(800,600));
 
@@ -155,8 +155,13 @@ int Game::run(RenderWindow &app) {
 
     scroll(elapsedTime, app.getSize());
 
-    for(Enemy* enemy : enemies)
-        enemy->update(elapsedTime);
+    for(unsigned int i = 0;i < enemies.size();i++){
+        enemies.at(i)->update(elapsedTime, app.getSize());
+        if(enemies.at(i)->isDead()){
+            delete(enemies.at(i));
+            enemies.erase(enemies.begin()+i);
+        }
+    }
 
     for(Player* var : players){
         var->update(elapsedTime);
@@ -189,6 +194,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
         for(Arrow* arrow : players.at(i)->getArrows()){
             for(unsigned int j = 0; j < enemies.size(); j++){
                 if(enemies.at(j)->detectHit(arrow)){
+                    enemies.at(j)->take_damage(Arrow::ARROW_DAMAGE);
                     arrow->kill();
                 }
             }
@@ -214,27 +220,22 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
             //Collisions with enemies
             if(player_invulnerability_timer <= 0){
                 for(unsigned int j = 0; j < enemies.size(); j++){
-                    if(!enemies.at(j)->isOnScreen(windowSize)){
-                        delete(enemies.at(j));
-                        enemies.erase(enemies.begin()+j);
+                    if(enemies.at(j)->detectHit(players.at(i))){
+                        players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
+                        player_invulnerability_timer = 200;
+                        break;
                     }
-                    else{
-                        if(enemies.at(j)->detectHit(players.at(i))){
-                            players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
-                            player_invulnerability_timer = 200;
-                            break;
-                        }
-                        if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
-                           vector<Flame*> flames = ((Dragon*)enemies.at(j))->getFlames();
-                           for(Flame* flame : flames){
-                                if(players.at(i)->detectHit(flame)){
-                                   players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
-                                   player_invulnerability_timer = 200;
-                                   break;
-                                }
-                           }
-                        }
+                    if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
+                       vector<Flame*> flames = ((Dragon*)enemies.at(j))->getFlames();
+                       for(Flame* flame : flames){
+                            if(players.at(i)->detectHit(flame)){
+                               players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
+                               player_invulnerability_timer = 200;
+                               break;
+                            }
+                       }
                     }
+
                 }
             }
             else{

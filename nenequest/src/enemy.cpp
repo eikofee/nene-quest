@@ -14,11 +14,15 @@ short int Enemy::getAttackDamage(){
     return attack_damage;
 }
 
- void Enemy::update(float elapsedTime){
+ void Enemy::update(float elapsedTime, Vector2u windowSize){
 
     this->move(elapsedTime);
  }
 
  EnemyType Enemy::getEnemyType(){
     return enemy_type;
+ }
+
+ bool Enemy::isDead(){
+    return is_dead;
  }

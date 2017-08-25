@@ -9,9 +9,9 @@
 class Dragon : public Enemy {
 
     public:
-        Dragon(int hp, sf::Vector2f position = sf::Vector2f(0,0));
+        Dragon(sf::Vector2f position = sf::Vector2f(0,0));
         virtual ~Dragon();
-        virtual void update(float elapsedTime);
+        virtual void update(float elapsedTime, sf::Vector2u windowSize);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
         void breathFire();
         bool isBreatingFire();
@@ -30,15 +30,17 @@ class Dragon : public Enemy {
         static int const DELAY_BETWEEN_FLAMES = 100; //Milliseconds
         static float constexpr ANIMATION_DELAY = 0.5;//Seconds
         static float constexpr DRAGON_SPEED = 0.1;//Pixels/milliseconds
+        static float constexpr DEAD_ANIMATION_DURATION = 6000;//Milliseconds
 
         std::vector<Flame*> flames;
         std::vector<sf::RectangleShape> hitboxes;
 
 
-        int movement_timer = 0;
+        float movement_timer = 0;
         bool fire_breathing = false;
         void progressAnimation();
-        short int flame_timer = 0;
+        float flame_timer = 0;
+        float dying_timer = 0;
 };
 
 #endif // DRAGON_H
