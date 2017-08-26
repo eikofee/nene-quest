@@ -19,16 +19,12 @@ int Game::run(RenderWindow &app) {
     players.push_back(player);
     players.push_back(new Player(new Weapon(Sword), Vector2f(1000,800), true));
 
-	// LifeBar
-    //life = LifeBar(100);
-	//life.setPosition(300, 100);
-
-    /**
-        FIXME : Kostia, déplacer le code de knightHead dans la classe "LifeBar"
-    **/
 
 	// Background
     Background background = Background(app.getSize());
+
+    bridge = new BridgePit(300, app.getSize().y-background.getSkyHeight(), app.getSize().y);
+
 
 	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
 	Dragon* dragon = new Dragon(Vector2f(1000,400));
@@ -176,6 +172,7 @@ int Game::run(RenderWindow &app) {
 
     app.clear(Color::White);
     app.draw(background);
+    app.draw(*bridge);
 
     drawWithDepth(&app);
     app.draw(arrow);
@@ -383,6 +380,13 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
             else if(player->getPosition().x + playerSpeed.x*elapsedTime < 0)
                 player->setPosition(0, player->getPosition().y);
 
+            if(bridge->detectHit(player)){
+                if(playerSpeed.x > 0)
+                    player->setPosition(bridge->getSpriteBounds().left - player->getHitbox().getGlobalBounds().width, player->getPosition().y);
+                else
+                    player->setPosition(bridge->getSpriteBounds().left +  bridge->getSpriteBounds().width, player->getPosition().y);
+            }
+
             if(playerIsColliding(player)){
                 //Do/While in case the player collide several object at the same time
                 do{
@@ -406,6 +410,15 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
                 player->setPosition(player->getPosition().x, windowSize.y - player->getHitbox().getGlobalBounds().height);
             else if(player->getPosition().y < skyHeight - player->getHitbox().getGlobalBounds().height/2)
                 player->setPosition(player->getPosition().x, skyHeight - player->getHitbox().getGlobalBounds().height/2);
+
+            if(bridge->detectHit(player)){
+                if(playerSpeed.y > 0)
+                    player->setPosition(player->getPosition().x, bridge->getSpriteBounds().top + bridge->getSpriteBounds().height - player->getHitbox().getGlobalBounds().height);
+                else
+                    player->setPosition(player->getPosition().x, bridge->getSpriteBounds().top - player->getHitbox().getGlobalBounds().height + Entity::DEPTH_DIFF);
+            }
+
+
 
             if(playerIsColliding(player)){
                 //Do/While in case the player collide several object at the same time

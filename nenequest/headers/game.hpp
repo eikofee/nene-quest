@@ -17,6 +17,7 @@
 #include "../headers/breakableObject.hpp"
 #include "../headers/bonus.hpp"
 #include"../headers/arrow.hpp"
+#include "../headers/bridgePit.hpp"
 
 class Game : public Screen {
     public:
@@ -40,6 +41,7 @@ class Game : public Screen {
         std::vector<BonusHp*> bonuses_hp;
         std::vector<ItemWeapon*> item_weapons;
         std::vector<BreakableObject*> breakable_objects;
+        BridgePit* bridge;
 
         static constexpr float SCROLL_SPEED = -0.1;
         static constexpr float PLAYER_SPEED = 0.5;
