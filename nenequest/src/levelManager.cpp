@@ -1,4 +1,4 @@
-#include "..\headers\levelManager.hpp"
+#include "../headers/levelManager.hpp"
 
 LevelManager::LevelManager() {
 	this->timeSync = 0;

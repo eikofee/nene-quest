@@ -4,8 +4,8 @@
 #include <string>
 #include <vector>
 #include <list>
-#include "..\headers\parserCommand.hpp"
-#include <SFML\Graphics.hpp>
+#include "../headers/parserCommand.hpp"
+#include <SFML/Graphics.hpp>
 class LevelManager {
 
 private:

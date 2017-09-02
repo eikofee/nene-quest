@@ -1,7 +1,7 @@
 #ifndef PLAYER_HPP_INCLUDED
 #define PLAYER_HPP_INCLUDED
 
-#include "../headers/movableentity.hpp"
+#include "../headers/movableEntity.hpp"
 #include "../headers/weapon.hpp"
 #include "../headers/lifebar.hpp"
 #include "../headers/arrow.hpp"
