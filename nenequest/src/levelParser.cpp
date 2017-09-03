@@ -1,4 +1,4 @@
-#include "..\headers\levelParser.hpp"
+#include "../headers/levelParser.hpp"
 
 LevelParser::LevelParser() {
 

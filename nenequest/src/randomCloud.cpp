@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 #include "../headers/randomCloud.hpp"
 
 using namespace std;
