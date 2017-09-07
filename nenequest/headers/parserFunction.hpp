@@ -4,17 +4,18 @@
 #include <string>
 #include <vector>
 #include <map>
-
+class LevelManager;
 class ParserFunction {
 
-private:
+protected:
 	std::vector<std::string> commands;
-	
+	LevelManager* manager;
 
 public:
 	ParserFunction();
+	virtual void initialize(LevelManager* manager);
 	bool isCorrect(std::string command);
-	virtual void exec(std::map<std::string, std::string> args) const = 0;
+	virtual void exec(std::map<std::string, std::string> args);
 	
 };
 

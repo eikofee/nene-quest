@@ -13,8 +13,8 @@ void LevelManager::setLevelCommands(std::vector<ParserCommand*> commands) {
 }
 
 void LevelManager::update() {
-	if (!isWaiting)
-		if (this->levelCommands.front()->getTime() >= (this->timeSync + this->clock.getElapsedTime().asSeconds())) {
+	if (!isWaiting && this->levelCommands.size() > 0)
+		if (this->levelCommands.front()->getTime() <= (this->timeSync + this->clock.getElapsedTime().asSeconds())) {
 			ParserCommand* c = this->levelCommands.front();
 			this->levelCommands.pop_front();
 			c->getFunction()->exec(c->getArguments());
@@ -31,6 +31,21 @@ void LevelManager::resume() {
 	clock.restart();
 	isWaiting = false;
 }
+
+// Function mapping
+void LevelManager::setScrollSpeed(int speed) {
+	this->background->setSpeed(speed);
+}
+
+
+
+
+
+// Game setters
+void LevelManager::setBackground(Background* bck) {
+	this->background = bck;
+}
+
 
 bool LevelManager::pccomp(ParserCommand* a, ParserCommand* b) {
 	if (a->getTime() >= b->getTime())

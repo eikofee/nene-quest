@@ -19,6 +19,9 @@
 #include"../headers/arrow.hpp"
 #include "../headers/bridgePit.hpp"
 
+#include "../headers/levelManager.hpp"
+#include "../headers/levelParser.hpp"
+
 class Game : public Screen {
     public:
         Game();
@@ -33,6 +36,10 @@ class Game : public Screen {
         static bool cmp(Entity* a, Entity* d);
         void dropItem(Bonus* drop, sf::Vector2f dropPosition);
 
+
+		//Final objetcs
+		LevelManager* manager;
+		LevelParser* parser;
 
         BreakableObject* getCollidingObject(Player* p);
 

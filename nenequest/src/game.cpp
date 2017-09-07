@@ -13,15 +13,23 @@ Game::Game() {
 int Game::run(RenderWindow &app) {
 	Event event;
 	bool running = true;
+	// Final game objects (should only include Game, Players, LevelManagers and other UI events)
+	this->manager = new LevelManager();
+	this->parser = new LevelParser();
+	this->parser->setLevelManager(this->manager);
+	this->parser->initialize();
+	this->parser->setLevelFilesPath("levels");
+    Background background = Background(app.getSize());
+	this->manager->setBackground(&background);
+
+	//Load Level
+	this->parser->parseFile("level0.nnq");
 
 	// Player
 	Player* player = new Player(new Weapon(Axe), Vector2f(1000,600));
     players.push_back(player);
     players.push_back(new Player(new Weapon(Sword), Vector2f(1000,800), true));
 
-
-	// Background
-    Background background = Background(app.getSize());
 
     bridge = new BridgePit(300, app.getSize().y-background.getSkyHeight(), app.getSize().y);
 
@@ -163,6 +171,8 @@ int Game::run(RenderWindow &app) {
         var->update(elapsedTime);
         playerMove(var, elapsedTime, app.getSize(), background.getSkyHeight());
     }
+
+	manager->update();
 
     background.update();
     arrow.update(elapsedTime);
