@@ -11,6 +11,8 @@
 #include <algorithm>
 
 #include "commands\cmdScroll.h"
+#include "commands\cmdStart.h"
+#include "commands\cmdChest.h"
 
 class LevelParser {
 

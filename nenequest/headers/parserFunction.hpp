@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include "customMap.h"
 class LevelManager;
 class ParserFunction {
 
@@ -15,7 +16,7 @@ public:
 	ParserFunction();
 	virtual void initialize(LevelManager* manager);
 	bool isCorrect(std::string command);
-	virtual void exec(std::map<std::string, std::string> args);
+	virtual void exec(CustomMap* args);
 	
 };
 

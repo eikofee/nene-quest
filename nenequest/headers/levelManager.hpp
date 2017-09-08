@@ -27,6 +27,8 @@ public:
 
 	// Function mapping
 	void setScrollSpeed(int speed);
+	void startLevel();
+	void spawnChest(int x, int y, std::string item, int hp);
 
 	static bool pccomp(ParserCommand* a, ParserCommand* b);
 };

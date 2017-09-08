@@ -16,6 +16,6 @@ bool ParserFunction::isCorrect(std::string command) {
 	return false;
 }
 
-void ParserFunction::exec(std::map<std::string, std::string> args)
+void ParserFunction::exec(CustomMap* args)
 {
 }

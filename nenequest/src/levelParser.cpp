@@ -7,6 +7,8 @@ LevelParser::LevelParser() {
 void LevelParser::initialize()
 {
 	this->addFunction(new cmdScroll());
+	this->addFunction(new cmdStart());
+	this->addFunction(new cmdChest());
 
 	for (auto f : this->functions)
 		f->initialize(this->manager);

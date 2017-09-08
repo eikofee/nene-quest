@@ -12,8 +12,8 @@ public:
 		ParserFunction::manager = manager;
 	}
 
-	void exec(std::map<std::string, std::string> args) {
-		int scrollSpeed = std::stoi(args.at("speed"));
+	void exec(CustomMap* args) {
+		int scrollSpeed = std::stoi(args->getOrDefault("speed", "1"));
 		ParserFunction::manager->setScrollSpeed(scrollSpeed);
 	}
 
