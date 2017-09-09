@@ -26,10 +26,6 @@ class Game : public Screen {
     public:
         Game();
         virtual int run(sf::RenderWindow &app);
-        void addObject(BreakableObject* obj);
-        void addEnemy(Enemy* enemy);
-        void addPlayer(Player* player);
-
 
     private:
         void checkCollision(float elapsedTime, sf::Vector2u windowSize);

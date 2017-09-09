@@ -38,26 +38,25 @@ void LevelManager::setScrollSpeed(int speed) {
 }
 
 void LevelManager::startLevel() {
-	game->addPlayer(new Player(Sword, sf::Vector2f(1000,600)));
+	//init player and stuff
 }
 
-void LevelManager::spawnChest(int x, int y, BonusType bonus, int hp) {
-	game->addObject(new BreakableObject(Chest, sf::Vector2f(x,y)), bonus);
+void LevelManager::spawnChest(int x, int y, std::string item, int hp) {
+	//spawn a chest on the given position
 }
+
+
 
 // Game setters
 void LevelManager::setBackground(Background* bck) {
 	this->background = bck;
 }
 
-void LevelManager::setGame(Game* gme){
-    this->game = gme;
-}
 
 bool LevelManager::pccomp(ParserCommand* a, ParserCommand* b) {
 	if (a->getTime() >= b->getTime())
 		return false;
-
+	
 	return true;
 }
 
