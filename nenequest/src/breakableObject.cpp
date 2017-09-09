@@ -5,9 +5,7 @@
 
 using namespace sf;
 
-BreakableObject::BreakableObject(ObjectType o, Vector2f position, BonusType argDrop) {
-
-    drop = argDrop;
+BreakableObject::BreakableObject(ObjectType o, Vector2f position) {
 
     object_type = o;
 
@@ -36,19 +34,7 @@ void BreakableObject::getObjectTexture(ObjectType o){
 Bonus* BreakableObject::getDrops(){
 
     Bonus* bonus;
-    int num;
-
-    if(drop == Item_Random){
-        num = rand()% Number_of_Bonuses;
-    }
-    else if(drop == Item_None){
-        return NULL;
-    }
-    else{
-        num = drop;
-    }
-
-
+    int num = rand()% Number_of_Bonuses;
     if(num == Item_Axe){
         bonus = new ItemWeapon(Axe, this->getPosition());
     }
@@ -65,13 +51,15 @@ Bonus* BreakableObject::getDrops(){
         bonus = new BonusHp(BonusHp::ONIGIRI, this->getPosition());
     }
 
-    //Randomize the chances of getting a drop of a barrel if the drop isn't set
-    if(object_type == Barrel && drop == Item_Random){
+    if(object_type == Chest)
+        return bonus;
+
+    else if(object_type == Barrel){
         if(rand() % 10 < BARREL_DROP_CHANCE)
             return bonus;
         else
             return NULL;
     }
-    else
-        return bonus;
+
+
 }

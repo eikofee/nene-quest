@@ -25,7 +25,7 @@ int Game::run(RenderWindow &app) {
 	//Load Level
 	this->parser->parseFile("level0.nnq");
 
-	/*// Player
+	// Player
 	Player* player = new Player(new Weapon(Axe), Vector2f(1000,600));
     players.push_back(player);
     players.push_back(new Player(new Weapon(Sword), Vector2f(1000,800), true));
@@ -50,7 +50,7 @@ int Game::run(RenderWindow &app) {
     breakable_objects.push_back(barrel);
     breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(700,630)));
 
-    Arrow arrow = Arrow(Vector2f(100, 700), 700);*/
+    Arrow arrow = Arrow(Vector2f(100, 700), 700);
     //Clock
 	Clock clock;
 
@@ -84,6 +84,7 @@ int Game::run(RenderWindow &app) {
                     players.at(0)->fireArrow();
                     break;
                 default:
+                    dragon->breathFire();
                     break;
                 }
                 break;
@@ -174,6 +175,8 @@ int Game::run(RenderWindow &app) {
 	manager->update();
 
     background.update();
+    arrow.update(elapsedTime);
+
 
     checkCollision(elapsedTime, app.getSize());
 
@@ -518,8 +521,4 @@ void Game::addObject(BreakableObject* obj){
 
 void Game::addEnemy(Enemy* enemy){
     enemies.push_back(enemy);
-}
-
-void Game::addPlayer(Player* player){
-    players.push_back(player);
 }

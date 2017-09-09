@@ -5,8 +5,7 @@
 #include <vector>
 #include <list>
 #include "../headers/parserCommand.hpp"
-//#include "../headers/background.hpp"
-
+#include "background.hpp"
 #include <SFML/Graphics.hpp>
 class LevelManager {
 
@@ -15,7 +14,6 @@ private:
 	std::list<ParserCommand*> levelCommands;
 	sf::Clock clock;
 	Background* background;
-	class Game* game;
 	float timeSync;
 	bool isWaiting;
 
