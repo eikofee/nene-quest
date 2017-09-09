@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "../headers/movableEntity.hpp"
 
-enum BonusType {Item_Axe, Item_Sword, Item_Greatsword, Item_Bow, Item_Onigiri, Number_of_Bonuses = 5};
+enum BonusType {Item_Axe, Item_Sword, Item_Greatsword, Item_Bow, Item_Onigiri, Number_of_Bonuses = 5, Item_Random, Item_None};
 
 class Bonus : public MovableEntity
 {

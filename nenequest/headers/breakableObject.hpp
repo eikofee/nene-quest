@@ -11,7 +11,7 @@ enum ObjectType {Chest, Barrel};
 class BreakableObject : public MovableEntity
 {
     public:
-        BreakableObject(ObjectType o, sf::Vector2f position);
+        BreakableObject(ObjectType o, sf::Vector2f position, BonusType argDrop = Item_Random);
         virtual ~BreakableObject();
         Bonus* getDrops();
 
@@ -21,6 +21,8 @@ class BreakableObject : public MovableEntity
         static const int BARREL_DROP_CHANCE = 8; //Chances out of 10
         void getObjectTexture(ObjectType o);
         ObjectType object_type;
+        BonusType drop;
+
 };
 
 #endif // BREAKABLEITEM_H
