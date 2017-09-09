@@ -33,8 +33,8 @@ void LevelParser::parseFile(std::string filename) {
 			if (fa.find(ds) != std::string::npos)
 			{
 
-				std::string func_name = fa.substr(0, fa.find(ds));
-				std::string func_args = fa.substr(fa.find(ds) + 1, fa.length() - 1);
+				func_name = fa.substr(0, fa.find(ds));
+				func_args = fa.substr(fa.find(ds) + 1, fa.length() - 1);
 				func_args = func_args.substr(0 , func_args.length() - 1);
 
 
