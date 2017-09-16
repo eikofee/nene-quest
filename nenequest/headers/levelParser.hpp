@@ -9,6 +9,11 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+
+#include "commands\cmdScroll.h"
+#include "commands\cmdStart.h"
+#include "commands\cmdChest.h"
+
 class LevelParser {
 
 	private:
@@ -19,6 +24,7 @@ class LevelParser {
 
 	public:
 		LevelParser();
+		void initialize();
 		void parseFile(std::string filename);
 		void setLevelFilesPath(std::string path);
 		void setLevelManager(LevelManager* manager);

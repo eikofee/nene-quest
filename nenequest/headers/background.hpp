@@ -12,7 +12,6 @@ class Background : public sf::Drawable, sf::Transformable {
         sf::RectangleShape ground;
 		sf::Vector2u v;
 
-		//cloud stuff
 		static const int CLOUD_SPAWN_INTERVAL = 5;
 		static const int CLOUD_SPAWN_INTERVAL_RANDOM = 2;
 		static const int MOUNTAIN_SPAWN_INTERVAL = 2;
@@ -20,6 +19,11 @@ class Background : public sf::Drawable, sf::Transformable {
 		static const int CLOUD_SPAWN_Y_TOP = 0;
 		static const int CLOUD_SPAWN_Y_BOTTOM = 200;
 		static const int MOUNTAIN_VAR_Y_OFFSET = 30;
+
+		float cloudSpeedModifier = 1.0f;
+		float mountainSpeedModifier = 1.5f;
+		int scrollSpeed = 0;
+
 		std::vector<RandomCloud*> clouds;
 		std::vector<RandomMountain*> mountains;
 		float nextCloud = 0;
@@ -51,6 +55,7 @@ class Background : public sf::Drawable, sf::Transformable {
 		void update();
 		void createClouds();
 		void createMountains();
+		void setSpeed(int speed);
 };
 
 #endif
