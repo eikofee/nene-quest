@@ -1,8 +1,10 @@
 #include "../headers/levelManager.hpp"
-
-LevelManager::LevelManager() {
+#include "../headers/player.hpp"
+#include "../headers/game.hpp"
+LevelManager::LevelManager(Game* game) {
 	this->timeSync = 0;
 	this->isWaiting = false;
+	this->game = game;
 }
 
 void LevelManager::setLevelCommands(std::vector<ParserCommand*> commands) {
@@ -37,8 +39,15 @@ void LevelManager::setScrollSpeed(int speed) {
 	this->background->setSpeed(speed);
 }
 
-void LevelManager::startLevel() {
-	//init player and stuff
+void LevelManager::startLevel(int playerCount) {
+	if (playerCount >= 1) {
+		Player* player = new Player(new Weapon(Axe), sf::Vector2f(1000, 600));
+		game->addPlayerInstance(player);
+	};
+	if (playerCount >= 2) {
+		Player* player = new Player(new Weapon(Sword), sf::Vector2f(1000, 800));
+		game->addPlayerInstance(player);
+	}
 }
 
 void LevelManager::spawnChest(int x, int y, std::string item, int hp) {

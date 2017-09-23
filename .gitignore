@@ -80,3 +80,4 @@ nene-quest.vcxproj
 /x64/*
 /nene-quest.vcxproj.user
 *.ilk
+/Win32/Debug

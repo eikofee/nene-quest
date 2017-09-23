@@ -1,4 +1,2 @@
-3:scroll[speed=1]
-8:scroll[speed=8]
-13:scroll[speed=2]
-20:scroll[speed=-19]
+0:start[playerCount=2]
+0:scroll[speed=3]
