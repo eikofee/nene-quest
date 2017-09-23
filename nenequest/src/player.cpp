@@ -24,7 +24,7 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
     }
     else{
         this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), "img/icon_p2.png");
-        texture.loadFromFile("img/player1.png");
+        texture.loadFromFile("img/player2.png");
     }
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, 0, texture.getSize().x/2, texture.getSize().y/3));
