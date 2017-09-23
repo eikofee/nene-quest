@@ -20,7 +20,7 @@ private:
 	bool isWaiting;
 
 public:
-	LevelManager();
+	LevelManager(Game* game);
 	void setBackground(Background* bck);
 	void setLevelCommands(std::vector<ParserCommand*> commands);
 	void update();

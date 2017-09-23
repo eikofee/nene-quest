@@ -14,7 +14,7 @@ int Game::run(RenderWindow &app) {
 	Event event;
 	bool running = true;
 	// Final game objects (should only include Game, Players, LevelManagers and other UI events)
-	this->manager = new LevelManager();
+	this->manager = new LevelManager(this);
 	this->parser = new LevelParser();
 	this->parser->setLevelManager(this->manager);
 	this->parser->initialize();
