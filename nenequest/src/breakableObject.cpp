@@ -33,7 +33,7 @@ void BreakableObject::getObjectTexture(ObjectType o){
 
 Bonus* BreakableObject::getDrops(){
 
-    Bonus* bonus;
+    Bonus* bonus = nullptr;
     int num = rand()% Number_of_Bonuses;
     if(num == Item_Axe){
         bonus = new ItemWeapon(Axe, this->getPosition());
