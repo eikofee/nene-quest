@@ -42,5 +42,7 @@ int getWeaponDamage(WeaponType w)
             return 1;
         case GreatSword:
             return 2;
+		default:
+			return 0;
     }
 }

@@ -1,5 +1,10 @@
 #include "../headers/levelParser.hpp"
 
+#include "../headers/commands/cmdScroll.h"
+#include "../headers/commands/cmdStart.h"
+#include "../headers/commands/cmdChest.h"
+#include "../headers/commands/cmdBridge.h"
+
 LevelParser::LevelParser() {
 
 }
@@ -9,6 +14,7 @@ void LevelParser::initialize()
 	this->addFunction(new cmdScroll());
 	this->addFunction(new cmdStart());
 	this->addFunction(new cmdChest());
+	this->addFunction(new cmdBridge());
 
 	for (auto f : this->functions)
 		f->initialize(this->manager);

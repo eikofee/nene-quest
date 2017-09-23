@@ -14,7 +14,7 @@ int Game::run(RenderWindow &app) {
 	Event event;
 	bool running = true;
 	// Final game objects (should only include Game, Players, LevelManagers and other UI events)
-	this->manager = new LevelManager();
+	this->manager = new LevelManager(this);
 	this->parser = new LevelParser();
 	this->parser->setLevelManager(this->manager);
 	this->parser->initialize();
@@ -24,12 +24,6 @@ int Game::run(RenderWindow &app) {
 
 	//Load Level
 	this->parser->parseFile("level0.nnq");
-
-	// Player
-	Player* player = new Player(new Weapon(Axe), Vector2f(1000,600));
-    players.push_back(player);
-    players.push_back(new Player(new Weapon(Sword), Vector2f(1000,800), true));
-
 
     bridge = new BridgePit(300, app.getSize().y-background.getSkyHeight(), app.getSize().y);
 
@@ -298,7 +292,6 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     }
 }
 
-
  void Game::scroll(float elapsedTime, Vector2u windowSize){
     for(unsigned int j = 0; j < item_weapons.size(); j++){
         item_weapons.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
@@ -516,4 +509,12 @@ void Game::dropItem(Bonus* drop, Vector2f dropPosition){
     }
 }
 
+//Function calls for levelManager
+void Game::addEnemyInstance(Enemy* enemy) {
+	this->enemies.push_back(enemy);
+}
+
+void Game::addPlayerInstance(Player* player) {
+	this->players.push_back(player);
+}
 

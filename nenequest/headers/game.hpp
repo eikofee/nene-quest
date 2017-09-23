@@ -19,13 +19,15 @@
 #include"../headers/arrow.hpp"
 #include "../headers/bridgePit.hpp"
 
-#include "../headers/levelManager.hpp"
 #include "../headers/levelParser.hpp"
-
+class LevelManager;
 class Game : public Screen {
     public:
         Game();
         virtual int run(sf::RenderWindow &app);
+		void addEnemyInstance(Enemy* enemy);
+		void addPlayerInstance(Player* player);
+
 
     private:
         void checkCollision(float elapsedTime, sf::Vector2u windowSize);
