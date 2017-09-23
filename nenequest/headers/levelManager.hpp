@@ -4,9 +4,10 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <SFML/Graphics.hpp>
 #include "../headers/parserCommand.hpp"
 #include "background.hpp"
-#include <SFML/Graphics.hpp>
+class Game;
 class LevelManager {
 
 private:
@@ -14,6 +15,7 @@ private:
 	std::list<ParserCommand*> levelCommands;
 	sf::Clock clock;
 	Background* background;
+	Game* game;
 	float timeSync;
 	bool isWaiting;
 
@@ -27,7 +29,7 @@ public:
 
 	// Function mapping
 	void setScrollSpeed(int speed);
-	void startLevel();
+	void startLevel(int playerCount);
 	void spawnChest(int x, int y, std::string item, int hp);
 
 	static bool pccomp(ParserCommand* a, ParserCommand* b);

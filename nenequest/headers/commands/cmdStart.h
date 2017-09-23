@@ -13,7 +13,7 @@ public:
 	}
 
 	void exec(CustomMap* args) {
-		ParserFunction::manager->startLevel();
+		ParserFunction::manager->startLevel(std::stoi(args->getOrDefault("playerCount", "1")));
 	}
 
 };
