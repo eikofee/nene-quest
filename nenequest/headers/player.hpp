@@ -36,7 +36,7 @@ class Player : public MovableEntity
 
         // Jumping
         bool isJumping();
-        void switchJump();
+        void toggleJump();
 
         bool moving_up = false;
         bool moving_down = false;
@@ -47,6 +47,7 @@ class Player : public MovableEntity
         ItemWeapon* getLastDroppedItem();
 
     private:
+		static constexpr float PLAYER_SPEED = 0.5;
         bool is_attacking = false;
         bool animation_state = false;
 
@@ -56,6 +57,11 @@ class Player : public MovableEntity
         sf::Clock clock;
         static constexpr float ANIMATION_DELAY = 0.1;
         void update_animation();
+		void manageMovements(float elapsedTime);
+		sf::Vector2f fixMovements(sf::Vector2f movement);
+		void fixPosition();
+
+		void cleanArrows(float elapsedTime);
         ItemWeapon* last_dropped_item = NULL;
 
 

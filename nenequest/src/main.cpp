@@ -19,6 +19,6 @@ int main() {
 
 	while (selectedScreen >= 0)
 		selectedScreen = screens[selectedScreen]->run(app);
-
+		
 	return EXIT_SUCCESS;
 }
