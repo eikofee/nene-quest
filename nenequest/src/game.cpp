@@ -338,15 +338,15 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
  }
 
 //Unused
-//bool Game::playerIsColliding(Player* p){
-/*    for(unsigned int j = 0; j < breakable_objects.size(); j++){
+bool Game::playerIsColliding(Player* p){
+    for(unsigned int j = 0; j < breakable_objects.size(); j++){
         if(p->detectHit(breakable_objects.at(j))){
             return true;
         }
     }
     return false;
 
- }*/
+ }
 
  BreakableObject* Game::getCollidingObject(Player* p){
     for(BreakableObject* obj : breakable_objects)
