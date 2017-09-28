@@ -12,7 +12,7 @@ class Enemy : public Entity
         Enemy(int hp);
         virtual ~Enemy();
         short int getAttackDamage();
-        virtual void update(float elapsedTime);
+        void update(float elapsedTime);
         EnemyType getEnemyType();
         bool isDead();
 		virtual bool isDying(); //Called for dying animation (blinking or dragon's death)

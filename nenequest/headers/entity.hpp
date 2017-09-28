@@ -38,8 +38,7 @@ class Entity : public sf::Drawable
 		void updateHitboxSize();
 		void updateHitboxPosition();
 		void updateSpritePosition();
-		//not too fond of the name
-		sf::Vector2f speed;
+		sf::Vector2f speed; //not too fond of the name
 
 	private:
 

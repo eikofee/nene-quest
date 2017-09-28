@@ -49,7 +49,7 @@ Dragon::~Dragon(){
     }
 }
 
- void Dragon::update(float elapsedTime, Vector2u windowSize){
+ void Dragon::update(float elapsedTime) {
 
     if(!this->isDying()){
 
@@ -60,7 +60,7 @@ Dragon::~Dragon(){
             speed = Vector2f( -speed.x, speed.y);
             movement_timer = 0;
         }
-        this->move(elapsedTime);
+        //this->move(elapsedTime);
 
         //Breathe fire
         flame_timer += elapsedTime;
@@ -172,35 +172,35 @@ vector<Flame*> Dragon::getFlames(){
     return flames;
 }
 
-void Dragon::setPosition(int x, int y){
-    sprite.setPosition(x,y);
-    for(unsigned int i =0;i < hitboxes.size();i++)
-        hitboxes.at(i).setPosition(x,y);
-}
-
-void Dragon::move(float elapsedTime){
-    sprite.move(speed.x*elapsedTime, speed.y*elapsedTime);
-    for(unsigned int i =0;i < hitboxes.size();i++)
-        hitboxes.at(i).move(speed.x*elapsedTime, speed.y*elapsedTime);
-
-}
-
-void Dragon::move(sf::Vector2f g_speed, float elapsedTime){
-    sprite.move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
-    for(unsigned int i =0;i < hitboxes.size();i++)
-        hitboxes.at(i).move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
-
-}
-
-bool Dragon::detectHit(Entity* entity){
-
-    if(this->getDepth() + Entity::DEPTH_DIFF > entity->getDepth() && this->getDepth() - Entity::DEPTH_DIFF < entity->getDepth())
-        for(unsigned int i =0;i < hitboxes.size();i++)
-            if(entity->getHitbox().getGlobalBounds().intersects(hitboxes.at(i).getGlobalBounds()))
-                return true;
-    return false;
-}
-
-float Dragon::getDepth(){
-    return hitboxes.at(0).getGlobalBounds().top + hitboxes.at(0).getGlobalBounds().height +70;
-}
+//void Dragon::setPosition(int x, int y){
+//    sprite.setPosition(x,y);
+//    for(unsigned int i =0;i < hitboxes.size();i++)
+//        hitboxes.at(i).setPosition(x,y);
+//}
+//
+//void Dragon::move(float elapsedTime){
+//    sprite.move(speed.x*elapsedTime, speed.y*elapsedTime);
+//    for(unsigned int i =0;i < hitboxes.size();i++)
+//        hitboxes.at(i).move(speed.x*elapsedTime, speed.y*elapsedTime);
+//
+//}
+//
+//void Dragon::move(sf::Vector2f g_speed, float elapsedTime){
+//    sprite.move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
+//    for(unsigned int i =0;i < hitboxes.size();i++)
+//        hitboxes.at(i).move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
+//
+//}
+//
+//bool Dragon::detectHit(Entity* entity){
+//
+//    if(this->getDepth() + Entity::DEPTH_DIFF > entity->getDepth() && this->getDepth() - Entity::DEPTH_DIFF < entity->getDepth())
+//        for(unsigned int i =0;i < hitboxes.size();i++)
+//            if(entity->getHitbox().getGlobalBounds().intersects(hitboxes.at(i).getGlobalBounds()))
+//                return true;
+//    return false;
+//}
+//
+//float Dragon::getDepth(){
+//    return hitboxes.at(0).getGlobalBounds().top + hitboxes.at(0).getGlobalBounds().height +70;
+//}

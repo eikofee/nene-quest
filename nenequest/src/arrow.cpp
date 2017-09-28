@@ -68,7 +68,7 @@ void Arrow::kill(){
     is_dying = true;
 }
 
-void Arrow::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+void Arrow::draw(sf::RenderTarget& target, sf::RenderStates states) {
 
     //target.draw(hitbox, states);
     target.draw(sprite, states);

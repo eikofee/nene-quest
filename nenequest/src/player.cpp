@@ -2,13 +2,13 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 /**
-    TODO :
+    TODO (not updated) :
     - Placer l'arme correctement
     - Animation de l'attaque (rotation du sprite du Weapon)
-    - Empêcher de sortir de la fenêtre / allez trop haut-bas => Fait dans game.cpp
-    - Detection avec les ennemis => Fait dans game.cpp
-    - Frame immortalitElorsqu'on perd de la vie => Fait dans game.cpp mais c'est mieux ici donc fait le +(animation clignotante dans l'idéal)
-    - Saut (immortalitEtemporaire) => Fait dans game.cpp
+    - Empecher de sortir de la fenere / allez trop haut-bas => Fait dans game.cpp <= and fixed back here
+    - Detection avec les ennemis => Fait dans game.cpp 
+    - Frame immortalite lorsqu'on perd de la vie => Fait dans game.cpp mais c'est mieux ici donc fait le +(animation clignotante dans l'ideal)
+    - Saut (immortalite temporaire) => Fait dans game.cpp <= need to be here
 **/
 
 using namespace sf;
@@ -156,7 +156,8 @@ sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
 		result.x = 0;
 		//result.x = 1920 - this->hitbox.getGlobalBounds().left - this->hitbox.getGlobalBounds().width;
 
-	if (this->hitbox.getGlobalBounds().top + result.y < 500 /*Gameroom size (top)*/)
+	//TODO
+	if (this->hitbox.getGlobalBounds().top + result.y < 200 /*Gameroom size (top)*/)
 		result.y = 0;
 		//result.y = 500 - this->hitbox.getGlobalBounds().top;
 
@@ -176,8 +177,8 @@ void Player::fixPosition() {
 	if (bounds.left + bounds.width > 1920)
 		v.x = (1920 - bounds.left - bounds.width);
 
-	if (bounds.top < 500)
-		v.y = -1 * (bounds.top - 500);
+	if (bounds.top < 200)
+		v.y = -1 * (bounds.top - 200);
 
 	if (bounds.top + bounds.height > 1080)
 		v.y = (1080 - bounds.top - bounds.height);

@@ -1,8 +1,6 @@
 #include "../headers/entity.hpp"
 using namespace sf;
 
-
-
 bool Entity::detectHit(Entity* entity){
 
     if(this->getDepth() + DEPTH_DIFF > entity->getDepth() && this->getDepth() - DEPTH_DIFF < entity->getDepth())

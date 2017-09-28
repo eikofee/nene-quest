@@ -10,17 +10,16 @@ class Dragon : public Enemy {
 
     public:
         Dragon(sf::Vector2f position = sf::Vector2f(0,0));
-        virtual ~Dragon();
-        virtual void update(float elapsedTime, sf::Vector2u windowSize);
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
-        void breathFire();
+        ~Dragon();
+        void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const; //???
+		void update(float elapsedTime);
+		void breathFire();
         bool isBreatingFire();
-        std::vector<Flame*> getFlames();
-        virtual void setPosition(int x, int y);
-        virtual void move(float elapsedTime);
-		virtual void move(sf::Vector2f g_speed, float elapsedTime);
-        virtual bool detectHit(Entity* entity);
-        virtual float getDepth();
+        std::vector<Flame*> getFlames();	//Should be projectile ?
+        //void setPosition(int x, int y);
+        //void move(float elapsedTime);
+		//void move(sf::Vector2f g_speed, float elapsedTime);
+        //bool detectHit(Entity* entity);
 
     protected:
 
