@@ -1,7 +1,7 @@
 #ifndef PROJECTILE_H
 #define PROJECTILE_H
 
-#include"../headers/movableEntity.hpp"
+#include "../headers/entity.hpp"
 
 
 class Projectile : public Entity

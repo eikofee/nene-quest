@@ -2,8 +2,7 @@
 #define BONUS_H
 
 #include <SFML/Graphics.hpp>
-#include "../headers/movableEntity.hpp"
-
+#include "../headers/entity.hpp"
 enum BonusType {Item_Axe, Item_Sword, Item_Greatsword, Item_Bow, Item_Onigiri, Number_of_Bonuses = 5};
 
 class Bonus : public Entity

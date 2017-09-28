@@ -1,9 +1,8 @@
 #ifndef ENNEMY_H
 #define ENNEMY_H
 
-#include "../headers/movableEntity.hpp"
-#include "../headers/livingEntity.hpp"
 #include <SFML/Graphics.hpp>
+#include "../headers/entity.hpp"
 
 enum EnemyType {Enemy_Dragon, Enemy_Boar};
 

@@ -1,7 +1,6 @@
 #ifndef ARROW_HPP
 #define ARROW_HPP
 
-#include "../headers/movableEntity.hpp"
 #include "../headers/projectile.hpp"
 
 class Arrow : public Projectile {
