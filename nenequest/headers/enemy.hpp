@@ -7,15 +7,16 @@
 
 enum EnemyType {Enemy_Dragon, Enemy_Boar};
 
-class Enemy : public MovableEntity, public LivingEntity
+class Enemy : public Entity
 {
     public:
         Enemy(int hp);
         virtual ~Enemy();
         short int getAttackDamage();
-        virtual void update(float elapsedTime, sf::Vector2u windowSize);
+        virtual void update(float elapsedTime);
         EnemyType getEnemyType();
         bool isDead();
+		virtual bool isDying(); //Called for dying animation (blinking or dragon's death)
 
     protected:
         sf::Clock clock;
@@ -25,6 +26,7 @@ class Enemy : public MovableEntity, public LivingEntity
         static int const DRAGON_HP = 20;
         static int const BOAR_HP = 3;
         bool is_dead = false;
+		int hp;
 
     private:
 };

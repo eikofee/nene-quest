@@ -22,6 +22,7 @@ class Arrow : public Projectile {
         float lifespan = 0;
         float gravity = 0.002;
 
+
         sf::Texture damage_texture;
         sf::Sprite damage_sprite;
 

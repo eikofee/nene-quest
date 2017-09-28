@@ -51,7 +51,7 @@ Dragon::~Dragon(){
 
  void Dragon::update(float elapsedTime, Vector2u windowSize){
 
-    if(this->isAlive()){
+    if(!this->isDying()){
 
         //Move dragon back and forth
         movement_timer += elapsedTime;
@@ -71,10 +71,6 @@ Dragon::~Dragon(){
                 flame_timer=0;
             }
         }
-
-
-        if(!this->isOnScreen(windowSize))
-            is_dead = true;
     }
     //Dying animation
     else{
@@ -181,12 +177,14 @@ void Dragon::setPosition(int x, int y){
     for(unsigned int i =0;i < hitboxes.size();i++)
         hitboxes.at(i).setPosition(x,y);
 }
+
 void Dragon::move(float elapsedTime){
     sprite.move(speed.x*elapsedTime, speed.y*elapsedTime);
     for(unsigned int i =0;i < hitboxes.size();i++)
         hitboxes.at(i).move(speed.x*elapsedTime, speed.y*elapsedTime);
 
 }
+
 void Dragon::move(sf::Vector2f g_speed, float elapsedTime){
     sprite.move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
     for(unsigned int i =0;i < hitboxes.size();i++)

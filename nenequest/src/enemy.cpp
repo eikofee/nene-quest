@@ -4,7 +4,8 @@
 
 using namespace sf;
 
-Enemy::Enemy(int hp) : LivingEntity (hp) {}
+//need to initialize hp and stuff
+Enemy::Enemy(int hp) : Entity () {}
 
 Enemy::~Enemy() {
     //dtor
@@ -14,9 +15,9 @@ short int Enemy::getAttackDamage(){
     return attack_damage;
 }
 
- void Enemy::update(float elapsedTime, Vector2u windowSize){
+ void Enemy::update(float elapsedTime){
 
-    this->move(elapsedTime);
+    //this->move(elapsedTime);
  }
 
  EnemyType Enemy::getEnemyType(){
@@ -25,4 +26,8 @@ short int Enemy::getAttackDamage(){
 
  bool Enemy::isDead(){
     return is_dead;
+ }
+
+ bool Enemy::isDying() {
+	 return this->hp < 0; //idk
  }

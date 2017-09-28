@@ -54,9 +54,9 @@ int Game::run(RenderWindow &app) {
 			manageInputs(event);
 		}
 
-		scroll(elapsedTime, app.getSize());
+		//scroll(elapsedTime, app.getSize());
 		for(unsigned int i = 0;i < enemies.size();i++){
-			enemies.at(i)->update(elapsedTime, app.getSize());
+			enemies.at(i)->update(elapsedTime);
 			if(enemies.at(i)->isDead()){
 				delete(enemies.at(i));
 				enemies.erase(enemies.begin()+i);
@@ -74,7 +74,7 @@ int Game::run(RenderWindow &app) {
 		arrow.update(elapsedTime);
 
 
-		checkCollision(elapsedTime, app.getSize());
+		//checkCollision(elapsedTime, app.getSize());
 
 		app.clear(Color::White);
 		app.draw(background);
@@ -183,159 +183,161 @@ void Game::manageInputs(sf::Event e) {
 }
 
 //Collision detection
-void Game::checkCollision(float elapsedTime, Vector2u windowSize){
+//TODO: Move this somewhere else (World class)
+//void Game::checkCollision(float elapsedTime, Vector2u windowSize){
+//
+//    for(unsigned int i = 0; i < players.size(); i++){
+//
+//        for(Arrow* arrow : players.at(i)->getArrows()){
+//            for(unsigned int j = 0; j < enemies.size(); j++){
+//                if(enemies.at(j)->detectHit(arrow)){
+//                    enemies.at(j)->take_damage(Arrow::ARROW_DAMAGE);
+//                    arrow->kill();
+//                }
+//            }
+//            for(unsigned int j = 0; j < breakable_objects.size(); j++){
+//                if(arrow->detectHit(breakable_objects.at(j))){
+//                    arrow->kill();
+//
+//                    if(Bonus* tmp = breakable_objects.at(j)->getDrops()){
+//                        Vector2f dropPosition = Vector2f(breakable_objects.at(j)->getHitbox().getGlobalBounds().left
+//                                                        , breakable_objects.at(j)->getHitbox().getGlobalBounds().top + breakable_objects.at(j)->getHitbox().getGlobalBounds().height -100);
+//                        dropItem(tmp, dropPosition);
+//                    }
+//
+//
+//                    delete(breakable_objects.at(j));
+//                    breakable_objects.erase(breakable_objects.begin()+j);
+//
+//                }
+//            }
+//        }
+//        if(!players.at(i)->isJumping()){
+//
+//            //Collisions with enemies
+//            if(player_invulnerability_timer <= 0){
+//                for(unsigned int j = 0; j < enemies.size(); j++){
+//                    if(enemies.at(j)->detectHit(players.at(i))){
+//                        players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
+//                        player_invulnerability_timer = 200;
+//                        break;
+//                    }
+//                    if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
+//                       vector<Flame*> flames = ((Dragon*)enemies.at(j))->getFlames();
+//                       for(Flame* flame : flames){
+//                            if(players.at(i)->detectHit(flame)){
+//                               players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
+//                               player_invulnerability_timer = 200;
+//                               break;
+//                            }
+//                       }
+//                    }
+//
+//                }
+//            }
+//            else{
+//                player_invulnerability_timer -= elapsedTime;
+//            }
+//
+//            //Collisions with bonus hp
+//            for(unsigned int j = 0; j < bonuses_hp.size(); j++){
+//
+//                //Check for collisions between the player and the item
+//                if(players.at(i)->detectHit(bonuses_hp.at(j))){
+//
+//                    players.at(i)->getLife()->increase(bonuses_hp.at(j)->getHealedAmount());
+//                    delete(bonuses_hp.at(j));
+//                    bonuses_hp.erase(bonuses_hp.begin()+j);
+//                }
+//            }
+//
+//            //Collisions with weapon items
+//            for(unsigned int j = 0; j < item_weapons.size(); j++){
+//
+//                //Check for collisions between the player and the item
+//                if(players.at(i)->getLastDroppedItem() == NULL || !players.at(i)->detectHit(players.at(i)->getLastDroppedItem())){
+//                    players.at(i)->setLastDroppedItem(NULL);
+//                    if(item_weapons.at(j)->detectHit(players.at(i))){
+//
+//                        WeaponType weaponType = item_weapons.at(j)->getWeaponType();
+//                        if(players.at(i)->getWeapon()->getWeaponType() != weaponType){
+//
+//                            //Drop old weapon
+//                            ItemWeapon* tmp = new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition());
+//
+//                            //setDropped used to prevent the player from interacting with the item again when he's still standing on it
+//                            item_weapons.push_back(tmp);
+//                            players.at(i)->setLastDroppedItem(tmp);
+//
+//                            //If an other player is standing on the item, change it's last dropped item
+//                            for(Player* var : players)
+//                                if(var->getLastDroppedItem() == item_weapons.at(j))
+//                                    var->setLastDroppedItem(tmp);
+//
+//                            delete(item_weapons.at(j));
+//                            item_weapons.erase(item_weapons.begin()+j);
+//
+//                            //Equip new weapon
+//                            players.at(i)->equip(new Weapon(weaponType));
+//
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
-    for(unsigned int i = 0; i < players.size(); i++){
+//Some of the code here should be moved into entities' or in a World class
+ //void Game::scroll(float elapsedTime, Vector2u windowSize){
+ //   for(unsigned int j = 0; j < item_weapons.size(); j++){
+ //       item_weapons.at(j)->move(Vector2f(SCROLL_SPEED, 0));
+ //       //Check if the item is still on screen
+ //       if(!item_weapons.at(j)->isOnScreen(windowSize)){
+ //           delete(item_weapons.at(j));
+ //           item_weapons.erase(item_weapons.begin()+j);
+ //       }
+ //   }
+ //   for(unsigned int j = 0; j < bonuses_hp.size(); j++){
+ //       bonuses_hp.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
+ //       //Check if the item is still on screen
+ //       if(!bonuses_hp.at(j)->isOnScreen(windowSize)){
+ //           delete(bonuses_hp.at(j));
+ //           bonuses_hp.erase(bonuses_hp.begin()+j);
+ //       }
+ //   }
+ //   for(unsigned int j = 0; j < breakable_objects.size(); j++){
+ //       breakable_objects.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
+ //       //Check if the item is still on screen
+ //       if(!breakable_objects.at(j)->isOnScreen(windowSize)){
+ //           delete(breakable_objects.at(j));
+ //           breakable_objects.erase(breakable_objects.begin()+j);
+ //       }
+ //   }
 
-        for(Arrow* arrow : players.at(i)->getArrows()){
-            for(unsigned int j = 0; j < enemies.size(); j++){
-                if(enemies.at(j)->detectHit(arrow)){
-                    enemies.at(j)->take_damage(Arrow::ARROW_DAMAGE);
-                    arrow->kill();
-                }
-            }
-            for(unsigned int j = 0; j < breakable_objects.size(); j++){
-                if(arrow->detectHit(breakable_objects.at(j))){
-                    arrow->kill();
+ //   //Check if player is pushed by the scrolling
+ //   for(Player* player : players){
+ //       if(playerIsColliding(player)){
+ //           //Move the player of 1 pixel to the left until he isn't in collision within any object
+ //           do{
+ //               player->setPosition(player->getPosition().x -1, player->getPosition().y);
 
-                    if(Bonus* tmp = breakable_objects.at(j)->getDrops()){
-                        Vector2f dropPosition = Vector2f(breakable_objects.at(j)->getHitbox().getGlobalBounds().left
-                                                        , breakable_objects.at(j)->getHitbox().getGlobalBounds().top + breakable_objects.at(j)->getHitbox().getGlobalBounds().height -100);
-                        dropItem(tmp, dropPosition);
-                    }
+ //               //If the scrolling pushes the player into the border of the screen, destroy the item pushing him and damage the player
+ //               if(player->getPosition().x <= 0){
+ //                   for(unsigned int j = 0;j < breakable_objects.size();j++){
+ //                       if(player->detectHit(breakable_objects.at(j)))
+ //                           delete(breakable_objects.at(j));
+ //                           breakable_objects.erase(breakable_objects.begin()+j);
+ //                           life.decrease(SCROLLING_DAMAGE);
+ //                           player->setPosition(0,player->getPosition().y);
+ //                   }
 
+ //               }
 
-                    delete(breakable_objects.at(j));
-                    breakable_objects.erase(breakable_objects.begin()+j);
-
-                }
-            }
-        }
-        if(!players.at(i)->isJumping()){
-
-            //Collisions with enemies
-            if(player_invulnerability_timer <= 0){
-                for(unsigned int j = 0; j < enemies.size(); j++){
-                    if(enemies.at(j)->detectHit(players.at(i))){
-                        players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
-                        player_invulnerability_timer = 200;
-                        break;
-                    }
-                    if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
-                       vector<Flame*> flames = ((Dragon*)enemies.at(j))->getFlames();
-                       for(Flame* flame : flames){
-                            if(players.at(i)->detectHit(flame)){
-                               players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
-                               player_invulnerability_timer = 200;
-                               break;
-                            }
-                       }
-                    }
-
-                }
-            }
-            else{
-                player_invulnerability_timer -= elapsedTime;
-            }
-
-            //Collisions with bonus hp
-            for(unsigned int j = 0; j < bonuses_hp.size(); j++){
-
-                //Check for collisions between the player and the item
-                if(players.at(i)->detectHit(bonuses_hp.at(j))){
-
-                    players.at(i)->getLife()->increase(bonuses_hp.at(j)->getHealedAmount());
-                    delete(bonuses_hp.at(j));
-                    bonuses_hp.erase(bonuses_hp.begin()+j);
-                }
-            }
-
-            //Collisions with weapon items
-            for(unsigned int j = 0; j < item_weapons.size(); j++){
-
-                //Check for collisions between the player and the item
-                if(players.at(i)->getLastDroppedItem() == NULL || !players.at(i)->detectHit(players.at(i)->getLastDroppedItem())){
-                    players.at(i)->setLastDroppedItem(NULL);
-                    if(item_weapons.at(j)->detectHit(players.at(i))){
-
-                        WeaponType weaponType = item_weapons.at(j)->getWeaponType();
-                        if(players.at(i)->getWeapon()->getWeaponType() != weaponType){
-
-                            //Drop old weapon
-                            ItemWeapon* tmp = new ItemWeapon(players.at(i)->getWeapon()->getWeaponType(), item_weapons.at(j)->getPosition());
-
-                            //setDropped used to prevent the player from interacting with the item again when he's still standing on it
-                            item_weapons.push_back(tmp);
-                            players.at(i)->setLastDroppedItem(tmp);
-
-                            //If an other player is standing on the item, change it's last dropped item
-                            for(Player* var : players)
-                                if(var->getLastDroppedItem() == item_weapons.at(j))
-                                    var->setLastDroppedItem(tmp);
-
-                            delete(item_weapons.at(j));
-                            item_weapons.erase(item_weapons.begin()+j);
-
-                            //Equip new weapon
-                            players.at(i)->equip(new Weapon(weaponType));
-
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
- void Game::scroll(float elapsedTime, Vector2u windowSize){
-    for(unsigned int j = 0; j < item_weapons.size(); j++){
-        item_weapons.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
-        //Check if the item is still on screen
-        if(!item_weapons.at(j)->isOnScreen(windowSize)){
-            delete(item_weapons.at(j));
-            item_weapons.erase(item_weapons.begin()+j);
-        }
-    }
-    for(unsigned int j = 0; j < bonuses_hp.size(); j++){
-        bonuses_hp.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
-        //Check if the item is still on screen
-        if(!bonuses_hp.at(j)->isOnScreen(windowSize)){
-            delete(bonuses_hp.at(j));
-            bonuses_hp.erase(bonuses_hp.begin()+j);
-        }
-    }
-    for(unsigned int j = 0; j < breakable_objects.size(); j++){
-        breakable_objects.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
-        //Check if the item is still on screen
-        if(!breakable_objects.at(j)->isOnScreen(windowSize)){
-            delete(breakable_objects.at(j));
-            breakable_objects.erase(breakable_objects.begin()+j);
-        }
-    }
-
-    //Check if player is pushed by the scrolling
-    for(Player* player : players){
-        if(playerIsColliding(player)){
-            //Move the player of 1 pixel to the left until he isn't in collision within any object
-            do{
-                player->setPosition(player->getPosition().x -1, player->getPosition().y);
-
-                //If the scrolling pushes the player into the border of the screen, destroy the item pushing him and damage the player
-                if(player->getPosition().x <= 0){
-                    for(unsigned int j = 0;j < breakable_objects.size();j++){
-                        if(player->detectHit(breakable_objects.at(j)))
-                            delete(breakable_objects.at(j));
-                            breakable_objects.erase(breakable_objects.begin()+j);
-                            life.decrease(SCROLLING_DAMAGE);
-                            player->setPosition(0,player->getPosition().y);
-                    }
-
-                }
-
-            }while(playerIsColliding(player));
-        }
-    }
- }
+ //           }while(playerIsColliding(player));
+ //       }
+ //   }
+ //}
 
 //Unused
 bool Game::playerIsColliding(Player* p){

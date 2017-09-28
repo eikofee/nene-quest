@@ -4,7 +4,7 @@
 #include"../headers/movableEntity.hpp"
 
 
-class Projectile : public MovableEntity
+class Projectile : public Entity
 {
     public:
         Projectile();

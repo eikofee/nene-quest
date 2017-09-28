@@ -8,7 +8,7 @@
 
 enum ObjectType {Chest, Barrel};
 
-class BreakableObject : public MovableEntity
+class BreakableObject : public Entity
 {
     public:
         BreakableObject(ObjectType o, sf::Vector2f position);

@@ -6,13 +6,12 @@
 
 enum BonusType {Item_Axe, Item_Sword, Item_Greatsword, Item_Bow, Item_Onigiri, Number_of_Bonuses = 5};
 
-class Bonus : public MovableEntity
+class Bonus : public Entity
 {
     public:
         Bonus();
         virtual ~Bonus();
         BonusType getBonusType();
-
     protected:
         BonusType bonus_type;
 

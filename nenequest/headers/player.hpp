@@ -12,7 +12,7 @@
 
 static int PLAYER_HP = 100;
 
-class Player : public MovableEntity
+class Player : public Entity
 {
     public:
         Player(Weapon* weapon, sf::Vector2f(position), bool secondPlayer = false);

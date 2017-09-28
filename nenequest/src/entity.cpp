@@ -51,3 +51,19 @@ float Entity::getDepth(){
 float Entity::getDrawDepth(){
     return this->getDepth();
 }
+
+void Entity::move(sf::Vector2f v) {
+	//maybe we can do it directly here instead of each of the entities
+}
+
+EntityType Entity::getEntityType() {
+	return NONE;
+}
+
+void Entity::update(float elapsedTime) {
+	//do nothing
+}
+
+bool Entity::isDead() {
+	return false;
+}

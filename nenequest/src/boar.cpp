@@ -43,7 +43,7 @@ void Boar::progressAnimation(){
 
     //Move the boar if it isn't stunned
     if(!is_stunned){
-        this->move(elapsedTime);
+        //this->move(elapsedTime);
         if(clock.getElapsedTime().asSeconds() > ANIMATION_DELAY){
             progressAnimation();
             clock.restart();
@@ -56,8 +56,8 @@ void Boar::progressAnimation(){
             is_stunned = false;
     }
 
-    if(!this->isOnScreen(windowSize) || !this->isAlive())
-        is_dead = true;
+    //if(!this->isOnScreen(windowSize) || !this->isAlive())
+    //    is_dead = true;
 }
 
 void Boar::stun() {

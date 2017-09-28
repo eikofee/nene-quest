@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "../headers/movableEntity.hpp"
 
-class BridgePit : public MovableEntity
+class BridgePit : public Entity
 {
     public:
         BridgePit(float x, float groundHeight, unsigned int windowHeight);
