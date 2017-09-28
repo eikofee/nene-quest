@@ -17,47 +17,39 @@ using namespace std;
 Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 
     this->weapon = w;
-
     if(!secondPlayer){
         this->life = new LifeBar(PLAYER_HP, Vector2f(300,100));
         texture.loadFromFile("img/player1.png");
-    }
-    else{
+    }else{
         this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), "img/icon_p2.png");
         texture.loadFromFile("img/player2.png");
     }
+
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, 0, texture.getSize().x/2, texture.getSize().y/3));
-
     hitbox.setPosition(position);
 	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-
     updateSpritePosition();
 
 	// Weapon placement
     this->weapon->setPosition(position.x + 220, position.y + 180);
-
 }
 
 Player::~Player(){
     delete this->weapon;
 }
 
-
-Weapon* Player::getWeapon()
-{
+Weapon* Player::getWeapon(){
     return this->weapon;
 }
 
-void Player::attack()
-{
+void Player::attack(){
     this->is_attacking = true;
     update_animation();
     this->is_attacking = false;
 }
 
-void Player::equip(Weapon* w)
-{
+void Player::equip(Weapon* w){
     this->weapon = w;
     this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
 }
@@ -69,8 +61,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(*this->life, states);
 }
 
-void Player::update_animation()
-{
+void Player::update_animation(){
     this->animation_state = !this->animation_state;
     if (this->isJumping())
         return;
@@ -112,26 +103,21 @@ void Player::move(Vector2f g_speed, float elapsedTime){
     this->getWeapon()->move(g_speed, elapsedTime);
 }
 
-LifeBar* Player::getLife()
-{
+LifeBar* Player::getLife(){
     return this->life;
 }
 
-
-bool Player::isJumping()
-{
+bool Player::isJumping(){
      return this->is_jumping;
 }
 
-void Player::switchJump()
-{
+void Player::toggleJump(){
     this->is_jumping = !this->is_jumping;
 }
 
 void Player::setPosition(float x, float y){
     this->sprite.setPosition(x, y);
     this->hitbox.setPosition(x, y);
-
     this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
 }
 
@@ -139,24 +125,84 @@ void Player::fireArrow(){
     arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220, this->getPosition().y + 180), this->getDepth()));
 }
 
-vector<Arrow*> Player::getArrows(){
-    return arrows;
+void Player::update(float elapsedTime){
+	this->cleanArrows(elapsedTime);
+	this->manageMovements(elapsedTime);
 }
 
-void Player::update(float elapsedTime){
+void Player::manageMovements(float elapsedTime) {
+	Vector2f finalMovement = Vector2f(0, 0);
+	if (this->moving_up)
+		finalMovement.y -= PLAYER_SPEED;
+	if (this->moving_down)
+		finalMovement.y += PLAYER_SPEED;
+	if (this->moving_left)
+		finalMovement.x -= PLAYER_SPEED;
+	if (this->moving_right)
+		finalMovement.x += PLAYER_SPEED;
 
-    for(unsigned int i = 0;i< arrows.size();i++){
-        arrows.at(i)->update(elapsedTime);
-        if(arrows.at(i)->isDead()){
-            delete(arrows.at(i));
-            arrows.erase(arrows.begin()+i);
-        }
-    }
+	finalMovement = this->fixMovements(finalMovement);
+	this->move(finalMovement, elapsedTime);
+	this->fixPosition();
+}
+
+sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
+	Vector2f result = Vector2f(movement.x, movement.y);
+	if (this->hitbox.getGlobalBounds().left + result.x < 0)
+		result.x = 0;
+		//result.x = -this->hitbox.getGlobalBounds().left;
+
+	if (this->hitbox.getGlobalBounds().left + this->hitbox.getGlobalBounds().width + result.x > 1920 /*Gameroom size (right)*/)
+		result.x = 0;
+		//result.x = 1920 - this->hitbox.getGlobalBounds().left - this->hitbox.getGlobalBounds().width;
+
+	if (this->hitbox.getGlobalBounds().top + result.y < 500 /*Gameroom size (top)*/)
+		result.y = 0;
+		//result.y = 500 - this->hitbox.getGlobalBounds().top;
+
+	if (this->hitbox.getGlobalBounds().top + this->hitbox.getGlobalBounds().height + result.y > 1080 /*Gameroom size (bottom)*/)
+		result.y = 0;
+		//result.y = 1080 - this->hitbox.getGlobalBounds().top - this->hitbox.getGlobalBounds().height;
+
+	return result;
+}
+
+void Player::fixPosition() {
+	sf::FloatRect bounds = this->hitbox.getGlobalBounds();
+	sf::Vector2f v = Vector2f(0, 0);
+	if (bounds.left < 0)
+		v.x = -bounds.left;
+
+	if (bounds.left + bounds.width > 1920)
+		v.x = (1920 - bounds.left - bounds.width);
+
+	if (bounds.top < 500)
+		v.y = -1 * (bounds.top - 500);
+
+	if (bounds.top + bounds.height > 1080)
+		v.y = (1080 - bounds.top - bounds.height);
+
+	this->move(v, 1);
+}
+
+void Player::cleanArrows(float elapsedTime) {
+	for (unsigned int i = 0; i< this->arrows.size(); i++) {
+		this->arrows.at(i)->update(elapsedTime);
+		if (this->arrows.at(i)->isDead()) {
+			delete(this->arrows.at(i));
+			this->arrows.erase(this->arrows.begin() + i);
+		}
+	}
 }
 
 void Player::setLastDroppedItem(ItemWeapon* item){
     last_dropped_item = item;
 }
+
 ItemWeapon* Player::getLastDroppedItem(){
     return last_dropped_item;
+}
+
+vector<Arrow*> Player::getArrows(){
+    return arrows;
 }

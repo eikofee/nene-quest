@@ -37,6 +37,7 @@ class Game : public Screen {
         void drawWithDepth(sf::RenderWindow* app);
         static bool cmp(Entity* a, Entity* d);
         void dropItem(Bonus* drop, sf::Vector2f dropPosition);
+		void manageInputs(sf::Event e);
 
 
 		//Final objetcs

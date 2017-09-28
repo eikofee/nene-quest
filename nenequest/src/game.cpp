@@ -7,184 +7,179 @@ using namespace std;
 using namespace sf;
 
 Game::Game() {
-
-}
-
-int Game::run(RenderWindow &app) {
-	Event event;
-	bool running = true;
 	// Final game objects (should only include Game, Players, LevelManagers and other UI events)
 	this->manager = new LevelManager(this);
 	this->parser = new LevelParser();
 	this->parser->setLevelManager(this->manager);
 	this->parser->initialize();
 	this->parser->setLevelFilesPath("levels");
+}
+
+int Game::run(RenderWindow &app) {
+	Event event;
+	bool running = true;
     Background background = Background(app.getSize());
 	this->manager->setBackground(&background);
 
 	//Load Level
 	this->parser->parseFile("level0.nnq");
 
+
+	//Testing objects////////////
     bridge = new BridgePit(300, app.getSize().y-background.getSkyHeight(), app.getSize().y);
-
-
 	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
 	Dragon* dragon = new Dragon(Vector2f(1000,400));
 	BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
     ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(800,600));
-
     bonuses_hp.push_back(onigiri);
     item_weapons.push_back(sword);
     item_weapons.push_back(new ItemWeapon(GreatSword, Vector2f(300,630)));
     enemies.push_back(dragon);
-    enemies.push_back(boar1);
-
-
+	enemies.push_back(boar1);
     BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
     breakable_objects.push_back(barrel);
     breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(700,630)));
-
     Arrow arrow = Arrow(Vector2f(100, 700), 700);
-    //Clock
+    /////////////////////////////
+	
 	Clock clock;
 
     // ---------------- Main Loop ----------------
 	while(running) {
+		float elapsedTime = clock.restart().asMilliseconds();
+		while(app.pollEvent(event)) {
+			if (event.type == Event::Closed)
+				return (-1);
 
-    float elapsedTime = clock.restart().asMilliseconds();
+			manageInputs(event);
+		}
 
-    while(app.pollEvent(event)) {
-        if (event.type == Event::Closed) {
-            return (-1);
-        }
-        switch (event.type)
-        {
-            case (Event::KeyPressed):
-                switch (event.key.code) {
-                case Keyboard::Up:
-                    players.at(0)->moving_up = true;
-                    break;
-                case Keyboard::Down:
-                    players.at(0)->moving_down = true;
-                    break;
-                case Keyboard::Right:
-                    players.at(0)->moving_right = true;
-                    break;
-                case Keyboard::Left:
-                    players.at(0)->moving_left = true;
-                    break;
-                case Keyboard::Space:
-                    players.at(0)->attack();
-                    players.at(0)->fireArrow();
-                    break;
-                default:
-                    dragon->breathFire();
-                    break;
-                }
-                break;
-            case (Event::KeyReleased):
-                switch (event.key.code) {
-                case Keyboard::Up:
-                    players.at(0)->moving_up = false;
-                    break;
-                case Keyboard::Down:
-                    players.at(0)->moving_down = false;
-                    break;
-                case Keyboard::Right:
-                    players.at(0)->moving_right = false;
-                    break;
-                case Keyboard::Left:
-                    players.at(0)->moving_left = false;
-                    break;
-                default:
-                    break;
-                }
-                break;
-            default:
-                break;
-        }
-        if(players.size() == 2)
-        switch (event.type)
-        {
-            case (Event::KeyPressed):
-                switch (event.key.code) {
-                case Keyboard::Z:
-                    players.at(1)->moving_up = true;
-                    break;
-                case Keyboard::S:
-                    players.at(1)->moving_down = true;
-                    break;
-                case Keyboard::D:
-                    players.at(1)->moving_right = true;
-                    break;
-                case Keyboard::Q:
-                    players.at(1)->moving_left = true;
-                    break;
-                case Keyboard::A:
-                    players.at(1)->attack();
-                    players.at(1)->fireArrow();
-                    break;
-                default:
-                    break;
-                }
-                break;
-            case (Event::KeyReleased):
-                switch (event.key.code) {
-                case Keyboard::Z:
-                    players.at(1)->moving_up = false;
-                    break;
-                case Keyboard::S:
-                    players.at(1)->moving_down = false;
-                    break;
-                case Keyboard::D:
-                    players.at(1)->moving_right = false;
-                    break;
-                case Keyboard::Q:
-                    players.at(1)->moving_left = false;
-                    break;
-                default:
-                    break;
-                }
-                break;
-            default:
-                break;
-        }
-    }
+		scroll(elapsedTime, app.getSize());
+		for(unsigned int i = 0;i < enemies.size();i++){
+			enemies.at(i)->update(elapsedTime, app.getSize());
+			if(enemies.at(i)->isDead()){
+				delete(enemies.at(i));
+				enemies.erase(enemies.begin()+i);
+			}
+		}
 
-    scroll(elapsedTime, app.getSize());
+		for(Player* p : players){
+			p->update(elapsedTime);
+			//playerMove(p, elapsedTime, app.getSize(), background.getSkyHeight());
+		}
 
-    for(unsigned int i = 0;i < enemies.size();i++){
-        enemies.at(i)->update(elapsedTime, app.getSize());
-        if(enemies.at(i)->isDead()){
-            delete(enemies.at(i));
-            enemies.erase(enemies.begin()+i);
-        }
-    }
+		manager->update();
 
-    for(Player* var : players){
-        var->update(elapsedTime);
-        playerMove(var, elapsedTime, app.getSize(), background.getSkyHeight());
-    }
-
-	manager->update();
-
-    background.update();
-    arrow.update(elapsedTime);
+		background.update();
+		arrow.update(elapsedTime);
 
 
-    checkCollision(elapsedTime, app.getSize());
+		checkCollision(elapsedTime, app.getSize());
 
-    app.clear(Color::White);
-    app.draw(background);
-    app.draw(*bridge);
+		app.clear(Color::White);
+		app.draw(background);
+		app.draw(*bridge);
 
-    drawWithDepth(&app);
-    app.draw(arrow);
-    app.display();
-
+		drawWithDepth(&app);
+		app.draw(arrow);
+		app.display();
 	}
 
 	return (-1);
+}
+
+void Game::manageInputs(sf::Event e) {
+	switch (e.type){
+		case (Event::KeyPressed):
+			switch (e.key.code) {
+				case Keyboard::Up:
+					players.at(0)->moving_up = true;
+				break;
+				case Keyboard::Down:
+					players.at(0)->moving_down = true;
+				break;
+				case Keyboard::Right:
+					players.at(0)->moving_right = true;
+				break;
+				case Keyboard::Left:
+					players.at(0)->moving_left = true;
+				break;
+				case Keyboard::Space:
+					players.at(0)->attack();
+					players.at(0)->fireArrow();
+				break;
+				default:
+				break;
+			}
+		break;
+		case (Event::KeyReleased):
+			switch (e.key.code) {
+				case Keyboard::Up:
+					players.at(0)->moving_up = false;
+				break;
+				case Keyboard::Down:
+					players.at(0)->moving_down = false;
+				break;
+				case Keyboard::Right:
+					players.at(0)->moving_right = false;
+				break;
+				case Keyboard::Left:
+					players.at(0)->moving_left = false;
+				break;
+				default:
+				break;
+			}
+		break;
+		default:
+		break;
+	}
+	
+	if (players.size() == 2)
+		switch (e.type)
+		{
+		case (Event::KeyPressed):
+			switch (e.key.code) {
+			case Keyboard::Z:
+				players.at(1)->moving_up = true;
+				break;
+			case Keyboard::S:
+				players.at(1)->moving_down = true;
+				break;
+			case Keyboard::D:
+				players.at(1)->moving_right = true;
+				break;
+			case Keyboard::Q:
+				players.at(1)->moving_left = true;
+				break;
+			case Keyboard::A:
+				players.at(1)->attack();
+				players.at(1)->fireArrow();
+				break;
+			default:
+				break;
+			}
+			break;
+		case (Event::KeyReleased):
+			switch (e.key.code) {
+			case Keyboard::Z:
+				players.at(1)->moving_up = false;
+				break;
+			case Keyboard::S:
+				players.at(1)->moving_down = false;
+				break;
+			case Keyboard::D:
+				players.at(1)->moving_right = false;
+				break;
+			case Keyboard::Q:
+				players.at(1)->moving_left = false;
+				break;
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
+		}
 }
 
 //Collision detection
@@ -342,7 +337,8 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     }
  }
 
- bool Game::playerIsColliding(Player* p){
+//Unused
+bool Game::playerIsColliding(Player* p){
     for(unsigned int j = 0; j < breakable_objects.size(); j++){
         if(p->detectHit(breakable_objects.at(j))){
             return true;
@@ -360,8 +356,9 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
     return NULL;
  }
 
- void Game::playerMove(Player* player, float elapsedTime, Vector2u windowSize, float skyHeight){
-    for(Player* player : players){
+//Deprecated
+//void Game::playerMove(Player* player, float elapsedTime, Vector2u windowSize, float skyHeight){
+/*    for(Player* player : players){
          Vector2f playerSpeed = Vector2f(0,0);
 
         if (player->moving_up) {
@@ -451,7 +448,7 @@ void Game::checkCollision(float elapsedTime, Vector2u windowSize){
         }
     }
  }
-
+*/
  void Game::drawWithDepth(RenderWindow* app){
 
     list<Entity*> entities;
