@@ -33,6 +33,7 @@ class Dragon : public Enemy {
 
         std::vector<Flame*> flames;
         std::vector<sf::RectangleShape> hitboxes;
+		sf::Vector2f computeMove(float elapsedTime);
 
 
         float movement_timer = 0;

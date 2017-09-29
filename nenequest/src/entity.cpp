@@ -54,6 +54,8 @@ float Entity::getDrawDepth(){
 
 void Entity::move(sf::Vector2f v) {
 	//maybe we can do it directly here instead of each of the entities
+	sprite.move(v);
+	hitbox.move(v);
 }
 
 EntityType Entity::getEntityType() {

@@ -60,7 +60,8 @@ Dragon::~Dragon(){
             speed = Vector2f( -speed.x, speed.y);
             movement_timer = 0;
         }
-        //this->move(elapsedTime);
+
+        this->move(computeMove(elapsedTime));
 
         //Breathe fire
         flame_timer += elapsedTime;
@@ -178,12 +179,14 @@ vector<Flame*> Dragon::getFlames(){
 //        hitboxes.at(i).setPosition(x,y);
 //}
 //
-//void Dragon::move(float elapsedTime){
-//    sprite.move(speed.x*elapsedTime, speed.y*elapsedTime);
-//    for(unsigned int i =0;i < hitboxes.size();i++)
-//        hitboxes.at(i).move(speed.x*elapsedTime, speed.y*elapsedTime);
-//
-//}
+sf::Vector2f Dragon::computeMove(float elapsedTime){
+
+    sf::Vector2f r  = Vector2f(speed.x*elapsedTime, speed.y*elapsedTime);
+    //for(unsigned int i =0;i < hitboxes.size();i++)
+    //    hitboxes.at(i).move(speed.x*elapsedTime, speed.y*elapsedTime);
+
+	return r;
+}
 //
 //void Dragon::move(sf::Vector2f g_speed, float elapsedTime){
 //    sprite.move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
