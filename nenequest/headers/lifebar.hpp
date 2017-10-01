@@ -2,6 +2,7 @@
 #define LIFEBAR_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
+#include "../headers/playerID.hpp"
 
 class LifeBar : public sf::Drawable, sf::Transformable {
     private:
@@ -10,12 +11,13 @@ class LifeBar : public sf::Drawable, sf::Transformable {
         sf::RectangleShape background;
         sf::RectangleShape bar;
         sf::Sprite knight_head;
-        sf::Texture knight_head_text;
+        sf::Texture knight_head_tex;
+
     public:
         static const int LIFEBAR_WIDTH = 350;
         static const int LIFEBAR_HEIGHT = 35;
-        LifeBar(short int max, sf::Vector2f position, std::string knightHeadTextFileName = "img/icon_p1.png");
-        LifeBar();
+		LifeBar();
+        LifeBar(short int max, sf::Vector2f position, PlayerID id);
         virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
             target.draw(this->background);
             target.draw(this->bar);

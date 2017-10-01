@@ -17,18 +17,18 @@ using namespace std;
 Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 
     this->weapon = w;
-    if(!secondPlayer){
-        this->life = new LifeBar(PLAYER_HP, Vector2f(300,100));
-        texture.loadFromFile("img/player1.png");
-    }else{
-        this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), "img/icon_p2.png");
-        texture.loadFromFile("img/player2.png");
+    if (!secondPlayer) {
+        this->life = new LifeBar(PLAYER_HP, Vector2f(300,100), PlayerID::PLAYER1);
+        this->texture.loadFromFile("img/player1.png");
+    } else {
+        this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), PlayerID::PLAYER2);
+		this->texture.loadFromFile("img/player2.png");
     }
 
-	sprite.setTexture(texture);
-    sprite.setTextureRect(IntRect(0, 0, texture.getSize().x/2, texture.getSize().y/3));
-    hitbox.setPosition(position);
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
+	this->sprite.setTexture(this->texture);
+	this->sprite.setTextureRect(IntRect(0, 0, this->texture.getSize().x/2, this->texture.getSize().y/3));
+	this->hitbox.setPosition(position);
+	this->hitbox.setSize(Vector2f(this->sprite.getLocalBounds().width, this->sprite.getLocalBounds().height));
     updateSpritePosition();
 
 	// Weapon placement
@@ -56,7 +56,7 @@ void Player::equip(Weapon* w){
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     //target.draw(hitbox,states);
-    target.draw(sprite, states);
+    target.draw(this->sprite, states);
     target.draw(*this->weapon, states);
     target.draw(*this->life, states);
 }
@@ -72,11 +72,11 @@ void Player::update_animation(){
     int top_left_x, bottom_right_x, top_left_y, bottom_right_y;
 
     if (is_attacking) {
-            top_left_x = size_x/2;
-            bottom_right_x = size_x;
+        top_left_x = size_x/2;
+        bottom_right_x = size_x;
     } else {
-            top_left_x = 0;
-            bottom_right_x = size_x/2;
+        top_left_x = 0;
+        bottom_right_x = size_x/2;
     }
 
     if (this->animation_state) { // jambes croisée
@@ -92,7 +92,7 @@ void Player::update_animation(){
 
 void Player::move(Vector2f g_speed, float elapsedTime){
 
-    if (clock.getElapsedTime().asSeconds() > this->ANIMATION_DELAY){
+    if (clock.getElapsedTime().asSeconds() > this->ANIMATION_DELAY) {
         update_animation();
         clock.restart();
     }

@@ -4,11 +4,9 @@
 using namespace std;
 using namespace sf;
 
-LifeBar::LifeBar(){
+LifeBar::LifeBar() {}
 
-}
-
-LifeBar::LifeBar(short int max, Vector2f position, string str) {
+LifeBar::LifeBar(short int max, Vector2f position, PlayerID id) {
     this->max = max;
     this->value = this->max;
 
@@ -23,12 +21,20 @@ LifeBar::LifeBar(short int max, Vector2f position, string str) {
     this->bar.setFillColor(Color::Green);
     this->bar.setPosition(position);
 
-	knight_head_text.loadFromFile(str);
-    knight_head.setTexture(knight_head_text);
+	switch (id) {
+		case PlayerID::PLAYER1:
+			this->knight_head_tex.loadFromFile("img/icon_p1.png");
+			break;
+		case PlayerID::PLAYER2:
+			this->knight_head_tex.loadFromFile("img/icon_p2.png");
+			break;
+		default:
+			break;
+	}
 
-	knight_head.setOrigin(this->background.getSize().x/2 + 50, this->background.getSize().y + 30);
-	knight_head.setPosition(position);
-
+    this->knight_head.setTexture(this->knight_head_tex);
+	this->knight_head.setOrigin(this->background.getSize().x/2 + 50, this->background.getSize().y + 30);
+	this->knight_head.setPosition(position);
 }
 
 void LifeBar::updateBar() {
@@ -37,20 +43,16 @@ void LifeBar::updateBar() {
 }
 
 void LifeBar::increase(short int amount) {
-
     this->value += amount;
-    if (this->value > this->max) {
+    if (this->value > this->max)
         this->value = this->max;
-    }
     updateBar();
 }
 
 void LifeBar::decrease(short int amount) {
-
     this->value -= amount;
-    if (this->value < 0) {
+    if (this->value < 0)
         this->value = 0;
-    }
     updateBar();
 }
 

@@ -9,14 +9,11 @@ Menu::Menu() {
 }
 
 short int Menu::validateMenu(short int menuIndex) {
-    if (menuIndex == 0) {
-        this->playing = true;
-        return 1;
+    switch (menuIndex) {
+		case 0: this->playing = true; return 1;
+		case 1: return 2;
+		default: return (-1);
     }
-    else if (menuIndex == 1)
-        return 2;
-    else
-        return (-1);
 }
 
 int Menu::run(RenderWindow &app) {
@@ -64,7 +61,7 @@ int Menu::run(RenderWindow &app) {
         t->setStyle(Text::Bold);
     }
 
-    // Selector
+	// ---------------- Selector ----------------
     Texture selectorTex;
     selectorTex.loadFromFile("img/cursor.png");
     selectorTex.setSmooth(true);

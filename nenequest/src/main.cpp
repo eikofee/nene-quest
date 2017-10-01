@@ -9,7 +9,7 @@ int main() {
 	vector<Screen*> screens;
 	int selectedScreen = 0;
 
-	RenderWindow app(VideoMode::VideoMode(1280, 720), "Nene Quest", Style::Close | Style::Titlebar);
+	RenderWindow app(VideoMode::getDesktopMode(), "Nene Quest", Style::Close | Style::Titlebar);
     app.setFramerateLimit(60);
 
 	screens.push_back(new Menu);

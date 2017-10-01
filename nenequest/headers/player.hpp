@@ -12,11 +12,10 @@
 
 static int PLAYER_HP = 100;
 
-class Player : public Entity
-{
+class Player : public Entity {
     public:
-        Player(Weapon* weapon, sf::Vector2f(position), bool secondPlayer = false);
-        virtual ~Player();
+        Player(Weapon* weapon, sf::Vector2f position, bool secondPlayer = false);
+        ~Player();
 
         // Weapon
         Weapon* getWeapon();
@@ -64,9 +63,8 @@ class Player : public Entity
 		void cleanArrows(float elapsedTime);
         ItemWeapon* last_dropped_item = NULL;
 
-
         LifeBar* life;
         Weapon* weapon;
 };
 
-#endif // PLAYER_HPP_INCLUDED
+#endif
