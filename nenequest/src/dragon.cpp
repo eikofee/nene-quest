@@ -1,3 +1,5 @@
+#include "../headers/config.hpp"
+
 #include<time.h>
 
 #include "../headers/dragon.hpp"
@@ -15,7 +17,7 @@ Dragon::Dragon(Vector2f position) : Enemy (DRAGON_HP) {
 
     flame_timer = 0;
 
-	texture.loadFromFile("img/enemy_dragon.png");
+	texture.loadFromFile(PACKAGE_DATADIR "/img/enemy_dragon.png");
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y/2));
     sprite.setPosition(position);

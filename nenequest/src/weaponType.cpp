@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include "../headers/weaponType.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -19,13 +20,13 @@ std::string getWeaponPath(WeaponType w) {
 
     switch (w) {
         case Bow:
-            return "img/weapon_bow.png";
+            return PACKAGE_DATADIR "/img/weapon_bow.png";
         case Axe:
-            return "img/weapon_axe.png";
+            return PACKAGE_DATADIR "/img/weapon_axe.png";
         case Sword:
-            return "img/weapon_sword.png";
+            return PACKAGE_DATADIR "/img/weapon_sword.png";
         case GreatSword:
-            return "img/weapon_sword2.png";
+            return PACKAGE_DATADIR "/img/weapon_sword2.png";
         default:
             return "";
     }

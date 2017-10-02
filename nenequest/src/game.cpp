@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include "../headers/game.hpp"
 #include "../headers/world.hpp"
 #include <stdlib.h>
@@ -13,7 +14,7 @@ Game::Game() {
 	this->parser = new LevelParser();
 	this->parser->setLevelManager(this->manager);
 	this->parser->initialize();
-	this->parser->setLevelFilesPath("levels");
+	this->parser->setLevelFilesPath(PACKAGE_DATADIR "/levels");
 }
 
 int Game::run(RenderWindow &app) {

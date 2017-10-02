@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include "../headers/bonusHp.hpp"
 
 using namespace sf;
@@ -7,7 +8,7 @@ BonusHp::BonusHp(short int bonusType, Vector2f position) {
     switch (bonusType) {
         case ONIGIRI:
             bonus_type = Item_Onigiri;
-            texture.loadFromFile("img/item_onigiri.png");
+            texture.loadFromFile(PACKAGE_DATADIR "/img/item_onigiri.png");
             sprite.setTexture(texture);
 
             hitbox.setPosition(position);

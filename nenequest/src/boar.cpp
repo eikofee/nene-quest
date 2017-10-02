@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include "../headers/boar.hpp"
 #include <SFML/Graphics.hpp>
 
@@ -8,7 +9,7 @@ Boar::Boar(Vector2f position) : Enemy (BOAR_HP) {
     attack_damage = BOAR_DAMAGE;
     enemy_type = Enemy_Boar;
 
-	texture.loadFromFile("img/enemy_boar_anim.png");
+	texture.loadFromFile(PACKAGE_DATADIR "/img/enemy_boar_anim.png");
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0,0,texture.getSize().x,texture.getSize().y/2));
 
