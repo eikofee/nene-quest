@@ -22,7 +22,7 @@ public:
 	float getTime();
 	std::string getName();
 	ParserFunction* getFunction();
-	std::map<std::string, std::string> getArguments();
+	std::map<std::string, std::string>* getArguments();
 
 };
 
