@@ -10,14 +10,14 @@ BridgePit::BridgePit(float x, float groundHeight, unsigned int windowHeight)
     float y = groundHeight - sprite.getLocalBounds().height;
     sprite.setPosition(x, windowHeight - y/2 - sprite.getLocalBounds().height);
 
-    hitboxes.push_back(RectangleShape(Vector2f(sprite.getLocalBounds().width, y/2)));
-    hitboxes.push_back(RectangleShape(Vector2f(sprite.getLocalBounds().width, y/2)));
+    hitboxes.push_back(new RectangleShape(Vector2f(sprite.getLocalBounds().width, y/2)));
+    hitboxes.push_back(new RectangleShape(Vector2f(sprite.getLocalBounds().width, y/2)));
 
-    hitboxes.at(0).setPosition(x, windowHeight-groundHeight);
-    hitboxes.at(0).setFillColor(Color::Black);
+    hitboxes.at(0)->setPosition(x, windowHeight-groundHeight);
+    hitboxes.at(0)->setFillColor(Color::Black);
 
-    hitboxes.at(1).setPosition(x, windowHeight - y/2);
-    hitboxes.at(1).setFillColor(Color::Black);
+    hitboxes.at(1)->setPosition(x, windowHeight - y/2);
+    hitboxes.at(1)->setFillColor(Color::Black);
 
 }
 
@@ -33,15 +33,15 @@ bool BridgePit::detectHit(Entity* entity){
                entity->getHitbox().getGlobalBounds().top + entity->getHitbox().getGlobalBounds().height - Entity::DEPTH_DIFF > hitboxes.at(0).getGlobalBounds().top +hitboxes.at(0).getGlobalBounds().height )
                 return false;*/
     for(unsigned int i =0;i < hitboxes.size();i++)
-        if(tmp.getGlobalBounds().intersects(hitboxes.at(i).getGlobalBounds()))
+        if(tmp.getGlobalBounds().intersects(hitboxes.at(i)->getGlobalBounds()))
             return true;
     return false;
 }
 
 void BridgePit::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
-    for(RectangleShape var : hitboxes)
-        target.draw(var, states);
+    for(auto var : hitboxes)
+        target.draw(*var, states);
     target.draw(sprite, states);
 }
 

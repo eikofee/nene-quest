@@ -22,17 +22,21 @@ class Entity : public sf::Drawable
 		virtual void move(sf::Vector2f v); //Moves at px per sec
 		sf::Vector2f getSpriteSize();
 		sf::RectangleShape getHitbox();
+		bool hasMultipleHitboxes();
+		std::vector<sf::RectangleShape*> getHitboxes();
         virtual bool detectHit(Entity* entity);
         virtual float getDepth();
         virtual float getDrawDepth();
 		virtual EntityType getEntityType();
 		virtual void update(float elapsedTime);
 		virtual bool isDead();
+		float distanceToPosition(sf::Vector2f position);
 
 
 		
 	protected:
 		sf::RectangleShape hitbox;
+		std::vector<sf::RectangleShape*> hitboxes;
 		sf::Sprite sprite;
 		sf::Texture texture;
 		void updateHitboxSize();

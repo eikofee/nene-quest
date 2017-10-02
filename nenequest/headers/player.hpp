@@ -30,7 +30,7 @@ class Player : public Entity {
 
         // override
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
-        virtual void move(sf::Vector2f g_speed, float elapsedTime);
+        void move(sf::Vector2f g_speed);
         virtual void setPosition(float x, float y);
 
         // Jumping
@@ -56,7 +56,7 @@ class Player : public Entity {
         sf::Clock clock;
         static constexpr float ANIMATION_DELAY = 0.1;
         void update_animation();
-		void manageMovements(float elapsedTime);
+		void manageMovements();
 		sf::Vector2f fixMovements(sf::Vector2f movement);
 		void fixPosition();
 

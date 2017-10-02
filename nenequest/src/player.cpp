@@ -1,4 +1,5 @@
 #include "../headers/player.hpp"
+#include "../headers/world.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 /**
@@ -90,7 +91,8 @@ void Player::update_animation(){
     sprite.setTextureRect(IntRect(top_left_x, top_left_y, bottom_right_x, bottom_right_y));
 }
 
-void Player::move(Vector2f g_speed, float elapsedTime){
+void Player::move(Vector2f g_speed){
+	float elapsedTime = World::getElapsedTime();
 
     if (clock.getElapsedTime().asSeconds() > this->ANIMATION_DELAY) {
         update_animation();
@@ -99,8 +101,13 @@ void Player::move(Vector2f g_speed, float elapsedTime){
 
     hitbox.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
     sprite.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
-
-    this->getWeapon()->move(g_speed, elapsedTime);
+	this->getWeapon()->move(g_speed, elapsedTime);
+	//TOFIX
+	if (World::getCollidingEntities(this).size() > 0) {
+		hitbox.move(-g_speed.x * elapsedTime, -g_speed.y*elapsedTime);
+		sprite.move(-g_speed.x * elapsedTime, -g_speed.y*elapsedTime);
+		this->getWeapon()->move(-g_speed, elapsedTime);
+	}
 }
 
 LifeBar* Player::getLife(){
@@ -127,10 +134,10 @@ void Player::fireArrow(){
 
 void Player::update(float elapsedTime){
 	this->cleanArrows(elapsedTime);
-	this->manageMovements(elapsedTime);
+	this->manageMovements();
 }
 
-void Player::manageMovements(float elapsedTime) {
+void Player::manageMovements() {
 	Vector2f finalMovement = Vector2f(0, 0);
 	if (this->moving_up)
 		finalMovement.y -= PLAYER_SPEED;
@@ -142,7 +149,7 @@ void Player::manageMovements(float elapsedTime) {
 		finalMovement.x += PLAYER_SPEED;
 
 	finalMovement = this->fixMovements(finalMovement);
-	this->move(finalMovement, elapsedTime);
+	this->move(finalMovement);
 	this->fixPosition();
 }
 
@@ -164,7 +171,8 @@ sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
 	if (this->hitbox.getGlobalBounds().top + this->hitbox.getGlobalBounds().height + result.y > 1080 /*Gameroom size (bottom)*/)
 		result.y = 0;
 		//result.y = 1080 - this->hitbox.getGlobalBounds().top - this->hitbox.getGlobalBounds().height;
-
+	
+	
 	return result;
 }
 
@@ -183,7 +191,8 @@ void Player::fixPosition() {
 	if (bounds.top + bounds.height > 1080)
 		v.y = (1080 - bounds.top - bounds.height);
 
-	this->move(v, 1);
+	this->move(v);
+
 }
 
 void Player::cleanArrows(float elapsedTime) {

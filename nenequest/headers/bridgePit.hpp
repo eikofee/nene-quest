@@ -16,7 +16,6 @@ class BridgePit : public Entity
     protected:
 
     private:
-        std::vector<sf::RectangleShape> hitboxes;
         sf::RectangleShape tmp;
 };
 

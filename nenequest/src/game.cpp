@@ -1,4 +1,5 @@
 #include "../headers/game.hpp"
+#include "../headers/world.hpp"
 #include <stdlib.h>
 #include <iostream>
 #include <time.h>
@@ -27,6 +28,8 @@ int Game::run(RenderWindow &app) {
 
 	//Testing objects////////////
     bridge = new BridgePit(300, app.getSize().y-background.getSkyHeight(), app.getSize().y);
+	World::addEntity(bridge);
+
 	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
 	Dragon* dragon = new Dragon(Vector2f(1000,400));
 	BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
@@ -34,8 +37,8 @@ int Game::run(RenderWindow &app) {
     bonuses_hp.push_back(onigiri);
     item_weapons.push_back(sword);
     item_weapons.push_back(new ItemWeapon(GreatSword, Vector2f(300,630)));
-    enemies.push_back(dragon);
-	enemies.push_back(boar1);
+    //enemies.push_back(dragon);
+	//enemies.push_back(boar1);
     BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
     breakable_objects.push_back(barrel);
     breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(700,630)));
@@ -54,14 +57,11 @@ int Game::run(RenderWindow &app) {
 			manageInputs(event);
 		}
 
+		World::setElapsedTime(elapsedTime);
+		World::updateEntities();
+
 		//scroll(elapsedTime, app.getSize());
-		for(unsigned int i = 0;i < enemies.size();i++){
-			enemies.at(i)->update(elapsedTime);
-			if(enemies.at(i)->isDead()){
-				delete(enemies.at(i));
-				enemies.erase(enemies.begin()+i);
-			}
-		}
+		
 
 		for(Player* p : players){
 			p->update(elapsedTime);
@@ -451,6 +451,8 @@ bool Game::playerIsColliding(Player* p){
     }
  }
 */
+
+ //Move to Render class
  void Game::drawWithDepth(RenderWindow* app){
 
     list<Entity*> entities;
@@ -461,12 +463,12 @@ bool Game::playerIsColliding(Player* p){
     for(ItemWeapon* var : item_weapons){
         entities.push_back((Entity*)var);
     }
-    for(Enemy* var : enemies){
+    /*for(Enemy* var : enemies){
         entities.push_back((Entity*)var);
         if(var->getEnemyType() == Enemy_Dragon)
             for(Flame* flame : ((Dragon*)var)->getFlames())
                 entities.push_back((Entity*)flame);
-    }
+    }*/
     for(Player* var : players){
         entities.push_back((Entity*)var);
     }
@@ -482,6 +484,9 @@ bool Game::playerIsColliding(Player* p){
 
     for(Entity* var : entities)
         app->draw(*var);
+	
+	for (auto e : World::getEntities())
+		app->draw(*e);
 
  }
 
@@ -510,7 +515,7 @@ void Game::dropItem(Bonus* drop, Vector2f dropPosition){
 
 //Function calls for levelManager
 void Game::addEnemyInstance(Enemy* enemy) {
-	this->enemies.push_back(enemy);
+	World::addEntity(enemy);
 }
 
 void Game::addPlayerInstance(Player* player) {

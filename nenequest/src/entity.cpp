@@ -1,4 +1,5 @@
 #include "../headers/entity.hpp"
+#include <math.h>
 using namespace sf;
 
 bool Entity::detectHit(Entity* entity){
@@ -11,6 +12,10 @@ bool Entity::detectHit(Entity* entity){
 RectangleShape Entity::getHitbox(){
 
 	return hitbox;
+}
+
+std::vector<sf::RectangleShape*> Entity::getHitboxes() {
+	return hitboxes;
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
@@ -68,4 +73,12 @@ void Entity::update(float elapsedTime) {
 
 bool Entity::isDead() {
 	return false;
+}
+
+float Entity::distanceToPosition(sf::Vector2f position) {
+	return sqrtf(powf(this->getPosition().x - position.x, 2) + powf(this->getPosition().y - position.y, 2));
+}
+
+bool Entity::hasMultipleHitboxes() {
+	return hitboxes.size() > 0;
 }
