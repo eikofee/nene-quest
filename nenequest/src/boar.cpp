@@ -38,12 +38,13 @@ void Boar::progressAnimation(){
     }
 }
 
- void Boar::update(float elapsedTime, Vector2u windowSize) {
+ void Boar::update(float elapsedTime) {
 
 
     //Move the boar if it isn't stunned
     if(!is_stunned){
         //this->move(elapsedTime);
+		this->move(speed);
         if(clock.getElapsedTime().asSeconds() > ANIMATION_DELAY){
             progressAnimation();
             clock.restart();

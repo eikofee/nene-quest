@@ -10,7 +10,7 @@ class Boar : public Enemy {
     public:
         Boar(sf::Vector2f position = sf::Vector2f(0,0));
         virtual ~Boar();
-        virtual void update(float elapsedTime, sf::Vector2u windowSize);
+        void update(float elapsedTime);
         void stun();
 
     protected:
@@ -19,7 +19,7 @@ class Boar : public Enemy {
         static const int BOAR_DAMAGE = 1;
         static const int STUN_DURATION = 1000; //Milliseconds
         static constexpr float ANIMATION_DELAY = 0.1; //Seconds
-        static constexpr float BOAR_SPEED = 1; //Pixels/millisecond
+        static constexpr float BOAR_SPEED = 10; //Pixels/millisecond
 
         bool is_stunned = false;
         int stun_timer = 0;
