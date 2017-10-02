@@ -46,7 +46,7 @@ class Player : public Entity {
         ItemWeapon* getLastDroppedItem();
 
     private:
-		static constexpr float PLAYER_SPEED = 0.5;
+		static constexpr float PLAYER_SPEED = 500;
         bool is_attacking = false;
         bool animation_state = false;
 

@@ -15,6 +15,7 @@ public:
 	static void updateEntities();
 	static void setElapsedTime(float time);
 	static float getElapsedTime();
+	static std::vector<Entity*> testCollidingEntities(Entity* entity, sf::Vector2f movement);
 
 private:
 	static std::vector<Entity*> World::entities;

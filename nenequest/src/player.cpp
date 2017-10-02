@@ -93,21 +93,15 @@ void Player::update_animation(){
 
 void Player::move(Vector2f g_speed){
 	float elapsedTime = World::getElapsedTime();
-
+	//float elapsedTime = 1;
     if (clock.getElapsedTime().asSeconds() > this->ANIMATION_DELAY) {
         update_animation();
         clock.restart();
     }
 
-    hitbox.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
-    sprite.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
-	this->getWeapon()->move(g_speed, elapsedTime);
-	//TOFIX
-	if (World::getCollidingEntities(this).size() > 0) {
-		hitbox.move(-g_speed.x * elapsedTime, -g_speed.y*elapsedTime);
-		sprite.move(-g_speed.x * elapsedTime, -g_speed.y*elapsedTime);
-		this->getWeapon()->move(-g_speed, elapsedTime);
-	}
+    hitbox.move(g_speed.x, g_speed.y);
+	sprite.move(g_speed.x, g_speed.y);
+	this->getWeapon()->move(g_speed, 1);
 }
 
 LifeBar* Player::getLife(){
@@ -149,12 +143,18 @@ void Player::manageMovements() {
 		finalMovement.x += PLAYER_SPEED;
 
 	finalMovement = this->fixMovements(finalMovement);
-	this->move(finalMovement);
+	sf::Vector2f fx = sf::Vector2f(finalMovement.x, 0);
+	sf::Vector2f fy = sf::Vector2f(0, finalMovement.y);
+	if (World::testCollidingEntities(this, fx).size() == 0)
+		this->move(fx);
+	if (World::testCollidingEntities(this, fy).size() == 0)
+		this->move(fy);
+
 	this->fixPosition();
 }
 
 sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
-	Vector2f result = Vector2f(movement.x, movement.y);
+	Vector2f result = Vector2f(movement.x * World::getElapsedTime(), movement.y * World::getElapsedTime());
 	if (this->hitbox.getGlobalBounds().left + result.x < 0)
 		result.x = 0;
 		//result.x = -this->hitbox.getGlobalBounds().left;
