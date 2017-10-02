@@ -17,8 +17,8 @@ public:
 	static float getElapsedTime();
 
 private:
-	static std::vector<Entity*> World::entities;
-	static float World::elapsedTime;
+	static std::vector<Entity*> entities;
+	static float elapsedTime;
 };
 
 #endif
