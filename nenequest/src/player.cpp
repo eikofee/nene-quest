@@ -135,6 +135,7 @@ void Player::setPosition(float x, float y){
 
 void Player::fireArrow(){
     arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220, this->getPosition().y + 180), this->getDepth()));
+	setShootingState(true);
 }
 
 void Player::update(float elapsedTime){
@@ -226,4 +227,12 @@ ItemWeapon* Player::getLastDroppedItem(){
 
 vector<Arrow*> Player::getArrows(){
     return arrows;
+}
+
+bool Player::isShooting() {
+	return is_shooting;
+}
+
+void Player::setShootingState(bool state) {
+	is_shooting = state;
 }

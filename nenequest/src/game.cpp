@@ -106,7 +106,8 @@ void Game::manageInputs(sf::Event e) {
 				break;
 				case Keyboard::Space:
 					players.at(0)->attack();
-					players.at(0)->fireArrow();
+					if (!players.at(0)->isShooting())
+						players.at(0)->fireArrow();
 				break;
 				default:
 				break;
@@ -126,6 +127,8 @@ void Game::manageInputs(sf::Event e) {
 				case Keyboard::Left:
 					players.at(0)->moving_left = false;
 				break;
+				case Keyboard::Space:
+					players.at(0)->setShootingState(false);
 				default:
 				break;
 			}
@@ -153,7 +156,8 @@ void Game::manageInputs(sf::Event e) {
 				break;
 			case Keyboard::A:
 				players.at(1)->attack();
-				players.at(1)->fireArrow();
+				if (!players.at(1)->isShooting())
+					players.at(1)->fireArrow();
 				break;
 			default:
 				break;
@@ -172,6 +176,9 @@ void Game::manageInputs(sf::Event e) {
 				break;
 			case Keyboard::Q:
 				players.at(1)->moving_left = false;
+				break;
+			case Keyboard::A:
+				players.at(1)->setShootingState(false);
 				break;
 			default:
 				break;

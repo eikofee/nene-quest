@@ -44,11 +44,14 @@ class Player : public Entity {
 
         void setLastDroppedItem(ItemWeapon* item);
         ItemWeapon* getLastDroppedItem();
+		bool isShooting();
+		void setShootingState(bool state);
 
     private:
 		static constexpr float PLAYER_SPEED = 500;
         bool is_attacking = false;
         bool animation_state = false;
+		bool is_shooting = false;
 
         sf::Vector2f speed = sf::Vector2f(-10,0);
         std::vector<Arrow*> arrows;
