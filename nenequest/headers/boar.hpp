@@ -16,7 +16,6 @@ class Boar : public Enemy {
     protected:
 
     private:
-        static const int BOAR_DAMAGE = 1;
         static const int STUN_DURATION = 1000; //Milliseconds
         static constexpr float ANIMATION_DELAY = 0.1; //Seconds
         static constexpr float BOAR_SPEED = 10; //Pixels/millisecond

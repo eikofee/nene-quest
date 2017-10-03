@@ -1,10 +1,10 @@
 #include "../headers/bridgePit.hpp"
-
+#include "../headers/config.hpp"
 using namespace sf;
 
 BridgePit::BridgePit(float x, float groundHeight, unsigned int windowHeight)
 {
-    texture.loadFromFile("img/background_bridge.png");
+    texture.loadFromFile(GSP_OBST_BRIDGE);
     sprite.setTexture(texture);
 
     float y = groundHeight - sprite.getLocalBounds().height;

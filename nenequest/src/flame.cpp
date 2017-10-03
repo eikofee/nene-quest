@@ -1,4 +1,5 @@
 #include "../headers/flame.hpp"
+#include "../headers/config.hpp"
 #include <stdio.h>
 #include <math.h>
 using namespace sf;
@@ -14,7 +15,7 @@ Flame::Flame(Vector2f position, float f, float g_depth, bool straightLine){
     initial_location = position;
     fact = f;
 
-	texture.loadFromFile("img/icon_fire.png");
+	texture.loadFromFile(GSP_PROJ_FLAME);
 	sprite.setTexture(texture);
 	sprite.setOrigin(texture.getSize().x/2, texture.getSize().y/2);
     sprite.setPosition(position);

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "../headers/lifebar.hpp"
+#include "../headers/config.hpp"
 
 using namespace std;
 using namespace sf;
@@ -23,10 +24,10 @@ LifeBar::LifeBar(short int max, Vector2f position, PlayerID id) {
 
 	switch (id) {
 		case PlayerID::PLAYER1:
-			this->knight_head_tex.loadFromFile("img/icon_p1.png");
+			this->knight_head_tex.loadFromFile(GSP_UI_HEALTHBAR_P1_ICON);
 			break;
 		case PlayerID::PLAYER2:
-			this->knight_head_tex.loadFromFile("img/icon_p2.png");
+			this->knight_head_tex.loadFromFile(GSP_UI_HEALTHBAR_P2_ICON);
 			break;
 		default:
 			break;

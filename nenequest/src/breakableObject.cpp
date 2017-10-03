@@ -1,7 +1,7 @@
 #include "../headers/breakableObject.hpp"
 #include"../headers/itemWeapon.hpp"
 #include"../headers/bonusHp.hpp"
-
+#include "../headers/config.hpp"
 
 using namespace sf;
 
@@ -25,9 +25,9 @@ BreakableObject::~BreakableObject() {
 void BreakableObject::getObjectTexture(ObjectType o){
 
     if(o == Chest)
-        texture.loadFromFile("img/obj_chest.png");
+        texture.loadFromFile(GSP_BREAKABLE_CHEST);
     else if(o == Barrel)
-        texture.loadFromFile("img/obj_barrel.png");
+        texture.loadFromFile(GSP_BREAKABLE_BARREL);
 
 }
 

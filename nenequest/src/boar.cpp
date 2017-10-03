@@ -1,14 +1,15 @@
 #include "../headers/boar.hpp"
+#include "../headers/config.hpp"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
 
 Boar::Boar(Vector2f position) : Enemy (BOAR_HP) {
 
-    attack_damage = BOAR_DAMAGE;
+    attack_damage = DMG_BOAR;
     enemy_type = Enemy_Boar;
 
-	texture.loadFromFile("img/enemy_boar_anim.png");
+	texture.loadFromFile(GSP_A_BOAR);
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0,0,texture.getSize().x,texture.getSize().y/2));
 
