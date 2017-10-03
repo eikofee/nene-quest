@@ -20,8 +20,8 @@ public:
 	static std::vector<Entity*> testCollidingEntitiesOnZAxis(Entity* entity, sf::Vector2f movement);
 
 private:
-	static std::vector<Entity*> World::entities;
-	static float World::elapsedTime;
+	static std::vector<Entity*> entities;
+	static float elapsedTime;
 };
 
 #endif

@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include <SFML/Audio.hpp>
 #include "../headers/gameover.hpp"
 #include "../headers/gamemode.hpp"
@@ -5,7 +6,7 @@
 using namespace std;
 using namespace sf;
 
-const string GameOver::GAMEOVER_PATH = "img/gameover/";
+const string GameOver::GAMEOVER_PATH = PACKAGE_DATADIR "/img/gameover/";
 const string GameOver::GAMEOVER_EXT = ".png";
 
 GameOver::GameOver(GameMode mode) {
@@ -61,7 +62,7 @@ int GameOver::run(RenderWindow &app) {
 	bool running = true;
 
 	Texture haloTex;
-	haloTex.loadFromFile("img/gameover/light.png");
+	haloTex.loadFromFile(PACKAGE_DATADIR "/img/gameover/light.png");
     Sprite halo(haloTex);
     halo.setOrigin(haloTex.getSize().x/2, haloTex.getSize().y/2);
     halo.setPosition(app.getSize().x/2, app.getSize().y/2*1.25);
@@ -75,13 +76,13 @@ int GameOver::run(RenderWindow &app) {
     this->textLimitY = (halo.getGlobalBounds().top)/2.0;
 
     Texture p1DownTex;
-	p1DownTex.loadFromFile("img/gameover/p1_down.png");
+	p1DownTex.loadFromFile(PACKAGE_DATADIR "/img/gameover/p1_down.png");
     this->playersDown.push_back(new Sprite(p1DownTex));
 
     Texture p2DownTex;
 
     if (this->mode == TWO_PLAYER) {
-        p2DownTex.loadFromFile("img/gameover/p2_down.png");
+        p2DownTex.loadFromFile(PACKAGE_DATADIR "/img/gameover/p2_down.png");
         this->playersDown.push_back(new Sprite(p2DownTex));
 
         this->playersDown[0]->setOrigin(0, p1DownTex.getSize().y/2);
@@ -95,7 +96,7 @@ int GameOver::run(RenderWindow &app) {
     }
 
     SoundBuffer sfxBuffer;
-    sfxBuffer.loadFromFile("sfx/gameover.ogg");
+    sfxBuffer.loadFromFile(PACKAGE_DATADIR "/sfx/gameover.ogg");
     Sound sfx(sfxBuffer);
     sfx.play();
 

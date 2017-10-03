@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include "../headers/breakableObject.hpp"
 #include"../headers/itemWeapon.hpp"
 #include"../headers/bonusHp.hpp"
@@ -25,9 +26,9 @@ BreakableObject::~BreakableObject() {
 void BreakableObject::getObjectTexture(ObjectType o){
 
     if(o == Chest)
-        texture.loadFromFile("img/obj_chest.png");
+        texture.loadFromFile(PACKAGE_DATADIR "/img/obj_chest.png");
     else if(o == Barrel)
-        texture.loadFromFile("img/obj_barrel.png");
+        texture.loadFromFile(PACKAGE_DATADIR "/img/obj_barrel.png");
 
 }
 

@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include <iostream>
 #include "../headers/lifebar.hpp"
 
@@ -23,10 +24,10 @@ LifeBar::LifeBar(short int max, Vector2f position, PlayerID id) {
 
 	switch (id) {
 		case PlayerID::PLAYER1:
-			this->knight_head_tex.loadFromFile("img/icon_p1.png");
+			this->knight_head_tex.loadFromFile(PACKAGE_DATADIR "/img/icon_p1.png");
 			break;
 		case PlayerID::PLAYER2:
-			this->knight_head_tex.loadFromFile("img/icon_p2.png");
+			this->knight_head_tex.loadFromFile(PACKAGE_DATADIR "/img/icon_p2.png");
 			break;
 		default:
 			break;

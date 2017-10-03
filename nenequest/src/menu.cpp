@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include "../headers/menu.hpp"
 #include "../headers/lifebar.hpp"
 
@@ -23,7 +24,7 @@ int Menu::run(RenderWindow &app) {
 
 	// ---------------- Logo ----------------
 	Texture logoTex;
-    logoTex.loadFromFile("img/titlescreen.png");
+    logoTex.loadFromFile(PACKAGE_DATADIR "/img/titlescreen.png");
     logoTex.setSmooth(true);
 
     Sprite logo(logoTex);
@@ -32,7 +33,7 @@ int Menu::run(RenderWindow &app) {
     logo.move(0, -200);
 
     Font font;
-    font.loadFromFile("fonts/JapanSans100.ttf");
+    font.loadFromFile(PACKAGE_DATADIR "/fonts/JapanSans100.ttf");
     Color menuTextColor(101, 45, 86, 255);
 
     // ---------------- Menu ----------------
@@ -63,7 +64,7 @@ int Menu::run(RenderWindow &app) {
 
 	// ---------------- Selector ----------------
     Texture selectorTex;
-    selectorTex.loadFromFile("img/cursor.png");
+    selectorTex.loadFromFile(PACKAGE_DATADIR "/img/cursor.png");
     selectorTex.setSmooth(true);
 
     Sprite selector(selectorTex);

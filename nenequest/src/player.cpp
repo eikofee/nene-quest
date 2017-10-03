@@ -1,3 +1,4 @@
+#include "../headers/config.hpp"
 #include "../headers/player.hpp"
 #include "../headers/world.hpp"
 #include <SFML/Graphics.hpp>
@@ -20,10 +21,10 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
     this->weapon = w;
     if (!secondPlayer) {
         this->life = new LifeBar(PLAYER_HP, Vector2f(300,100), PlayerID::PLAYER1);
-        this->texture.loadFromFile("img/player1.png");
+        this->texture.loadFromFile(PACKAGE_DATADIR "/img/player1.png");
     } else {
         this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), PlayerID::PLAYER2);
-		this->texture.loadFromFile("img/player2.png");
+		this->texture.loadFromFile(PACKAGE_DATADIR "/img/player2.png");
     }
 	/////////////////////
 	// Z HITBOX SIZES  //
