@@ -1,4 +1,5 @@
 #include "../headers/weaponType.hpp"
+#include "../headers/config.hpp"
 #include <SFML/Graphics.hpp>
 
 sf::Vector2f getWeaponOrigin(WeaponType w) {
@@ -19,7 +20,7 @@ std::string getWeaponPath(WeaponType w) {
 
     switch (w) {
         case Bow:
-            return "img/weapon_bow.png";
+            return GSP_WEAPON_BOW;
         case Axe:
             return "img/weapon_axe.png";
         case Sword:
