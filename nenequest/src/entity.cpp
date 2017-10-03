@@ -9,13 +9,20 @@ bool Entity::detectHit(Entity* entity){
     return false;
 }
 
-RectangleShape Entity::getHitbox(){
-
+RectangleShape Entity::getHitbox() {
 	return hitbox;
+}
+
+RectangleShape Entity::getZHitbox() {
+	return zHitbox;
 }
 
 std::vector<sf::RectangleShape*> Entity::getHitboxes() {
 	return hitboxes;
+}
+
+std::vector<sf::RectangleShape*> Entity::getZHitboxes() {
+	return zHitboxes;
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
@@ -81,4 +88,8 @@ float Entity::distanceToPosition(sf::Vector2f position) {
 
 bool Entity::hasMultipleHitboxes() {
 	return hitboxes.size() > 0;
+}
+
+bool Entity::hasMultipleZHitboxes() {
+	return zHitboxes.size() > 0;
 }

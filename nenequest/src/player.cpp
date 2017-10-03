@@ -25,11 +25,20 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
         this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), PlayerID::PLAYER2);
 		this->texture.loadFromFile("img/player2.png");
     }
-
+	/////////////////////
+	// Z HITBOX SIZES  //
+	/////////////////////
+	float z_offset_x = 0.16;
+	float z_offset_y = 0.8;
+	float z_width = 0.5;
+	float z_height = 0.2;
+	/////////////////////
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(IntRect(0, 0, this->texture.getSize().x/2, this->texture.getSize().y/3));
 	this->hitbox.setPosition(position);
 	this->hitbox.setSize(Vector2f(this->sprite.getLocalBounds().width, this->sprite.getLocalBounds().height));
+	this->zHitbox.setPosition(position + sf::Vector2f(this->sprite.getLocalBounds().width * z_offset_x, this->sprite.getLocalBounds().height * z_offset_y));
+	this->zHitbox.setSize(Vector2f(this->sprite.getLocalBounds().width * z_width, this->sprite.getLocalBounds().height * z_height));
     updateSpritePosition();
 
 	// Weapon placement
@@ -57,6 +66,7 @@ void Player::equip(Weapon* w){
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     //target.draw(hitbox,states);
+	//target.draw(zHitbox, states);
     target.draw(this->sprite, states);
     target.draw(*this->weapon, states);
     target.draw(*this->life, states);
@@ -100,6 +110,7 @@ void Player::move(Vector2f g_speed){
     }
 
     hitbox.move(g_speed.x, g_speed.y);
+	zHitbox.move(g_speed.x, g_speed.y);
 	sprite.move(g_speed.x, g_speed.y);
 	this->getWeapon()->move(g_speed, 1);
 }
@@ -145,9 +156,9 @@ void Player::manageMovements() {
 	finalMovement = this->fixMovements(finalMovement);
 	sf::Vector2f fx = sf::Vector2f(finalMovement.x, 0);
 	sf::Vector2f fy = sf::Vector2f(0, finalMovement.y);
-	if (World::testCollidingEntities(this, fx).size() == 0)
+	if (World::testCollidingEntitiesOnZAxis(this, fx).size() == 0)
 		this->move(fx);
-	if (World::testCollidingEntities(this, fy).size() == 0)
+	if (World::testCollidingEntitiesOnZAxis(this, fy).size() == 0)
 		this->move(fy);
 
 	this->fixPosition();

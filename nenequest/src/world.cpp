@@ -30,10 +30,32 @@ std::vector<Entity*> World::getCollidingEntities(Entity* entity) {
 						result.push_back(e);
 						collide = true;
 					}
-			} else {
+			}
+			else {
 				if (e->getHitbox().getGlobalBounds().intersects(entity->getHitbox().getGlobalBounds()))
 					result.push_back(e);
 				//Add code for collision on z axis here
+			}
+		}
+
+	return result;
+}
+
+std::vector<Entity*> World::getCollidingEntitiesOnZAxis(Entity* entity) {
+	std::vector<Entity*> result;
+	for (auto e : entities)
+		if (e != entity) {
+			if (e->hasMultipleZHitboxes()) {
+				bool collide = false;
+				for (auto h : e->getZHitboxes())
+					if (h->getGlobalBounds().intersects(entity->getZHitbox().getGlobalBounds()) && !collide) {
+						result.push_back(e);
+						collide = true;
+					}
+			}
+			else {
+				if (e->getZHitbox().getGlobalBounds().intersects(entity->getZHitbox().getGlobalBounds()))
+					result.push_back(e);
 			}
 		}
 
@@ -56,6 +78,30 @@ std::vector<Entity*> World::testCollidingEntities(Entity* entity, sf::Vector2f m
 			}
 			else {
 				if (e->getHitbox().getGlobalBounds().intersects(testHitbox.getGlobalBounds()))
+					result.push_back(e);
+				//Add code for collision on z axis here
+			}
+		}
+
+	return result;
+}
+
+std::vector<Entity*> World::testCollidingEntitiesOnZAxis(Entity* entity, sf::Vector2f movement) {
+	std::vector<Entity*> result;
+	sf::RectangleShape testHitbox = sf::RectangleShape(entity->getZHitbox());
+	testHitbox.move(movement);
+	for (auto e : entities)
+		if (e != entity) {
+			if (e->hasMultipleZHitboxes()) {
+				bool collide = false;
+				for (auto h : e->getZHitboxes())
+					if (h->getGlobalBounds().intersects(testHitbox.getGlobalBounds()) && !collide) {
+						result.push_back(e);
+						collide = true;
+					}
+			}
+			else {
+				if (e->getZHitbox().getGlobalBounds().intersects(testHitbox.getGlobalBounds()))
 					result.push_back(e);
 				//Add code for collision on z axis here
 			}

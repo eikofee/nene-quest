@@ -10,14 +10,14 @@ BridgePit::BridgePit(float x, float groundHeight, unsigned int windowHeight)
     float y = groundHeight - sprite.getLocalBounds().height;
     sprite.setPosition(x, windowHeight - y/2 - sprite.getLocalBounds().height);
 
-    hitboxes.push_back(new RectangleShape(Vector2f(sprite.getLocalBounds().width, y/2)));
-    hitboxes.push_back(new RectangleShape(Vector2f(sprite.getLocalBounds().width, y/2)));
+    zHitboxes.push_back(new RectangleShape(Vector2f(sprite.getLocalBounds().width, y/2)));
+    zHitboxes.push_back(new RectangleShape(Vector2f(sprite.getLocalBounds().width, y/2)));
 
-    hitboxes.at(0)->setPosition(x, windowHeight-groundHeight);
-    hitboxes.at(0)->setFillColor(Color::Black);
+    zHitboxes.at(0)->setPosition(x, windowHeight-groundHeight);
+    zHitboxes.at(0)->setFillColor(Color::Black);
 
-    hitboxes.at(1)->setPosition(x, windowHeight - y/2);
-    hitboxes.at(1)->setFillColor(Color::Black);
+    zHitboxes.at(1)->setPosition(x, windowHeight - y/2);
+    zHitboxes.at(1)->setFillColor(Color::Black);
 
 }
 
@@ -40,7 +40,7 @@ bool BridgePit::detectHit(Entity* entity){
 
 void BridgePit::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
-    for(auto var : hitboxes)
+    for(auto var : zHitboxes)
         target.draw(*var, states);
     target.draw(sprite, states);
 }
