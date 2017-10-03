@@ -22,11 +22,11 @@ std::string getWeaponPath(WeaponType w) {
         case Bow:
             return GSP_WEAPON_BOW;
         case Axe:
-            return "img/weapon_axe.png";
+            return GSP_WEAPON_AXE;
         case Sword:
-            return "img/weapon_sword.png";
+            return GSP_WEAPON_SWORD;
         case GreatSword:
-            return "img/weapon_sword2.png";
+            return GSP_WEAPON_GREATSWORD;
         default:
             return "";
     }
