@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <time.h>
+#include "../headers/config.hpp"
 
 using namespace std;
 using namespace sf;
@@ -13,7 +14,7 @@ Game::Game() {
 	this->parser = new LevelParser();
 	this->parser->setLevelManager(this->manager);
 	this->parser->initialize();
-	this->parser->setLevelFilesPath("levels");
+	this->parser->setLevelFilesPath(GFP_LEVEL_FOLDER_PATH);
 }
 
 int Game::run(RenderWindow &app) {
@@ -92,19 +93,19 @@ void Game::manageInputs(sf::Event e) {
 	switch (e.type){
 		case (Event::KeyPressed):
 			switch (e.key.code) {
-				case Keyboard::Up:
+				case CKB_P1_MOVE_UP:
 					players.at(0)->moving_up = true;
 				break;
-				case Keyboard::Down:
+				case CKB_P1_MOVE_DOWN:
 					players.at(0)->moving_down = true;
 				break;
-				case Keyboard::Right:
+				case CKB_P1_MOVE_RIGHT:
 					players.at(0)->moving_right = true;
 				break;
-				case Keyboard::Left:
+				case CKB_P1_MOVE_LEFT:
 					players.at(0)->moving_left = true;
 				break;
-				case Keyboard::Space:
+				case CKB_P1_ATTACK:
 					players.at(0)->attack();
 					if (!players.at(0)->isShooting())
 						players.at(0)->fireArrow();
@@ -115,16 +116,16 @@ void Game::manageInputs(sf::Event e) {
 		break;
 		case (Event::KeyReleased):
 			switch (e.key.code) {
-				case Keyboard::Up:
+				case CKB_P1_MOVE_UP:
 					players.at(0)->moving_up = false;
 				break;
-				case Keyboard::Down:
+				case CKB_P1_MOVE_DOWN:
 					players.at(0)->moving_down = false;
 				break;
-				case Keyboard::Right:
+				case CKB_P1_MOVE_RIGHT:
 					players.at(0)->moving_right = false;
 				break;
-				case Keyboard::Left:
+				case CKB_P1_MOVE_LEFT:
 					players.at(0)->moving_left = false;
 				break;
 				case Keyboard::Space:
@@ -142,19 +143,19 @@ void Game::manageInputs(sf::Event e) {
 		{
 		case (Event::KeyPressed):
 			switch (e.key.code) {
-			case Keyboard::Z:
+			case CKB_P2_MOVE_UP:
 				players.at(1)->moving_up = true;
 				break;
-			case Keyboard::S:
+			case CKB_P2_MOVE_DOWN:
 				players.at(1)->moving_down = true;
 				break;
-			case Keyboard::D:
+			case CKB_P2_MOVE_RIGHT:
 				players.at(1)->moving_right = true;
 				break;
-			case Keyboard::Q:
+			case CKB_P2_MOVE_LEFT:
 				players.at(1)->moving_left = true;
 				break;
-			case Keyboard::A:
+			case CKB_P2_ATTACK:
 				players.at(1)->attack();
 				if (!players.at(1)->isShooting())
 					players.at(1)->fireArrow();
@@ -165,16 +166,16 @@ void Game::manageInputs(sf::Event e) {
 			break;
 		case (Event::KeyReleased):
 			switch (e.key.code) {
-			case Keyboard::Z:
+			case CKB_P2_MOVE_UP:
 				players.at(1)->moving_up = false;
 				break;
-			case Keyboard::S:
+			case CKB_P1_MOVE_DOWN:
 				players.at(1)->moving_down = false;
 				break;
-			case Keyboard::D:
+			case CKB_P2_MOVE_RIGHT:
 				players.at(1)->moving_right = false;
 				break;
-			case Keyboard::Q:
+			case CKB_P2_MOVE_LEFT:
 				players.at(1)->moving_left = false;
 				break;
 			case Keyboard::A:

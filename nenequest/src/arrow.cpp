@@ -2,6 +2,7 @@
 
 
 #include "../headers/arrow.hpp"
+#include "../headers/config.hpp"
 #include<math.h>
 
 using namespace sf;
@@ -12,7 +13,7 @@ Arrow::Arrow(Vector2f position, float g_depth)
     initial_location = position;
     lifespan = 0;
 
-	texture.loadFromFile("img/weapon_arrow.png");
+	texture.loadFromFile(GSP_PROJ_ARROW);
 	sprite.setTexture(texture);
 	sprite.setOrigin(texture.getSize().x/2, texture.getSize().y/1.5);
     sprite.setPosition(position);
@@ -23,7 +24,7 @@ Arrow::Arrow(Vector2f position, float g_depth)
 
 	speed = Vector2f(0.8,-0.8);
 
-	damage_texture.loadFromFile("img/icon_damage.png");
+	damage_texture.loadFromFile(GSP_EFFECT_ARROW_IMPACT);
 	damage_sprite.setTexture(damage_texture);
 	damage_sprite.setOrigin(-30, 90);
 	damage_sprite.setScale(0.7,0.7);

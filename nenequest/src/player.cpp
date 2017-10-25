@@ -1,5 +1,6 @@
 #include "../headers/player.hpp"
 #include "../headers/world.hpp"
+#include "../headers/config.hpp"
 #include <SFML/Graphics.hpp>
 #include <iostream>
 /**
@@ -19,11 +20,11 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 
     this->weapon = w;
     if (!secondPlayer) {
-        this->life = new LifeBar(PLAYER_HP, Vector2f(300,100), PlayerID::PLAYER1);
-        this->texture.loadFromFile("img/player1.png");
+        this->life = new LifeBar(HP_PLAYER, Vector2f(300,100), PlayerID::PLAYER1);
+        this->texture.loadFromFile(GSP_PLAYER_P1);
     } else {
-        this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), PlayerID::PLAYER2);
-		this->texture.loadFromFile("img/player2.png");
+        this->life = new LifeBar(HP_PLAYER, Vector2f(800,100), PlayerID::PLAYER2);
+		this->texture.loadFromFile(GSP_PLAYER_P2);
     }
 	/////////////////////
 	// Z HITBOX SIZES  //

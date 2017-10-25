@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "../headers/screens.hpp"
+#include "../headers/config.hpp"
 #include <iostream>
 
 using namespace std;
@@ -8,9 +9,16 @@ using namespace sf;
 int main() {
 	vector<Screen*> screens;
 	int selectedScreen = 0;
+	
+	sf::VideoMode mode = VideoMode::getDesktopMode();
+	Uint32 style = Style::Close | Style::Titlebar;
+	if (DSP_FULLSCREEN)
+		style = style | sf::Style::Fullscreen;
+	if (DSP_RESOLUTION == 720)
+		mode = VideoMode::VideoMode(1280, 720);
 
-	RenderWindow app(VideoMode::getDesktopMode(), "Nene Quest", Style::Close | Style::Titlebar);
-    app.setFramerateLimit(60);
+	RenderWindow app(mode, "Nene Quest", style);
+    app.setFramerateLimit(DSP_FPS_LIMIT);
 
 	screens.push_back(new Menu);
 	screens.push_back(new Game);

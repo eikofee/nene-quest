@@ -1,5 +1,6 @@
 #include "../headers/menu.hpp"
 #include "../headers/lifebar.hpp"
+#include "../headers/config.hpp"
 
 using namespace std;
 using namespace sf;
@@ -23,7 +24,7 @@ int Menu::run(RenderWindow &app) {
 
 	// ---------------- Logo ----------------
 	Texture logoTex;
-    logoTex.loadFromFile("img/titlescreen.png");
+    logoTex.loadFromFile(GSP_UI_TITLESCREEN_TITLE);
     logoTex.setSmooth(true);
 
     Sprite logo(logoTex);
@@ -32,7 +33,7 @@ int Menu::run(RenderWindow &app) {
     logo.move(0, -200);
 
     Font font;
-    font.loadFromFile("fonts/JapanSans100.ttf");
+    font.loadFromFile(TTF_JAPF);
     Color menuTextColor(101, 45, 86, 255);
 
     // ---------------- Menu ----------------
@@ -63,7 +64,7 @@ int Menu::run(RenderWindow &app) {
 
 	// ---------------- Selector ----------------
     Texture selectorTex;
-    selectorTex.loadFromFile("img/cursor.png");
+    selectorTex.loadFromFile(GSP_UI_TITLESCREEN_CURSOR);
     selectorTex.setSmooth(true);
 
     Sprite selector(selectorTex);
@@ -83,17 +84,23 @@ int Menu::run(RenderWindow &app) {
             // Keyboard handling
 			if (event.type == Event::KeyPressed) {
 				switch (event.key.code) {
-                    case Keyboard::Up:
-                        menuIndex = (menuIndex-1)%menuButtons.size();
-                        break;
-                    case Keyboard::Down:
-                        menuIndex = (menuIndex+1)%menuButtons.size();
-                        break;
-                    case Keyboard::Return:
-                        return validateMenu(menuIndex);
-                        break;
-                    default:
-                        break;
+				case CKB_P1_MOVE_UP:
+				case CKB_P2_MOVE_UP:
+                    menuIndex = (menuIndex-1)%menuButtons.size();
+                    break;
+
+				case CKB_P1_MOVE_DOWN:
+				case CKB_P2_MOVE_DOWN:
+                    menuIndex = (menuIndex+1)%menuButtons.size();
+                    break;
+				
+				case CKB_P1_ATTACK:
+				case CKB_P2_ATTACK:
+				case CKB_MENU_ENTER:
+                    return validateMenu(menuIndex);
+                    break;
+                default:
+                    break;
 				}
 				selector.setPosition(menuButtons[menuIndex]->getPosition());
 			}
