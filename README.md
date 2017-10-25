@@ -1,3 +1,5 @@
+# Information : the game is currently ON HOLD
+
 ![title](title.png)
 
 Reproduction of Nene Sakura's game "Nene Quest" from "New Game!!" (2nd season, episode 3) written in C++ with the SFML library.
