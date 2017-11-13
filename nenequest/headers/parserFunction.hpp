@@ -3,9 +3,9 @@
 
 #include <string>
 #include <vector>
-#include <map>
-#include "customMap.h"
-class LevelManager;
+#include <levelManager.hpp>
+#include <customMap.h>
+
 class ParserFunction {
 
 protected:

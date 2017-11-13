@@ -5,9 +5,10 @@
 #include <vector>
 #include <list>
 #include <SFML/Graphics.hpp>
-#include "../headers/parserCommand.hpp"
-#include "background.hpp"
+
+class Background;
 class Game;
+class ParserCommand;
 class LevelManager {
 
 private:

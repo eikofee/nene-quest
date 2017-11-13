@@ -3,9 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <enemy.hpp>
-#include <flame.hpp>
 
-
+class Projectile;
 class Dragon : public Enemy {
 
     public:
@@ -15,7 +14,7 @@ class Dragon : public Enemy {
 		void update(float elapsedTime);
 		void breathFire();
         bool isBreatingFire();
-        std::vector<Flame*> getFlames();	//Should be projectile ?
+        std::vector<Projectile*> getFlames();	//Should be projectile ?
         //void setPosition(int x, int y);
         //void move(float elapsedTime);
 		//void move(sf::Vector2f g_speed, float elapsedTime);
@@ -31,7 +30,7 @@ class Dragon : public Enemy {
         static float constexpr DRAGON_SPEED = 0.1;//Pixels/milliseconds
         static float constexpr DEAD_ANIMATION_DURATION = 6000;//Milliseconds
 
-        std::vector<Flame*> flames;
+        std::vector<Projectile*> flames;
         std::vector<sf::RectangleShape> hitboxes;
 		sf::Vector2f computeMove(float elapsedTime);
 

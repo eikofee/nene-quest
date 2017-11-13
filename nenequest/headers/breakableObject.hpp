@@ -2,9 +2,9 @@
 #define BREAKABLEOBJECT_H
 
 #include <SFML/Graphics.hpp>
-#include <bonus.hpp>
 #include <entity.hpp>
 
+class Bonus;
 
 enum ObjectType {Chest, Barrel};
 

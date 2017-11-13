@@ -2,9 +2,9 @@
 #define BACKGROUND_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include <randomCloud.hpp>
-#include <randomMountain.hpp>
+#include <randomShape.hpp>
 #include <list>
+
 
 class Background : public sf::Drawable, sf::Transformable {
     private:
@@ -24,8 +24,8 @@ class Background : public sf::Drawable, sf::Transformable {
 		float mountainSpeedModifier = 1.5f;
 		int scrollSpeed = 0;
 
-		std::vector<RandomCloud*> clouds;
-		std::vector<RandomMountain*> mountains;
+		std::vector<RandomShape*> clouds;
+		std::vector<RandomShape*> mountains;
 		float nextCloud = 0;
 		float nextMountain = 0;
 		sf::Clock cloudClock;

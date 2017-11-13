@@ -1,7 +1,7 @@
 #ifndef CMDSCROLL_HPP_INCLUDED
 #define CMDSCROLL_HPP_INCLUDED
 
-#include "../parserFunction.hpp"
+#include <parserFunction.hpp>
 
 class cmdScroll : public ParserFunction {
 

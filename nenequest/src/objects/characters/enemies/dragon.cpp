@@ -1,6 +1,7 @@
 #include<time.h>
 
 #include <dragon.hpp>
+#include <flame.hpp>
 
 using namespace sf;
 using namespace std;
@@ -169,7 +170,7 @@ bool Dragon::isBreatingFire(){
     return fire_breathing;
 }
 
-vector<Flame*> Dragon::getFlames(){
+vector<Projectile*> Dragon::getFlames(){
     return flames;
 }
 

@@ -4,6 +4,7 @@
 #include <commands/cmdBridge.h>
 #include <commands/cmdChest.h>
 #include <commands/cmdStart.h>
+#include <parserCommand.hpp>
 
 LevelParser::LevelParser() {
 

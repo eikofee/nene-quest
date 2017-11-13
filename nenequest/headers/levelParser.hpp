@@ -1,16 +1,15 @@
 #ifndef LEVELPARSER_H
 #define LEVELPARSER_H
 
-#include "../headers/parserFunction.hpp"
-#include "../headers/levelManager.hpp"
-#include "../headers/parserCommand.hpp"
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <levelManager.hpp>
 
-
+class ParserFunction;
+class ParserCommand;
 
 class LevelParser {
 

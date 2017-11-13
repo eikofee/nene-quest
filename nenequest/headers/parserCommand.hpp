@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include "../headers/parserFunction.hpp"
+#include <parserFunction.hpp>
 
 class ParserCommand {
 

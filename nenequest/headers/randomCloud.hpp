@@ -2,11 +2,12 @@
 #define RANDOMCLOUD_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
+#include <randomShape.hpp>
 #include <list>
 #include <stdlib.h>
 #include <time.h>
 
-class RandomCloud : public sf::Drawable, sf::Transformable {
+class RandomCloud : public RandomShape {
 	private:
 		static const int MAX_WIDTH = 200;
 		static const int MAX_HEIGHT = 100;

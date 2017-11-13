@@ -1,5 +1,10 @@
 #include <background.hpp>
+#include <randomCloud.hpp>
+#include <randomMountain.hpp>
+
 using namespace sf;
+
+//TODO : Move the createClouds and createMountains in another class ?
 
 Background::Background(Vector2u v) {
 	//Cloud stuff

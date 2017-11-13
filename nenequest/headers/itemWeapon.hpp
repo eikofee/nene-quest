@@ -2,8 +2,8 @@
 #define ITEMWEAPON_H
 
 
-#include "../headers/bonus.hpp"
-#include "../headers/weaponType.hpp"
+#include <bonus.hpp>
+#include <weaponType.hpp>
 #include <SFML/Graphics.hpp>
 
 

@@ -1,6 +1,8 @@
 #include <levelManager.hpp>
 #include <player.hpp>
 #include <game.hpp>
+#include <parserCommand.hpp>
+
 LevelManager::LevelManager(Game* game) {
 	this->timeSync = 0;
 	this->isWaiting = false;

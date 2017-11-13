@@ -2,11 +2,12 @@
 #define RANDOMMOUNTAIN_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
+#include <randomShape.hpp>
 #include <list>
 #include <stdlib.h>
 #include <time.h>
 
-class RandomMountain : public sf::Drawable, sf::Transformable {
+class RandomMountain :  public RandomShape {
 private:
 	static const int MAX_HEIGHT = 500;
 	static const int MIN_HEIGHT = 400;
