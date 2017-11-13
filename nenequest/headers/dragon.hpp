@@ -2,8 +2,8 @@
 #define DRAGON_H
 
 #include <SFML/Graphics.hpp>
-#include "../headers/enemy.hpp"
-#include "../headers/flame.hpp"
+#include <enemy.hpp>
+#include <flame.hpp>
 
 
 class Dragon : public Enemy {

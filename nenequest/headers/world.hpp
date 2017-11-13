@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "../headers/entity.hpp"
+#include <entity.hpp>
 class World {
 public:
 	static void initialize();

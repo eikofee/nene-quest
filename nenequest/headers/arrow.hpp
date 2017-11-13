@@ -1,7 +1,7 @@
 #ifndef ARROW_HPP
 #define ARROW_HPP
 
-#include "../headers/projectile.hpp"
+#include <projectile.hpp>
 
 class Arrow : public Projectile {
     public:

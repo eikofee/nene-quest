@@ -2,8 +2,8 @@
 #define WEAPON_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "../headers/entity.hpp"
-#include "../headers/weaponType.hpp"
+#include <entity.hpp>
+#include <weaponType.hpp>
 #include <string>
 
 class Weapon : public Entity {

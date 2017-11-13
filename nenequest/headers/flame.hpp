@@ -2,7 +2,7 @@
 #define FLAME_H
 
 #include <SFML/Graphics.hpp>
-#include "../headers/projectile.hpp"
+#include <projectile.hpp>
 
 class Flame : public Projectile {
 

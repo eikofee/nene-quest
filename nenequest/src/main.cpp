@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "../headers/screens.hpp"
+#include <screens.hpp>
 #include <iostream>
 
 using namespace std;

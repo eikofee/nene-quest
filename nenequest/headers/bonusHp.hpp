@@ -1,7 +1,7 @@
 #ifndef BONUSHP_H
 #define BONUSHP_H
 
-#include "../headers/bonus.hpp"
+#include <bonus.hpp>
 #include <SFML/Graphics.hpp>
 
 

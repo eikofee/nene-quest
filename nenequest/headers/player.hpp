@@ -1,11 +1,11 @@
 #ifndef PLAYER_HPP_INCLUDED
 #define PLAYER_HPP_INCLUDED
 
-#include "../headers/weapon.hpp"
-#include "../headers/lifebar.hpp"
-#include "../headers/arrow.hpp"
-#include"../headers/itemWeapon.hpp"
-#include "../headers/entity.hpp"
+#include <weapon.hpp>
+#include <lifebar.hpp>
+#include <arrow.hpp>
+#include <itemWeapon.hpp>
+#include <entity.hpp>
 
 #include <SFML/Graphics.hpp>
 #include <iostream>

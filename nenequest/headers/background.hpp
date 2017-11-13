@@ -2,8 +2,8 @@
 #define BACKGROUND_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include "randomCloud.hpp"
-#include "randomMountain.hpp"
+#include <randomCloud.hpp>
+#include <randomMountain.hpp>
 #include <list>
 
 class Background : public sf::Drawable, sf::Transformable {
