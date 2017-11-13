@@ -1,4 +1,4 @@
-#include "../headers/weaponType.hpp"
+#include <weaponType.hpp>
 #include <SFML/Graphics.hpp>
 
 sf::Vector2f getWeaponOrigin(WeaponType w) {

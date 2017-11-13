@@ -1,5 +1,5 @@
-#include "../headers/game.hpp"
-#include "../headers/world.hpp"
+#include <game.hpp>
+#include <world.hpp>
 #include <stdlib.h>
 #include <iostream>
 #include <time.h>

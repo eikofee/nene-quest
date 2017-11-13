@@ -1,6 +1,6 @@
 #include <SFML/Audio.hpp>
-#include "../headers/gameover.hpp"
-#include "../headers/gamemode.hpp"
+#include <gameover.hpp>
+#include <gamemode.hpp>
 
 using namespace std;
 using namespace sf;

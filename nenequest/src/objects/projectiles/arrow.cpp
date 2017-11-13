@@ -1,8 +1,8 @@
 #define _USE_MATH_DEFINES
 
 
-#include "../headers/arrow.hpp"
-#include<math.h>
+#include <arrow.hpp>
+#include <math.h>
 
 using namespace sf;
 

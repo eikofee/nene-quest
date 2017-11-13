@@ -1,6 +1,6 @@
-#include "../headers/levelManager.hpp"
-#include "../headers/player.hpp"
-#include "../headers/game.hpp"
+#include <levelManager.hpp>
+#include <player.hpp>
+#include <game.hpp>
 LevelManager::LevelManager(Game* game) {
 	this->timeSync = 0;
 	this->isWaiting = false;

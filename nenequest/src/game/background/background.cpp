@@ -1,5 +1,4 @@
-#include "../headers/background.hpp"
-
+#include <background.hpp>
 using namespace sf;
 
 Background::Background(Vector2u v) {

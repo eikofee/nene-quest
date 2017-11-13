@@ -1,4 +1,4 @@
-#include "../headers/projectile.hpp"
+#include <projectile.hpp>
 
 Projectile::Projectile()
 {

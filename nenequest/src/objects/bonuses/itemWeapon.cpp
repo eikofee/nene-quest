@@ -1,4 +1,4 @@
-#include "../headers/itemWeapon.hpp"
+#include <itemWeapon.hpp>
 
 using namespace sf;
 

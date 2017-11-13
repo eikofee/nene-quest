@@ -1,4 +1,4 @@
-#include "../headers/customMap.h"
+#include <customMap.h>
 
 CustomMap::CustomMap(std::map<std::string, std::string>* map) {
 	this->map = map;

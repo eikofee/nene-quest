@@ -1,4 +1,4 @@
-#include "../headers/parserFunction.hpp"
+#include <parserFunction.hpp>
 
 ParserFunction::ParserFunction(){
 

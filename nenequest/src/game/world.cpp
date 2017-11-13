@@ -1,4 +1,4 @@
-#include "../headers/world.hpp"
+#include <world.hpp>
 
 std::vector<Entity*> World::entities;
 float World::elapsedTime;

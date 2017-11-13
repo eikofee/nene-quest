@@ -1,4 +1,4 @@
-#include "../headers/enemy.hpp"
+#include <enemy.hpp>
 
 #include <SFML/Graphics.hpp>
 

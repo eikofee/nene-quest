@@ -1,4 +1,4 @@
-#include "../headers/entity.hpp"
+#include <entity.hpp>
 #include <math.h>
 using namespace sf;
 

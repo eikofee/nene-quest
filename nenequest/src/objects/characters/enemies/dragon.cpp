@@ -1,6 +1,6 @@
 #include<time.h>
 
-#include "../headers/dragon.hpp"
+#include <dragon.hpp>
 
 using namespace sf;
 using namespace std;

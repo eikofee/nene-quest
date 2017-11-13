@@ -1,9 +1,9 @@
-#include "../headers/levelParser.hpp"
+#include <levelParser.hpp>
 
-#include "../headers/commands/cmdScroll.h"
-#include "../headers/commands/cmdStart.h"
-#include "../headers/commands/cmdChest.h"
-#include "../headers/commands/cmdBridge.h"
+#include <commands/cmdScroll.h>
+#include <commands/cmdBridge.h>
+#include <commands/cmdChest.h>
+#include <commands/cmdStart.h>
 
 LevelParser::LevelParser() {
 

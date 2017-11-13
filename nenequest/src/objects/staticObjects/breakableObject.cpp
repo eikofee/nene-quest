@@ -1,6 +1,6 @@
-#include "../headers/breakableObject.hpp"
-#include"../headers/itemWeapon.hpp"
-#include"../headers/bonusHp.hpp"
+#include <breakableObject.hpp>
+#include <itemWeapon.hpp>
+#include <bonusHp.hpp>
 
 
 using namespace sf;
