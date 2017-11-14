@@ -1,6 +1,7 @@
 #include <world.hpp>
 
 std::vector<Entity*> World::entities;
+std::vector<Player*> World::players;
 float World::elapsedTime;
 void World::initialize() {
 	
@@ -114,8 +115,10 @@ void World::setElapsedTime(float time) {
 	elapsedTime = time / 1000;
 }
 
-void World::addEntity(Entity* entity) {
+void World::addEntity(Entity* entity, bool isPlayer) {
 	entities.push_back(entity);
+	if (isPlayer)
+		players.push_back((Player*)entity);
 }
 
 void World::updateEntities() {
@@ -130,4 +133,14 @@ void World::updateEntities() {
 
 float World::getElapsedTime() {
 	return elapsedTime;
+}
+
+void World::render(sf::RenderWindow &app) {
+	for (auto e : entities) {
+		app.draw(*e);
+	}
+}
+
+std::vector<Player*> World::getPlayers() {
+	return players;
 }

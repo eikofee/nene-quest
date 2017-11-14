@@ -30,19 +30,19 @@ int Game::run(RenderWindow &app) {
     bridge = new BridgePit(300, app.getSize().y-background.getSkyHeight(), app.getSize().y);
 	World::addEntity(bridge);
 
-	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
-	Dragon* dragon = new Dragon(Vector2f(1000,400));
-	BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
-    ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(800,600));
-    bonuses_hp.push_back(onigiri);
-    item_weapons.push_back(sword);
-    item_weapons.push_back(new ItemWeapon(GreatSword, Vector2f(300,630)));
+	//Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
+	//Dragon* dragon = new Dragon(Vector2f(1000,400));
+	//BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
+    //ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(800,600));
+    //bonuses_hp.push_back(onigiri);
+    //item_weapons.push_back(sword);
+    //item_weapons.push_back(new ItemWeapon(GreatSword, Vector2f(300,630)));
     //enemies.push_back(dragon);
 	//enemies.push_back(boar1);
-    BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
-    breakable_objects.push_back(barrel);
-    breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(700,630)));
-    Arrow arrow = Arrow(Vector2f(100, 700), 700);
+    //BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
+    //breakable_objects.push_back(barrel);
+    //breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(700,630)));
+    //Arrow arrow = Arrow(Vector2f(100, 700), 700);
     /////////////////////////////
 	
 	Clock clock;
@@ -71,17 +71,18 @@ int Game::run(RenderWindow &app) {
 		manager->update();
 
 		background.update();
-		arrow.update(elapsedTime);
+		//arrow.update(elapsedTime);
 
 
 		//checkCollision(elapsedTime, app.getSize());
 
 		app.clear(Color::White);
 		app.draw(background);
-		app.draw(*bridge);
+		//app.draw(*bridge);
+		World::render(app);
 
-		drawWithDepth(&app);
-		app.draw(arrow);
+		//drawWithDepth(&app);
+		//app.draw(arrow);
 		app.display();
 	}
 
@@ -89,6 +90,7 @@ int Game::run(RenderWindow &app) {
 }
 
 void Game::manageInputs(sf::Event e) {
+	auto players = World::getPlayers();
 	switch (e.type){
 		case (Event::KeyPressed):
 			switch (e.key.code) {
@@ -526,6 +528,7 @@ void Game::addEnemyInstance(Enemy* enemy) {
 }
 
 void Game::addPlayerInstance(Player* player) {
-	this->players.push_back(player);
+	//this->players.push_back(player);
+	World::addEntity(player, true);
 }
 
