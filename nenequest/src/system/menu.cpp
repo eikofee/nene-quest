@@ -67,11 +67,10 @@ int Menu::run(RenderWindow &app) {
     selector.setPosition(onePlayerText.getPosition());
 
     // ---------------- Main Loop ----------------
-	while(true) {
-
+	while (true) {
         Vector2i localPosition = Mouse::getPosition(app);
 
-		while(app.pollEvent(event)) {
+		while (app.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				return (-1);
 

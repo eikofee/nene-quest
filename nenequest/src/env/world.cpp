@@ -136,9 +136,8 @@ float World::getElapsedTime() {
 }
 
 void World::render(sf::RenderWindow &app) {
-	for (auto e : entities) {
+	for (auto e : entities)
 		app.draw(*e);
-	}
 }
 
 std::vector<Player*> World::getPlayers() {
