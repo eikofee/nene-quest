@@ -20,25 +20,26 @@ Dragon::Dragon(Vector2f position) : Enemy (DRAGON_HP) {
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y/2));
     sprite.setPosition(position);
+	sf::RectangleShape* hitbox = new sf::RectangleShape();
+    hitbox->setPosition(position);
+	hitbox->setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
+    hitbox->setFillColor(Color::Red);
+	hitboxes.push_back(hitbox);
 
-    hitbox.setPosition(position);
-	hitbox.setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-    hitbox.setFillColor(Color::Red);
+	hitboxes.push_back(new RectangleShape(Vector2f(530,120)));
+	hitboxes.at(1)->setOrigin(-270, -410);
 
-	hitboxes.push_back(RectangleShape(Vector2f(530,120)));
-	hitboxes.at(0).setOrigin(-270, -410);
+    hitboxes.push_back(new RectangleShape(Vector2f(220,290)));
+	hitboxes.at(2)->setOrigin(-270, -120);
 
-    hitboxes.push_back(RectangleShape(Vector2f(220,290)));
-	hitboxes.at(1).setOrigin(-270, -120);
+    hitboxes.push_back(new RectangleShape(Vector2f(310,180)));
+	hitboxes.at(3)->setOrigin(-50, -30);
 
-    hitboxes.push_back(RectangleShape(Vector2f(310,180)));
-	hitboxes.at(2).setOrigin(-50, -30);
-
-	for(unsigned int i =0;i < hitboxes.size();i++)
-        hitboxes.at(i).setPosition(position);
+	for(unsigned int i =1;i < hitboxes.size();i++)
+        hitboxes.at(i)->setPosition(position);
 
 	//sprite.setOrigin(sprite.getGlobalBounds().width*0.27,sprite.getGlobalBounds().height*0.5 );
-    updateSpritePosition();
+    updateAutoSpritePosition();
 
 	speed = Vector2f(DRAGON_SPEED,0);
 
@@ -79,8 +80,8 @@ Dragon::~Dragon(){
         fire_breathing = true;
         //Delete the hitbox at the start of the dying animation
         if(dying_timer == 0){
-            for(unsigned int i =0;i < hitboxes.size();i++)
-                hitboxes.at(i).setSize(Vector2f(0,0));
+            for(unsigned int i =1;i < hitboxes.size();i++)
+                hitboxes.at(i)->setSize(Vector2f(0,0));
             sprite.setOrigin(350 ,400);
             sprite.move( 350, 400);
             dying_timer = 1;

@@ -31,7 +31,6 @@ class Dragon : public Enemy {
         static float constexpr DEAD_ANIMATION_DURATION = 6000;//Milliseconds
 
         std::vector<Projectile*> flames;
-        std::vector<sf::RectangleShape> hitboxes;
 		sf::Vector2f computeMove(float elapsedTime);
 
 

@@ -35,11 +35,15 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 	/////////////////////
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(IntRect(0, 0, this->texture.getSize().x/2, this->texture.getSize().y/3));
-	this->hitbox.setPosition(position);
-	this->hitbox.setSize(Vector2f(this->sprite.getLocalBounds().width, this->sprite.getLocalBounds().height));
-	this->zHitbox.setPosition(position + sf::Vector2f(this->sprite.getLocalBounds().width * z_offset_x, this->sprite.getLocalBounds().height * z_offset_y));
-	this->zHitbox.setSize(Vector2f(this->sprite.getLocalBounds().width * z_width, this->sprite.getLocalBounds().height * z_height));
-    updateSpritePosition();
+	sf::RectangleShape* h = new sf::RectangleShape();
+	sf::RectangleShape* zh = new sf::RectangleShape();
+	hitboxes.push_back(h);
+	zHitboxes.push_back(zh);
+	this->hitboxes.at(0)->setPosition(position);
+	this->hitboxes.at(0)->setSize(Vector2f(this->sprite.getLocalBounds().width, this->sprite.getLocalBounds().height));
+	this->zHitboxes.at(0)->setPosition(position + sf::Vector2f(this->sprite.getLocalBounds().width * z_offset_x, this->sprite.getLocalBounds().height * z_offset_y));
+	this->zHitboxes.at(0)->setSize(Vector2f(this->sprite.getLocalBounds().width * z_width, this->sprite.getLocalBounds().height * z_height));
+    updateAutoSpritePosition();
 
 	// Weapon placement
     this->weapon->setPosition(position.x + 220, position.y + 180);
@@ -65,7 +69,8 @@ void Player::equip(Weapon* w){
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-    //target.draw(hitbox,states);
+	//for (auto h : hitboxes)
+		//target.draw(*h,states);
 	//target.draw(zHitbox, states);
     target.draw(this->sprite, states);
     target.draw(*this->weapon, states);
@@ -90,7 +95,7 @@ void Player::update_animation(){
         bottom_right_x = size_x/2;
     }
 
-    if (this->animation_state) { // jambes croisée
+    if (this->animation_state) { // jambes croisees
         top_left_y = size_y/3;
         bottom_right_y = size_y/3;
     } else {
@@ -109,10 +114,9 @@ void Player::move(Vector2f g_speed){
         clock.restart();
     }
 
-    hitbox.move(g_speed.x, g_speed.y);
-	zHitbox.move(g_speed.x, g_speed.y);
-	sprite.move(g_speed.x, g_speed.y);
-	this->getWeapon()->move(g_speed, 1);
+	Entity::move(g_speed);
+	sf::Vector2f v = sf::Vector2f(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
+	this->getWeapon()->move(g_speed);
 }
 
 LifeBar* Player::getLife(){
@@ -128,8 +132,7 @@ void Player::toggleJump(){
 }
 
 void Player::setPosition(float x, float y){
-    this->sprite.setPosition(x, y);
-    this->hitbox.setPosition(x, y);
+	Entity::setPosition(x, y);
     this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
 }
 
@@ -167,20 +170,20 @@ void Player::manageMovements() {
 
 sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
 	Vector2f result = Vector2f(movement.x * World::getElapsedTime(), movement.y * World::getElapsedTime());
-	if (this->hitbox.getGlobalBounds().left + result.x < 0)
+	if (this->hitboxes.at(0)->getGlobalBounds().left + result.x < 0)
 		result.x = 0;
 		//result.x = -this->hitbox.getGlobalBounds().left;
 
-	if (this->hitbox.getGlobalBounds().left + this->hitbox.getGlobalBounds().width + result.x > 1920 /*Gameroom size (right)*/)
+	if (this->hitboxes.at(0)->getGlobalBounds().left + this->hitboxes.at(0)->getGlobalBounds().width + result.x > 1920 /*Gameroom size (right)*/)
 		result.x = 0;
 		//result.x = 1920 - this->hitbox.getGlobalBounds().left - this->hitbox.getGlobalBounds().width;
 
 	//TODO
-	if (this->hitbox.getGlobalBounds().top + result.y < 200 /*Gameroom size (top)*/)
+	if (this->hitboxes.at(0)->getGlobalBounds().top + result.y < 200 /*Gameroom size (top)*/)
 		result.y = 0;
 		//result.y = 500 - this->hitbox.getGlobalBounds().top;
 
-	if (this->hitbox.getGlobalBounds().top + this->hitbox.getGlobalBounds().height + result.y > 1080 /*Gameroom size (bottom)*/)
+	if (this->hitboxes.at(0)->getGlobalBounds().top + this->hitboxes.at(0)->getGlobalBounds().height + result.y > 1080 /*Gameroom size (bottom)*/)
 		result.y = 0;
 		//result.y = 1080 - this->hitbox.getGlobalBounds().top - this->hitbox.getGlobalBounds().height;
 	
@@ -189,7 +192,7 @@ sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
 }
 
 void Player::fixPosition() {
-	sf::FloatRect bounds = this->hitbox.getGlobalBounds();
+	sf::FloatRect bounds = this->hitboxes.at(0)->getGlobalBounds();
 	sf::Vector2f v = Vector2f(0, 0);
 	if (bounds.left < 0)
 		v.x = -bounds.left;

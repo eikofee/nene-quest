@@ -23,9 +23,11 @@ Flame::Flame(Vector2f position, float f, float g_depth, bool straightLine){
     else
         sprite.scale(0.7,0.7);
 
-    updateHitboxSize();
-    hitbox.setOrigin(texture.getSize().x/2, texture.getSize().y/2);
-    updateHitboxPosition();
+    updateAutoHitboxSize();
+	sf::RectangleShape* hitbox = new sf::RectangleShape();
+    hitbox->setOrigin(texture.getSize().x/2, texture.getSize().y/2);
+	hitboxes.push_back(hitbox);
+	updateAutoHitboxPosition();
 
 	speed = Vector2f(-2.7,1);
 
@@ -40,12 +42,12 @@ void Flame::update(float elapsedTime){
 
         //Make the flame smaller when it goes up (when it's derivative (cos) is < 0 and bigger when it goes down
         if(cos(lifespan/(600)) > 0 && sprite.getScale().x <= 1){
-            hitbox.setScale(sprite.getScale().x + 0.01, sprite.getScale().y + 0.01);
+            hitboxes.at(0)->setScale(sprite.getScale().x + 0.01, sprite.getScale().y + 0.01);
             sprite.setScale(sprite.getScale().x + 0.01, sprite.getScale().y + 0.01);
         }
         else{
             span_left += elapsedTime;
-            hitbox.setScale(sprite.getScale().x - 0.01, sprite.getScale().y - 0.01);
+			hitboxes.at(0)->setScale(sprite.getScale().x - 0.01, sprite.getScale().y - 0.01);
             sprite.setScale(sprite.getScale().x - 0.01, sprite.getScale().y - 0.01);
         }
         //Begin a timer when the flame begin to go up to make it disappear

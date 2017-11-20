@@ -18,8 +18,8 @@ ItemWeapon::ItemWeapon(WeaponType type, Vector2f position) {
     sprite.setTexture(texture);
 
     sprite.setPosition(position);
-    updateHitboxSize();
-    updateHitboxPosition();
+    updateAutoHitboxSize();
+    updateAutoHitboxPosition();
 }
 
 ItemWeapon::~ItemWeapon() {

@@ -349,23 +349,23 @@ void Game::manageInputs(sf::Event e) {
  //}
 
 //Unused
-bool Game::playerIsColliding(Player* p){
-    for(unsigned int j = 0; j < breakable_objects.size(); j++){
-        if(p->detectHit(breakable_objects.at(j))){
-            return true;
-        }
-    }
-    return false;
-
- }
-
- BreakableObject* Game::getCollidingObject(Player* p){
-    for(BreakableObject* obj : breakable_objects)
-        if(p->detectHit(obj))
-            return obj;
-
-    return NULL;
- }
+//bool Game::playerIsColliding(Player* p){
+//    for(unsigned int j = 0; j < breakable_objects.size(); j++){
+//        if(p->detectHit(breakable_objects.at(j))){
+//            return true;
+//        }
+//    }
+//    return false;
+//
+// }
+//
+// BreakableObject* Game::getCollidingObject(Player* p){
+//    for(BreakableObject* obj : breakable_objects)
+//        if(p->detectHit(obj))
+//            return obj;
+//
+//    return NULL;
+// }
 
 //Deprecated
 //void Game::playerMove(Player* player, float elapsedTime, Vector2u windowSize, float skyHeight){

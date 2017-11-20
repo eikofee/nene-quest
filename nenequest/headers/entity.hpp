@@ -21,13 +21,8 @@ class Entity : public sf::Drawable
 		virtual sf::Vector2f getPosition();
 		virtual void move(sf::Vector2f v); //Moves at px per sec
 		sf::Vector2f getSpriteSize();
-		sf::RectangleShape getHitbox();
-		sf::RectangleShape getZHitbox();
-		bool hasMultipleHitboxes();
-		bool hasMultipleZHitboxes();
 		std::vector<sf::RectangleShape*> getHitboxes();
 		std::vector<sf::RectangleShape*> getZHitboxes();
-        virtual bool detectHit(Entity* entity);
         virtual float getDepth();
         virtual float getDrawDepth();
 		virtual EntityType getEntityType();
@@ -38,15 +33,13 @@ class Entity : public sf::Drawable
 
 		
 	protected:
-		sf::RectangleShape hitbox;
 		std::vector<sf::RectangleShape*> hitboxes;
-		sf::RectangleShape zHitbox;
 		std::vector<sf::RectangleShape*> zHitboxes;
 		sf::Sprite sprite;
 		sf::Texture texture;
-		void updateHitboxSize();
-		void updateHitboxPosition();
-		void updateSpritePosition();
+		void updateAutoHitboxSize();
+		void updateAutoHitboxPosition();
+		void updateAutoSpritePosition();
 		sf::Vector2f speed; //not too fond of the name
 
 	private:

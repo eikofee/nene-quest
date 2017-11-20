@@ -25,18 +25,7 @@ BridgePit::~BridgePit()
 {
     //dtor
 }
-bool BridgePit::detectHit(Entity* entity){
 
-    RectangleShape tmp = RectangleShape(Vector2f(entity->getHitbox().getGlobalBounds().width, Entity::DEPTH_DIFF));
-    tmp.setPosition(entity->getHitbox().getGlobalBounds().left, entity->getHitbox().getGlobalBounds().top + entity->getHitbox().getGlobalBounds().height - Entity::DEPTH_DIFF);
-    /*if(entity->getHitbox().getGlobalBounds().top + entity->getHitbox().getGlobalBounds().height < hitboxes.at(1).getGlobalBounds().top &&
-               entity->getHitbox().getGlobalBounds().top + entity->getHitbox().getGlobalBounds().height - Entity::DEPTH_DIFF > hitboxes.at(0).getGlobalBounds().top +hitboxes.at(0).getGlobalBounds().height )
-                return false;*/
-    for(unsigned int i =0;i < hitboxes.size();i++)
-        if(tmp.getGlobalBounds().intersects(hitboxes.at(i)->getGlobalBounds()))
-            return true;
-    return false;
-}
 
 void BridgePit::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 

@@ -24,19 +24,13 @@ std::vector<Entity*> World::getCollidingEntities(Entity* entity) {
 	std::vector<Entity*> result;
 	for (auto e : entities)
 		if (e != entity) {
-			if (e->hasMultipleHitboxes()) {
-				bool collide = false;
-				for (auto h : e->getHitboxes())
-					if (h->getGlobalBounds().intersects(entity->getHitbox().getGlobalBounds()) && !collide) {
+			bool collide = false;
+			for (auto h : e->getHitboxes())
+				for (auto sh : entity->getHitboxes())
+					if (h->getGlobalBounds().intersects(sh->getGlobalBounds()) && !collide) {
 						result.push_back(e);
 						collide = true;
 					}
-			}
-			else {
-				if (e->getHitbox().getGlobalBounds().intersects(entity->getHitbox().getGlobalBounds()))
-					result.push_back(e);
-				//Add code for collision on z axis here
-			}
 		}
 
 	return result;
@@ -46,18 +40,13 @@ std::vector<Entity*> World::getCollidingEntitiesOnZAxis(Entity* entity) {
 	std::vector<Entity*> result;
 	for (auto e : entities)
 		if (e != entity) {
-			if (e->hasMultipleZHitboxes()) {
-				bool collide = false;
-				for (auto h : e->getZHitboxes())
-					if (h->getGlobalBounds().intersects(entity->getZHitbox().getGlobalBounds()) && !collide) {
+			bool collide = false;
+			for (auto h : e->getZHitboxes())
+				for (auto sh : entity->getZHitboxes())
+					if (h->getGlobalBounds().intersects(sh->getGlobalBounds()) && !collide) {
 						result.push_back(e);
 						collide = true;
 					}
-			}
-			else {
-				if (e->getZHitbox().getGlobalBounds().intersects(entity->getZHitbox().getGlobalBounds()))
-					result.push_back(e);
-			}
 		}
 
 	return result;
@@ -65,11 +54,11 @@ std::vector<Entity*> World::getCollidingEntitiesOnZAxis(Entity* entity) {
 
 std::vector<Entity*> World::testCollidingEntities(Entity* entity, sf::Vector2f movement) {
 	std::vector<Entity*> result;
-	sf::RectangleShape testHitbox = sf::RectangleShape(entity->getHitbox());
-	testHitbox.move(movement);
-	for (auto e : entities)
-		if (e != entity) {
-			if (e->hasMultipleHitboxes()) {
+	for (auto sh : entity->getHitboxes()) {
+		sf::RectangleShape testHitbox = sf::RectangleShape(*sh);
+		testHitbox.move(movement);
+		for (auto e : entities)
+			if (e != entity) {
 				bool collide = false;
 				for (auto h : e->getHitboxes())
 					if (h->getGlobalBounds().intersects(testHitbox.getGlobalBounds()) && !collide) {
@@ -77,23 +66,19 @@ std::vector<Entity*> World::testCollidingEntities(Entity* entity, sf::Vector2f m
 						collide = true;
 					}
 			}
-			else {
-				if (e->getHitbox().getGlobalBounds().intersects(testHitbox.getGlobalBounds()))
-					result.push_back(e);
-				//Add code for collision on z axis here
-			}
-		}
+	}
 
 	return result;
 }
 
 std::vector<Entity*> World::testCollidingEntitiesOnZAxis(Entity* entity, sf::Vector2f movement) {
 	std::vector<Entity*> result;
-	sf::RectangleShape testHitbox = sf::RectangleShape(entity->getZHitbox());
-	testHitbox.move(movement);
-	for (auto e : entities)
-		if (e != entity) {
-			if (e->hasMultipleZHitboxes()) {
+	for (auto sh : entity->getZHitboxes()) {
+
+		sf::RectangleShape testHitbox = sf::RectangleShape(*sh);
+		testHitbox.move(movement);
+		for (auto e : entities)
+			if (e != entity) {
 				bool collide = false;
 				for (auto h : e->getZHitboxes())
 					if (h->getGlobalBounds().intersects(testHitbox.getGlobalBounds()) && !collide) {
@@ -101,12 +86,7 @@ std::vector<Entity*> World::testCollidingEntitiesOnZAxis(Entity* entity, sf::Vec
 						collide = true;
 					}
 			}
-			else {
-				if (e->getZHitbox().getGlobalBounds().intersects(testHitbox.getGlobalBounds()))
-					result.push_back(e);
-				//Add code for collision on z axis here
-			}
-		}
+	}
 
 	return result;
 }

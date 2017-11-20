@@ -17,9 +17,10 @@ Arrow::Arrow(Vector2f position, float g_depth)
 	sprite.setOrigin(texture.getSize().x/2, texture.getSize().y/1.5);
     sprite.setPosition(position);
 
-    hitbox.setSize(Vector2f(texture.getSize().x/5, texture.getSize().y/1.8));
-    hitbox.setOrigin(0, texture.getSize().y/2 );
-    updateHitboxPosition();
+	sf::RectangleShape* hitbox = new sf::RectangleShape();
+    hitbox->setSize(Vector2f(texture.getSize().x/5, texture.getSize().y/1.8));
+    hitbox->setOrigin(0, texture.getSize().y/2 );
+    updateAutoHitboxPosition();
 
 	speed = Vector2f(0.8,-0.8);
 
@@ -42,7 +43,7 @@ void Arrow::update(float elapsedTime){
         //Make the arrow follow a curve
         this->setPosition(initial_location.x + lifespan*speed.x,initial_location.y + lifespan*speed.y + gravity*lifespan*lifespan/2);
         sprite.setRotation(atan((speed.y + gravity*lifespan)/speed.x)*180/3.1415);
-        hitbox.setRotation(sprite.getRotation());
+        hitboxes.at(0)->setRotation(sprite.getRotation());
 
         if(this->getPosition().y > initial_location.y)
             is_dead = true;
@@ -63,8 +64,8 @@ bool Arrow::isDead(){
 
 void Arrow::kill(){
     this->depth = 8000;
-    damage_sprite.setRotation(hitbox.getRotation());
-    damage_sprite.setPosition(hitbox.getPosition().x, hitbox.getPosition().y);
+    damage_sprite.setRotation(hitboxes.at(0)->getRotation());
+    damage_sprite.setPosition(hitboxes.at(0)->getPosition().x, hitboxes.at(0)->getPosition().y);
     is_dying = true;
 }
 

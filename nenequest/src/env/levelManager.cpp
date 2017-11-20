@@ -43,11 +43,11 @@ void LevelManager::setScrollSpeed(int speed) {
 
 void LevelManager::startLevel(int playerCount) {
 	if (playerCount >= 1) {
-		Player* player = new Player(new Weapon(Axe), sf::Vector2f(1000, 600));
+		Player* player = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
 		game->addPlayerInstance(player);
 	};
 	if (playerCount >= 2) {
-		Player* player = new Player(new Weapon(Sword), sf::Vector2f(1000, 800), true);
+		Player* player = new Player(new Weapon(Sword), sf::Vector2f(70, 820), true);
 		game->addPlayerInstance(player);
 	}
 }

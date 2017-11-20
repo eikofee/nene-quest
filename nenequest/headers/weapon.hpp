@@ -12,16 +12,6 @@ class Weapon : public Entity {
         int getDamage();
         WeaponType getWeaponType();
 
-        virtual void setPosition(float x, float y) {
-            this->sprite.setPosition(sf::Vector2f(x,y));
-            this->hitbox.setPosition(sf::Vector2f(x,y));
-        }
-
-        virtual void move(sf::Vector2f g_speed, float elapsedTime){
-            hitbox.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
-            sprite.move(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
-        }
-
     private :
         WeaponType type;
         int damage;

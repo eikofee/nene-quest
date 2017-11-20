@@ -12,10 +12,12 @@ BreakableObject::BreakableObject(ObjectType o, Vector2f position) {
     getObjectTexture(o);
 
 	sprite.setTexture(texture);
-    updateHitboxSize();
+    updateAutoHitboxSize();
 
-    hitbox.setPosition(position);
-    updateSpritePosition();
+	sf::RectangleShape* h = new sf::RectangleShape();
+	hitboxes.push_back(h);
+    hitboxes.at(0)->setPosition(position);
+    updateAutoSpritePosition();
 }
 
 BreakableObject::~BreakableObject() {

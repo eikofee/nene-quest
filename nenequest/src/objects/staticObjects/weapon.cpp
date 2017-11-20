@@ -9,10 +9,12 @@ Weapon::Weapon(WeaponType t)
 
     texture.loadFromFile(getWeaponPath(t));
 	sprite.setTexture(texture);
+	sf::RectangleShape* h = new sf::RectangleShape();
+	hitboxes.push_back(h);
 
     sprite.setOrigin(getWeaponOrigin(t));
-    updateHitboxSize();
-    updateHitboxPosition();
+    updateAutoHitboxSize();
+    updateAutoHitboxPosition();
 
     this->damage = damage;
 }
