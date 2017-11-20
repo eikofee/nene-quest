@@ -36,7 +36,9 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(IntRect(0, 0, this->texture.getSize().x/2, this->texture.getSize().y/3));
 	sf::RectangleShape* h = new sf::RectangleShape();
+	h->setFillColor(sf::Color(255, 0, 0, 128));
 	sf::RectangleShape* zh = new sf::RectangleShape();
+	zh->setFillColor(sf::Color(0, 0, 255, 128));
 	hitboxes.push_back(h);
 	zHitboxes.push_back(zh);
 	this->hitboxes.at(0)->setPosition(position);
@@ -69,10 +71,8 @@ void Player::equip(Weapon* w){
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	//for (auto h : hitboxes)
-		//target.draw(*h,states);
-	//target.draw(zHitbox, states);
-    target.draw(this->sprite, states);
+	Entity::draw(target, states);
+    //target.draw(this->sprite, states);
     target.draw(*this->weapon, states);
     target.draw(*this->life, states);
 }

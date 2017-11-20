@@ -1,5 +1,6 @@
 #include <entity.hpp>
 #include <math.h>
+#include <game.hpp>
 using namespace sf;
 
 std::vector<sf::RectangleShape*> Entity::getHitboxes() {
@@ -11,8 +12,12 @@ std::vector<sf::RectangleShape*> Entity::getZHitboxes() {
 }
 
 void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    for (auto h : hitboxes)
-		target.draw(*h, states);
+	if (Game::IsDebugMode()) {
+		for (auto h : hitboxes)
+			target.draw(*h, states);
+		for (auto zh : zHitboxes)
+			target.draw(*zh, states);
+	}
 	
 	target.draw(sprite, states);
 }

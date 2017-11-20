@@ -10,6 +10,7 @@ Weapon::Weapon(WeaponType t)
     texture.loadFromFile(getWeaponPath(t));
 	sprite.setTexture(texture);
 	sf::RectangleShape* h = new sf::RectangleShape();
+	h->setFillColor(sf::Color(255, 255, 0, 128));
 	hitboxes.push_back(h);
 
     sprite.setOrigin(getWeaponOrigin(t));

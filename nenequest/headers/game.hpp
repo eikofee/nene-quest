@@ -30,6 +30,8 @@ class Game : public Screen {
 		void addEnemyInstance(Enemy* enemy);
 		void addPlayerInstance(Player* player);
 
+		static bool IsDebugMode();
+
     private:
         //void checkCollision(float elapsedTime, sf::Vector2u windowSize);
         //void scroll(float elapsedTime, sf::Vector2u windowSize);
@@ -68,6 +70,9 @@ class Game : public Screen {
 
         LifeBar life;
         float player_invulnerability_timer = 0;
+
+		static bool debugMode;
+		void manageMetaInputs(sf::Event e, sf::Keyboard::Key toggleDebug);
 };
 
 #endif

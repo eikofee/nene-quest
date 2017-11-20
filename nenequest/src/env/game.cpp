@@ -7,6 +7,8 @@
 using namespace std;
 using namespace sf;
 
+bool Game::debugMode;
+
 Game::Game() {
 	// Final game objects (should only include Game, Players, LevelManagers and other UI events)
 	this->manager = new LevelManager(this);
@@ -14,6 +16,7 @@ Game::Game() {
 	this->parser->setLevelManager(this->manager);
 	this->parser->initialize();
 	this->parser->setLevelFilesPath("levels");
+	debugMode = false;
 }
 
 int Game::run(RenderWindow &app) {
@@ -68,6 +71,8 @@ int Game::run(RenderWindow &app) {
 					Keyboard::D,
 					Keyboard::H
 				);
+
+			manageMetaInputs(event, Keyboard::T);
 		}
 
 		World::setElapsedTime(elapsedTime);
@@ -135,6 +140,13 @@ void Game::manageInputs(
 			this->players.at(id)->moving_left = false;
 		else if (e.key.code == attack)
 			this->players.at(id)->setShootingState(false);
+	}
+}
+
+void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
+	if (e.type == Event::KeyPressed) {
+		if (e.key.code == toggleDebug)
+			debugMode = !debugMode;
 	}
 }
 
@@ -482,3 +494,6 @@ void Game::addPlayerInstance(Player* player) {
 	World::addEntity(player, true);
 }
 
+bool Game::IsDebugMode() {
+	return debugMode;
+}
