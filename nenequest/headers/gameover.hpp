@@ -12,14 +12,13 @@ class GameOver : public Screen {
         static const std::string GAMEOVER_PATH;
         static const std::string GAMEOVER_EXT;
         std::vector<sf::Sprite*> playersDown;
+		std::vector<sf::Sprite*> letters;
         sf::Color m_bgcolor = sf::Color(62, 64, 121);
         sf::Clock clockSprite;
         sf::Clock clockText;
         float textLimitY;
-        std::vector<sf::Sprite*> letters;
         bool textFinished = false;
-		int ww;
-		int h;
+		sf::Vector2f lettersSize;
     public:
         GameOver(GameMode mode);
         virtual int run(sf::RenderWindow &app);

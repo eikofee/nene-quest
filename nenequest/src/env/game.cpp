@@ -18,13 +18,11 @@ Game::Game() {
 
 int Game::run(RenderWindow &app) {
 	Event event;
-	bool running = true;
     Background background = Background(app.getSize());
 	this->manager->setBackground(&background);
 
 	//Load Level
 	this->parser->parseFile("level0.nnq");
-
 
 	//Testing objects////////////
     bridge = new BridgePit(300, app.getSize().y-background.getSkyHeight(), app.getSize().y);
@@ -48,13 +46,28 @@ int Game::run(RenderWindow &app) {
 	Clock clock;
 
     // ---------------- Main Loop ----------------
-	while(running) {
+	while(true) {
 		float elapsedTime = clock.restart().asMilliseconds();
+
 		while(app.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				return (-1);
+			manageInputs(event, PlayerID::PLAYER1,
+				Keyboard::Up,
+				Keyboard::Down,
+				Keyboard::Left,
+				Keyboard::Right,
+				Keyboard::Space
+			);
 
-			manageInputs(event);
+			if (this->players.size() == 2)
+				manageInputs(event, PlayerID::PLAYER2,
+					Keyboard::Z,
+					Keyboard::S,
+					Keyboard::Q,
+					Keyboard::D,
+					Keyboard::H
+				);
 		}
 
 		World::setElapsedTime(elapsedTime);
@@ -62,18 +75,14 @@ int Game::run(RenderWindow &app) {
 
 		//scroll(elapsedTime, app.getSize());
 		
-
-		for(Player* p : players){
+		for (Player* p : this->players) {
 			p->update(elapsedTime);
 			//playerMove(p, elapsedTime, app.getSize(), background.getSkyHeight());
 		}
 
-		manager->update();
-
+		this->manager->update();
 		background.update();
 		//arrow.update(elapsedTime);
-
-
 		//checkCollision(elapsedTime, app.getSize());
 
 		app.clear(Color::White);
@@ -89,106 +98,44 @@ int Game::run(RenderWindow &app) {
 	return (-1);
 }
 
-void Game::manageInputs(sf::Event e) {
-	auto players = World::getPlayers();
-	switch (e.type){
-		case (Event::KeyPressed):
-			switch (e.key.code) {
-				case Keyboard::Up:
-					players.at(0)->moving_up = true;
-				break;
-				case Keyboard::Down:
-					players.at(0)->moving_down = true;
-				break;
-				case Keyboard::Right:
-					players.at(0)->moving_right = true;
-				break;
-				case Keyboard::Left:
-					players.at(0)->moving_left = true;
-				break;
-				case Keyboard::Space:
-					players.at(0)->attack();
-					if (!players.at(0)->isShooting())
-						players.at(0)->fireArrow();
-				break;
-				default:
-				break;
-			}
-		break;
-		case (Event::KeyReleased):
-			switch (e.key.code) {
-				case Keyboard::Up:
-					players.at(0)->moving_up = false;
-				break;
-				case Keyboard::Down:
-					players.at(0)->moving_down = false;
-				break;
-				case Keyboard::Right:
-					players.at(0)->moving_right = false;
-				break;
-				case Keyboard::Left:
-					players.at(0)->moving_left = false;
-				break;
-				case Keyboard::Space:
-					players.at(0)->setShootingState(false);
-				default:
-				break;
-			}
-		break;
-		default:
-		break;
-	}
-	
-	if (players.size() == 2)
-		switch (e.type)
-		{
-		case (Event::KeyPressed):
-			switch (e.key.code) {
-			case Keyboard::Z:
-				players.at(1)->moving_up = true;
-				break;
-			case Keyboard::S:
-				players.at(1)->moving_down = true;
-				break;
-			case Keyboard::D:
-				players.at(1)->moving_right = true;
-				break;
-			case Keyboard::Q:
-				players.at(1)->moving_left = true;
-				break;
-			case Keyboard::A:
-				players.at(1)->attack();
-				if (!players.at(1)->isShooting())
-					players.at(1)->fireArrow();
-				break;
-			default:
-				break;
-			}
-			break;
-		case (Event::KeyReleased):
-			switch (e.key.code) {
-			case Keyboard::Z:
-				players.at(1)->moving_up = false;
-				break;
-			case Keyboard::S:
-				players.at(1)->moving_down = false;
-				break;
-			case Keyboard::D:
-				players.at(1)->moving_right = false;
-				break;
-			case Keyboard::Q:
-				players.at(1)->moving_left = false;
-				break;
-			case Keyboard::A:
-				players.at(1)->setShootingState(false);
-				break;
-			default:
-				break;
-			}
-			break;
-		default:
-			break;
+// Temporary solution for input management
+void Game::manageInputs(
+	sf::Event e,
+	PlayerID id,
+	Keyboard::Key up,
+	Keyboard::Key down,
+	Keyboard::Key left,
+	Keyboard::Key right,
+	Keyboard::Key attack) {
+
+	this->players = World::getPlayers();
+	if (e.type == Event::KeyPressed) {
+		if (e.key.code == up)
+			this->players.at(id)->moving_up = true;
+		else if (e.key.code == down)
+				this->players.at(id)->moving_down = true;
+		else if (e.key.code == right)
+			this->players.at(id)->moving_right = true;
+		else if (e.key.code == left)
+			this->players.at(id)->moving_left = true;
+		else if (e.key.code == attack) {
+			this->players.at(id)->attack();
+			if (!this->players.at(id)->isShooting())
+				this->players.at(id)->fireArrow();
 		}
+	}
+	else if (e.type == Event::KeyReleased) {
+		if (e.key.code == up)
+			this->players.at(id)->moving_up = false;
+		else if (e.key.code == down)
+			this->players.at(id)->moving_down = false;
+		else if (e.key.code == right)
+			this->players.at(id)->moving_right = false;
+		else if (e.key.code == left)
+			this->players.at(id)->moving_left = false;
+		else if (e.key.code == attack)
+			this->players.at(id)->setShootingState(false);
+	}
 }
 
 //Collision detection
@@ -466,28 +413,27 @@ void Game::manageInputs(sf::Event e) {
 
     list<Entity*> entities;
 
-    for(BonusHp* var : bonuses_hp){
+    for(BonusHp* var : bonuses_hp)
         entities.push_back((Entity*)var);
-    }
-    for(ItemWeapon* var : item_weapons){
+
+    for(ItemWeapon* var : item_weapons)
         entities.push_back((Entity*)var);
-    }
+
     /*for(Enemy* var : enemies){
         entities.push_back((Entity*)var);
         if(var->getEnemyType() == Enemy_Dragon)
             for(Flame* flame : ((Dragon*)var)->getFlames())
                 entities.push_back((Entity*)flame);
     }*/
-    for(Player* var : players){
+    for(Player* var : players)
         entities.push_back((Entity*)var);
-    }
-    for(BreakableObject* var : breakable_objects){
+
+    for(BreakableObject* var : breakable_objects)
         entities.push_back((Entity*)var);
-    }
+
     for(Player* player : players)
         for(Arrow* arrow : player->getArrows())
             entities.push_back((Entity*)arrow);
-
 
     entities.sort(cmp);
 
@@ -496,30 +442,34 @@ void Game::manageInputs(sf::Event e) {
 	
 	for (auto e : World::getEntities())
 		app->draw(*e);
-
  }
 
  bool Game::cmp(Entity* a, Entity* d) {
-    if(a->getDrawDepth() >= d->getDrawDepth()) {
+    if(a->getDrawDepth() >= d->getDrawDepth())
         return false;
-    }
     return true;
 }
 
-void Game::dropItem(Bonus* drop, Vector2f dropPosition){
-
-    if(drop->getBonusType() == Item_Onigiri)
-        bonuses_hp.push_back(new BonusHp(BonusHp::ONIGIRI, dropPosition));
-    else{
-        if(drop->getBonusType() == Item_Axe)
-            item_weapons.push_back(new ItemWeapon(Axe, dropPosition));
-        else if(drop->getBonusType() == Item_Bow)
-            item_weapons.push_back(new ItemWeapon(Bow, dropPosition));
-        else if(drop->getBonusType() == Item_Greatsword)
-            item_weapons.push_back(new ItemWeapon(GreatSword, dropPosition));
-        else if(drop->getBonusType() == Item_Sword)
-            item_weapons.push_back(new ItemWeapon(Sword, dropPosition));
-    }
+void Game::dropItem(Bonus* drop, Vector2f dropPosition) {
+	switch (drop->getBonusType()) {
+		case Item_Onigiri:
+			bonuses_hp.push_back(new BonusHp(BonusHp::ONIGIRI, dropPosition));
+			break;
+		case Item_Axe:
+			item_weapons.push_back(new ItemWeapon(Axe, dropPosition));
+			break;
+		case Item_Bow:
+			item_weapons.push_back(new ItemWeapon(Bow, dropPosition));
+			break;
+		case Item_Greatsword:
+			item_weapons.push_back(new ItemWeapon(GreatSword, dropPosition));
+			break;
+		case Item_Sword:
+			item_weapons.push_back(new ItemWeapon(Sword, dropPosition));
+			break;
+		default:
+			break;
+	}
 }
 
 //Function calls for levelManager

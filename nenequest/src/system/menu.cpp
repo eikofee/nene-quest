@@ -18,7 +18,6 @@ short int Menu::validateMenu(short int menuIndex) {
 
 int Menu::run(RenderWindow &app) {
 	Event event;
-	bool running = true;
 	int menuIndex = 0;
 
 	// ---------------- Logo ----------------
@@ -29,6 +28,7 @@ int Menu::run(RenderWindow &app) {
     Sprite logo(logoTex);
     logo.setOrigin(Vector2f(logoTex.getSize().x/2, logoTex.getSize().y/2));
     logo.setPosition(app.getSize().x/2, app.getSize().y/2);
+	logo.setScale(1.45, 1.45);
     logo.move(0, -200);
 
     Font font;
@@ -38,25 +38,20 @@ int Menu::run(RenderWindow &app) {
     // ---------------- Menu ----------------
     vector<Text*> menuButtons;
 
-    Text onePlayerText;
-    onePlayerText.setString(L"ひとりであそぶ");
+    Text onePlayerText(L"\u3072\u3068\u308A\u3067\u3042\u305D\u3076", font);
     menuButtons.push_back(&onePlayerText);
 
-    Text twoPlayerText;
-    twoPlayerText.setString(L"ふたりであそぶ");
+    Text twoPlayerText(L"\u3075\u305F\u308A\u3067\u3042\u305D\u3076", font);
     menuButtons.push_back(&twoPlayerText);
 
-    Text exitText;
-    exitText.setString(L"おわる");
+    Text exitText(L"\u304A\u308F\u308B", font);
     menuButtons.push_back(&exitText);
 
     for (unsigned int i=0; i<menuButtons.size(); i++) {
         Text* t = menuButtons[i];
-        t->setFont(font);
         t->setCharacterSize(this->TEXT_SIZE);
         t->setPosition(logo.getPosition());
-        t->move(-300, 300);
-        t->move(0, i*100);
+        t->move(-300, 300+i*100);
         t->setFillColor(menuTextColor);
         t->setStyle(Text::Bold);
     }
@@ -72,11 +67,10 @@ int Menu::run(RenderWindow &app) {
     selector.setPosition(onePlayerText.getPosition());
 
     // ---------------- Main Loop ----------------
-	while(running) {
-
+	while (true) {
         Vector2i localPosition = Mouse::getPosition(app);
 
-		while(app.pollEvent(event)) {
+		while (app.pollEvent(event)) {
 			if (event.type == Event::Closed)
 				return (-1);
 
@@ -109,7 +103,7 @@ int Menu::run(RenderWindow &app) {
                 return validateMenu(menuIndex);
 		}
 
-		app.clear(Color(252, 251, 253, 255));
+		app.clear(Color::White);
 		app.draw(logo);
 		app.draw(onePlayerText);
 		app.draw(twoPlayerText);

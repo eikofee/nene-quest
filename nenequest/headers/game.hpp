@@ -30,7 +30,6 @@ class Game : public Screen {
 		void addEnemyInstance(Enemy* enemy);
 		void addPlayerInstance(Player* player);
 
-
     private:
         //void checkCollision(float elapsedTime, sf::Vector2u windowSize);
         //void scroll(float elapsedTime, sf::Vector2u windowSize);
@@ -39,8 +38,15 @@ class Game : public Screen {
         void drawWithDepth(sf::RenderWindow* app);
         static bool cmp(Entity* a, Entity* d);
         void dropItem(Bonus* drop, sf::Vector2f dropPosition);
-		void manageInputs(sf::Event e);
-
+		void manageInputs(
+			sf::Event e,
+			PlayerID id,
+			sf::Keyboard::Key up,
+			sf::Keyboard::Key down,
+			sf::Keyboard::Key left,
+			sf::Keyboard::Key right,
+			sf::Keyboard::Key attack
+		);
 
 		//Final objetcs
 		LevelManager* manager;
