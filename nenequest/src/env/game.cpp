@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include <time.h>
+#include <configManager.h>
+#include <configParser.h>
+#include <configParameter.h>
 
 using namespace std;
 using namespace sf;
@@ -17,12 +20,55 @@ Game::Game() {
 	this->parser->initialize();
 	this->parser->setLevelFilesPath("levels");
 	debugMode = false;
+
+	//Config loader
+	this->configManager = new ConfigManager();
+	this->configParser = new ConfigParser();
+	this->configParser->setConfigManager(this->configManager);
+	this->configParser->initialize();
 }
 
 int Game::run(RenderWindow &app) {
 	Event event;
     Background background = Background(app.getSize());
 	this->manager->setBackground(&background);
+
+	//Load settings
+	this->configParser->parseFile("config.ini");
+	//Bind keys
+	Keyboard::Key kbDebugMode;
+	Keyboard::Key kbPause;
+
+	Keyboard::Key kbPlayerOneLeft;
+	Keyboard::Key kbPlayerOneRight;
+	Keyboard::Key kbPlayerOneUp;
+	Keyboard::Key kbPlayerOneDown;
+	Keyboard::Key kbPlayerOneAttack;
+	Keyboard::Key kbPlayerOneJump;
+
+	Keyboard::Key kbPlayerTwoLeft;
+	Keyboard::Key kbPlayerTwoRight;
+	Keyboard::Key kbPlayerTwoUp;
+	Keyboard::Key kbPlayerTwoDown;
+	Keyboard::Key kbPlayerTwoAttack;
+	Keyboard::Key kbPlayerTwoJump;
+
+	this->configManager->getParameter("toggleDebugMode")->getParameter(&kbDebugMode);
+	this->configManager->getParameter("togglePause")->getParameter(&kbPause);
+
+	this->configManager->getParameter("playerOneMoveLeft")->getParameter(&kbPlayerOneLeft);
+	this->configManager->getParameter("playerOneMoveRight")->getParameter(&kbPlayerOneRight);
+	this->configManager->getParameter("playerOneMoveUp")->getParameter(&kbPlayerOneUp);
+	this->configManager->getParameter("playerOneMoveDown")->getParameter(&kbPlayerOneDown);
+	this->configManager->getParameter("playerOneAttack")->getParameter(&kbPlayerOneAttack);
+	this->configManager->getParameter("playerOneJump")->getParameter(&kbPlayerOneJump);
+
+	this->configManager->getParameter("playerTwoMoveLeft")->getParameter(&kbPlayerTwoLeft);
+	this->configManager->getParameter("playerTwoMoveRight")->getParameter(&kbPlayerTwoRight);
+	this->configManager->getParameter("playerTwoMoveUp")->getParameter(&kbPlayerTwoUp);
+	this->configManager->getParameter("playerTwoMoveDown")->getParameter(&kbPlayerTwoDown);
+	this->configManager->getParameter("playerTwoAttack")->getParameter(&kbPlayerTwoAttack);
+	this->configManager->getParameter("playerTwoJump")->getParameter(&kbPlayerTwoJump);
 
 	//Load Level
 	this->parser->parseFile("level0.nnq");
@@ -56,23 +102,23 @@ int Game::run(RenderWindow &app) {
 			if (event.type == Event::Closed)
 				return (-1);
 			manageInputs(event, PlayerID::PLAYER1,
-				Keyboard::Up,
-				Keyboard::Down,
-				Keyboard::Left,
-				Keyboard::Right,
-				Keyboard::Space
+				kbPlayerOneUp,
+				kbPlayerOneDown,
+				kbPlayerOneLeft,
+				kbPlayerOneRight,
+				kbPlayerOneJump
 			);
 
 			if (this->players.size() == 2)
 				manageInputs(event, PlayerID::PLAYER2,
-					Keyboard::Z,
-					Keyboard::S,
-					Keyboard::Q,
-					Keyboard::D,
-					Keyboard::H
+					kbPlayerTwoUp,
+					kbPlayerTwoDown,
+					kbPlayerTwoLeft,
+					kbPlayerTwoRight,
+					kbPlayerTwoJump
 				);
 
-			manageMetaInputs(event, Keyboard::T);
+			manageMetaInputs(event, kbDebugMode);
 		}
 
 		World::setElapsedTime(elapsedTime);

@@ -22,6 +22,9 @@
 #include "../headers/bridgePit.hpp"
 
 #include "../headers/levelParser.hpp"
+
+class ConfigManager;
+class ConfigParser;
 class LevelManager;
 class Game : public Screen {
     public:
@@ -53,6 +56,8 @@ class Game : public Screen {
 		//Final objetcs
 		LevelManager* manager;
 		LevelParser* parser;
+		ConfigManager* configManager;
+		ConfigParser* configParser;
 
         BreakableObject* getCollidingObject(Player* p);
 

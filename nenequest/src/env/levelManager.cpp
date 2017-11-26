@@ -47,7 +47,7 @@ void LevelManager::startLevel(int playerCount) {
 		game->addPlayerInstance(player);
 	};
 	if (playerCount >= 2) {
-		Player* player = new Player(new Weapon(Sword), sf::Vector2f(70, 820), true);
+		Player* player = new Player(new Weapon(Sword), sf::Vector2f(70, 620), true);
 		game->addPlayerInstance(player);
 	}
 }
