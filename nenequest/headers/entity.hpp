@@ -29,6 +29,7 @@ class Entity : public sf::Drawable
 		virtual void update(float elapsedTime);
 		virtual bool isDead();
 		float distanceToPosition(sf::Vector2f position);
+		bool isIgnoringDepthOnRendering();
 
 
 		
@@ -41,6 +42,7 @@ class Entity : public sf::Drawable
 		void updateAutoHitboxPosition();
 		void updateAutoSpritePosition();
 		sf::Vector2f speed; //not too fond of the name
+		bool ignoreDepthOnRendering = false;
 
 	private:
 

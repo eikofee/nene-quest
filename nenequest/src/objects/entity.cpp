@@ -82,3 +82,7 @@ bool Entity::isDead() {
 float Entity::distanceToPosition(sf::Vector2f position) {
 	return sqrtf(powf(this->getPosition().x - position.x, 2) + powf(this->getPosition().y - position.y, 2));
 }
+
+bool Entity::isIgnoringDepthOnRendering() {
+	return ignoreDepthOnRendering;
+}

@@ -19,6 +19,7 @@ BridgePit::BridgePit(float x, float groundHeight, unsigned int windowHeight)
     zHitboxes.at(1)->setPosition(x, windowHeight - y/2);
     zHitboxes.at(1)->setFillColor(Color::Black);
 
+	ignoreDepthOnRendering = true;
 }
 
 BridgePit::~BridgePit()

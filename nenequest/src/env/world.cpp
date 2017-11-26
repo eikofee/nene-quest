@@ -116,10 +116,22 @@ float World::getElapsedTime() {
 }
 
 void World::render(sf::RenderWindow &app) {
+	std::sort(entities.begin(), entities.begin() + entities.size(), sortUsingFirstZHitbox);
 	for (auto e : entities)
 		app.draw(*e);
 }
 
 std::vector<Player*> World::getPlayers() {
 	return players;
+}
+
+bool World::sortUsingFirstZHitbox(Entity* a, Entity* b) {
+	if (a->isIgnoringDepthOnRendering())
+		return true;
+	if (b->isIgnoringDepthOnRendering())
+		return false;
+
+	auto ha = a->getZHitboxes().at(0)->getPosition().y + a->getZHitboxes().at(0)->getSize().y;
+	auto hb = b->getZHitboxes().at(0)->getPosition().y + b->getZHitboxes().at(0)->getSize().y;
+	return ha < hb;
 }

@@ -26,6 +26,7 @@ private:
 	static std::vector<Entity*> World::entities;
 	static std::vector<Player*> World::players;
 	static float World::elapsedTime;
+	static bool World::sortUsingFirstZHitbox(Entity* a, Entity* b);
 };
 
 #endif
