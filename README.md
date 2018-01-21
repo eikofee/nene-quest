@@ -1,7 +1,3 @@
-# :warning: Information : the game is currently ~~ON HOLD~~
-Well we're pretty busy with the Uni *at least until January 2018*, but we might work on it every now and then. Sorry for the inconvenience.
-
-
 ![title](title.png)
 
 Reproduction of Nene Sakura's game "Nene Quest" from "New Game!!" (2nd season, episode 3) written in C++ with the SFML library.
@@ -12,13 +8,13 @@ Reproduction of Nene Sakura's game "Nene Quest" from "New Game!!" (2nd season, e
 
 ![](samples/screenshot01.png)
 
-## Our project
+## nene-quest
 
 ![](samples/screenshot02.png)
 
 # Compilation & Execution
 
-We don't have any release yet so you can only compile the project by yourself for the moment.
+We currently don't have any release yet so you have to compile the project by yourself.
 
 * Download SFML 2.4.2 : https://www.sfml-dev.org/download/sfml/2.4.2/
 
@@ -40,11 +36,3 @@ We don't have any release yet so you can only compile the project by yourself fo
   + Right-click on the `src` and `headers` folders then select "Include in the project"
   + You can navigate in the files with the "Solutions and folders" button in the right corner
   + Now, you should be able to compile the project
-
-You can ask for help in the "Issues" tab if you're having some troubles.
-
-# Collaborations
-
-You're absolutely free to contribute in any way you can, it may be in C++ Programming, 2D Graphics reproduction or anything you may come up with. Just fork the project or write yours ideas in a new Issue.
-
-Thanks ! 
