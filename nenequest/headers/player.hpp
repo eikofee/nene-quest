@@ -52,6 +52,12 @@ class Player : public Entity {
         bool is_attacking = false;
         bool animation_state = false;
 		bool is_shooting = false;
+		
+		// Weapon placement
+		int weaponXOffset;
+		int weaponYOffset;
+		int weaponXOffsetVariation;
+		int weaponYOffsetVariation;
 
         sf::Vector2f speed = sf::Vector2f(-10,0);
         std::vector<Arrow*> arrows;

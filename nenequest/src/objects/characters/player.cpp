@@ -16,10 +16,14 @@ using namespace sf;
 using namespace std;
 
 //Weapon placement - edited in Player constructor
-int weaponXOffset = 220;
-int weaponYOffset = 180;
-int weaponXOffsetVariation = 3;
-int weaponYOffsetVariation = 3;
+int weaponXOffsetP1 = 233;
+int weaponYOffsetP1 = 190;
+int weaponXOffsetVariationP1 = 2;
+int weaponYOffsetVariationP1 = 2;
+int weaponXOffsetP2 = 235;
+int weaponYOffsetP2 = 170;
+int weaponXOffsetVariationP2 = 0;
+int weaponYOffsetVariationP2 = 3;
 
 //Z Hitbox sizes
 float z_offset_x = 0.16;
@@ -41,13 +45,17 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
     if (!secondPlayer) {
         this->life = new LifeBar(PLAYER_HP, Vector2f(300,100), PlayerID::PLAYER1);
         this->texture.loadFromFile("img/player1.png");
-		weaponXOffset = 235;
-		weaponYOffset = 180;
+		this->weaponXOffset = weaponXOffsetP1;
+		this->weaponYOffset = weaponYOffsetP1;
+		this->weaponXOffsetVariation = weaponXOffsetVariationP1;
+		this->weaponYOffsetVariation = weaponYOffsetVariationP1;
     } else {
         this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), PlayerID::PLAYER2);
 		this->texture.loadFromFile("img/player2.png");
-		weaponXOffset = 240;
-		weaponYOffset = 155;
+		this->weaponXOffset = weaponXOffsetP2;
+		this->weaponYOffset = weaponYOffsetP2;
+		this->weaponXOffsetVariation = weaponXOffsetVariationP2;
+		this->weaponYOffsetVariation = weaponYOffsetVariationP2;
 	}
 
 	this->sprite.setTexture(this->texture);
@@ -70,7 +78,7 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
     updateAutoSpritePosition();
 
 	// Weapon placement
-	this->weapon->setPosition(position.x + weaponXOffset, position.y + weaponYOffset);
+	this->weapon->setPosition(position.x + this->weaponXOffset, position.y + this->weaponYOffset);
 
 	//Generate animations rects with sizes
 	vector<FloatRect> fanimationRects = { fwalk1normal, fwalk2normal, fmoddifierAttack };
@@ -108,13 +116,13 @@ void Player::attack(){
 
 void Player::equip(Weapon* w){
     this->weapon = w;
-    this->weapon->setPosition(this->getPosition().x + weaponXOffset, this->getPosition().y + weaponYOffset);
+    this->weapon->setPosition(this->getPosition().x + this->weaponXOffset, this->getPosition().y + this->weaponYOffset);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	Entity::draw(target, states);
     target.draw(*this->weapon, states);
     target.draw(*this->life, states);
+	Entity::draw(target, states);
 }
 
 IntRect IntRectAddition(IntRect a, IntRect b) {
@@ -124,14 +132,14 @@ IntRect IntRectAddition(IntRect a, IntRect b) {
 
 void Player::update_animation(){
     this->animation_state = !this->animation_state;
-	int weaponXDecal = weaponXOffset;
-	int weaponYDecal = weaponYOffset;
+	int weaponXDecal = this->weaponXOffset;
+	int weaponYDecal = this->weaponYOffset;
 	IntRect result;
     
 	if (this->animation_state) { // jambes croisees
 		result = walk2normal;
-		weaponXDecal += weaponXOffsetVariation;
-		weaponYDecal += weaponYOffsetVariation;
+		weaponXDecal += this->weaponXOffsetVariation;
+		weaponYDecal += this->weaponYOffsetVariation;
 	}
 	else {
 		result = walk1normal;

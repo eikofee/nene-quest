@@ -469,9 +469,6 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
     for(BonusHp* var : bonuses_hp)
         entities.push_back((Entity*)var);
 
-    for(ItemWeapon* var : item_weapons)
-        entities.push_back((Entity*)var);
-
     /*for(Enemy* var : enemies){
         entities.push_back((Entity*)var);
         if(var->getEnemyType() == Enemy_Dragon)
@@ -480,6 +477,9 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
     }*/
     for(Player* var : players)
         entities.push_back((Entity*)var);
+
+	for (ItemWeapon* var : item_weapons)
+		entities.push_back((Entity*)var);
 
     for(BreakableObject* var : breakable_objects)
         entities.push_back((Entity*)var);
