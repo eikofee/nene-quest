@@ -26,7 +26,7 @@ class Player : public Entity {
         void update(float elapsedTime);
 
         // Life management
-        LifeBar* getLife();
+        //LifeBar* getLife();
 
         // override
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;

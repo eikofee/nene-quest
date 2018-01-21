@@ -86,3 +86,18 @@ float Entity::distanceToPosition(sf::Vector2f position) {
 bool Entity::isIgnoringDepthOnRendering() {
 	return ignoreDepthOnRendering;
 }
+
+int Entity::getHealth() {
+	return health;
+}
+
+void Entity::alterHealth(int value, bool relative) {
+	if (relative)
+		health += value;
+	else
+		health = value;
+}
+
+void Entity::handleDeath() {
+	//if (health <= 0) { do something }
+} 

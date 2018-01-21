@@ -125,11 +125,6 @@ int Game::run(RenderWindow &app) {
 		World::updateEntities();
 
 		//scroll(elapsedTime, app.getSize());
-		
-		for (Player* p : this->players) {
-			p->update(elapsedTime);
-			//playerMove(p, elapsedTime, app.getSize(), background.getSkyHeight());
-		}
 
 		this->manager->update();
 		background.update();

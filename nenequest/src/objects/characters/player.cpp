@@ -15,40 +15,81 @@
 using namespace sf;
 using namespace std;
 
+//Weapon placement - edited in Player constructor
+int weaponXOffset = 220;
+int weaponYOffset = 180;
+int weaponXOffsetVariation = 3;
+int weaponYOffsetVariation = 3;
+
+//Z Hitbox sizes
+float z_offset_x = 0.16;
+float z_offset_y = 0.8;
+float z_width = 0.5;
+float z_height = 0.2;
+
+//Sprite animation tiles
+FloatRect fwalk1normal = FloatRect(0, 0, 0.5f, 0.333333f);
+FloatRect fwalk2normal = FloatRect(0, 0.333333f, 0.5f, 0.333333f);
+FloatRect fmoddifierAttack = FloatRect(0.5f, 0, 0, 0);
+IntRect walk1normal;
+IntRect walk2normal;
+IntRect moddifierAttack;
+
 Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 
     this->weapon = w;
     if (!secondPlayer) {
         this->life = new LifeBar(PLAYER_HP, Vector2f(300,100), PlayerID::PLAYER1);
         this->texture.loadFromFile("img/player1.png");
+		weaponXOffset = 235;
+		weaponYOffset = 180;
     } else {
         this->life = new LifeBar(PLAYER_HP, Vector2f(800,100), PlayerID::PLAYER2);
 		this->texture.loadFromFile("img/player2.png");
-    }
-	/////////////////////
-	// Z HITBOX SIZES  //
-	/////////////////////
-	float z_offset_x = 0.16;
-	float z_offset_y = 0.8;
-	float z_width = 0.5;
-	float z_height = 0.2;
-	/////////////////////
+		weaponXOffset = 240;
+		weaponYOffset = 155;
+	}
+
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(IntRect(0, 0, this->texture.getSize().x/2, this->texture.getSize().y/3));
+
+	//Hitboxes + debug coloring
 	sf::RectangleShape* h = new sf::RectangleShape();
-	h->setFillColor(sf::Color(255, 0, 0, 128));
+	h->setFillColor(sf::Color(255, 0, 0, 128));	
 	sf::RectangleShape* zh = new sf::RectangleShape();
 	zh->setFillColor(sf::Color(0, 0, 255, 128));
+	
 	hitboxes.push_back(h);
 	zHitboxes.push_back(zh);
+
 	this->hitboxes.at(0)->setPosition(position);
 	this->hitboxes.at(0)->setSize(Vector2f(this->sprite.getLocalBounds().width, this->sprite.getLocalBounds().height));
 	this->zHitboxes.at(0)->setPosition(position + sf::Vector2f(this->sprite.getLocalBounds().width * z_offset_x, this->sprite.getLocalBounds().height * z_offset_y));
 	this->zHitboxes.at(0)->setSize(Vector2f(this->sprite.getLocalBounds().width * z_width, this->sprite.getLocalBounds().height * z_height));
+
     updateAutoSpritePosition();
 
 	// Weapon placement
-    this->weapon->setPosition(position.x + 220, position.y + 180);
+	this->weapon->setPosition(position.x + weaponXOffset, position.y + weaponYOffset);
+
+	//Generate animations rects with sizes
+	vector<FloatRect> fanimationRects = { fwalk1normal, fwalk2normal, fmoddifierAttack };
+	vector<IntRect> animationRects;
+	int sizeX = texture.getSize().x;
+	int sizeY = texture.getSize().y;
+	for each (FloatRect rect in fanimationRects)
+	{
+		IntRect r;
+		r.left = rect.left * sizeX;
+		r.width = rect.width * sizeX;
+		r.top = rect.top * sizeY;
+		r.height = rect.height * sizeY;
+		animationRects.push_back(r);
+	}
+
+	walk1normal = animationRects.at(0);
+	walk2normal = animationRects.at(1);
+	moddifierAttack = animationRects.at(2);
 }
 
 Player::~Player(){
@@ -67,61 +108,63 @@ void Player::attack(){
 
 void Player::equip(Weapon* w){
     this->weapon = w;
-    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
+    this->weapon->setPosition(this->getPosition().x + weaponXOffset, this->getPosition().y + weaponYOffset);
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	Entity::draw(target, states);
-    //target.draw(this->sprite, states);
     target.draw(*this->weapon, states);
     target.draw(*this->life, states);
 }
 
-void Player::update_animation(){
-    this->animation_state = !this->animation_state;
-    if (this->isJumping())
-        return;
-
-    float size_x = texture.getSize().x;
-    float size_y = texture.getSize().y;
-
-    int top_left_x, bottom_right_x, top_left_y, bottom_right_y;
-
-    if (is_attacking) {
-        top_left_x = size_x/2;
-        bottom_right_x = size_x;
-    } else {
-        top_left_x = 0;
-        bottom_right_x = size_x/2;
-    }
-
-    if (this->animation_state) { // jambes croisees
-        top_left_y = size_y/3;
-        bottom_right_y = size_y/3;
-    } else {
-        top_left_y = 0;
-        bottom_right_y = size_y/3;
-    }
-
-    sprite.setTextureRect(IntRect(top_left_x, top_left_y, bottom_right_x, bottom_right_y));
+IntRect IntRectAddition(IntRect a, IntRect b) {
+	IntRect result = IntRect(a.left + b.left, a.top + b.top, a.width + b.width, a.height + b.height);
+	return result;
 }
 
+void Player::update_animation(){
+    this->animation_state = !this->animation_state;
+	int weaponXDecal = weaponXOffset;
+	int weaponYDecal = weaponYOffset;
+	IntRect result;
+    
+	if (this->animation_state) { // jambes croisees
+		result = walk2normal;
+		weaponXDecal += weaponXOffsetVariation;
+		weaponYDecal += weaponYOffsetVariation;
+	}
+	else {
+		result = walk1normal;
+	}
+	
+	if (this->isJumping())
+        return;	// result = IntRectAddition(result, moddifierJump);
+	
+	if (is_attacking)
+		result = IntRectAddition(result, moddifierAttack);
+
+    sprite.setTextureRect(result);
+	this->weapon->setPosition(this->getPosition().x + weaponXDecal, this->getPosition().y + weaponYDecal);
+}
+
+
+// Called every frame by manageMovements->fixPosition->move
 void Player::move(Vector2f g_speed){
 	float elapsedTime = World::getElapsedTime();
-	//float elapsedTime = 1;
     if (clock.getElapsedTime().asSeconds() > this->ANIMATION_DELAY) {
         update_animation();
         clock.restart();
     }
 
 	Entity::move(g_speed);
-	sf::Vector2f v = sf::Vector2f(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
+	//sf::Vector2f v = sf::Vector2f(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
 	this->getWeapon()->move(g_speed);
 }
 
-LifeBar* Player::getLife(){
-    return this->life;
-}
+//Deprecated : use Entity->get/alterHealth()
+//LifeBar* Player::getLife(){
+//    return this->life;
+//}
 
 bool Player::isJumping(){
      return this->is_jumping;
@@ -133,11 +176,11 @@ void Player::toggleJump(){
 
 void Player::setPosition(float x, float y){
 	Entity::setPosition(x, y);
-    this->weapon->setPosition(this->getPosition().x + 220, this->getPosition().y + 180);
+    this->weapon->setPosition(this->getPosition().x + weaponXOffset, this->getPosition().y + weaponYOffset);
 }
 
 void Player::fireArrow(){
-    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + 220, this->getPosition().y + 180), this->getDepth()));
+    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + weaponXOffset, this->getPosition().y + weaponYOffset), this->getDepth()));
 	setShootingState(true);
 }
 
@@ -168,6 +211,7 @@ void Player::manageMovements() {
 	this->fixPosition();
 }
 
+//TODO : remove hardcoded value for cute ones
 sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
 	Vector2f result = Vector2f(movement.x * World::getElapsedTime(), movement.y * World::getElapsedTime());
 	if (this->hitboxes.at(0)->getGlobalBounds().left + result.x < 0)
@@ -191,6 +235,7 @@ sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
 	return result;
 }
 
+//TODO : remove hardcoded value for cute ones
 void Player::fixPosition() {
 	sf::FloatRect bounds = this->hitboxes.at(0)->getGlobalBounds();
 	sf::Vector2f v = Vector2f(0, 0);

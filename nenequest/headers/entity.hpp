@@ -30,7 +30,9 @@ class Entity : public sf::Drawable
 		virtual bool isDead();
 		float distanceToPosition(sf::Vector2f position);
 		bool isIgnoringDepthOnRendering();
-
+		int getHealth();
+		void alterHealth(int value, bool relative);
+		virtual void handleDeath();
 
 		
 	protected:
@@ -43,9 +45,9 @@ class Entity : public sf::Drawable
 		void updateAutoSpritePosition();
 		sf::Vector2f speed; //not too fond of the name
 		bool ignoreDepthOnRendering = false;
+		int health;
 
 	private:
-
 };
 
 #endif // ENTITY_H
