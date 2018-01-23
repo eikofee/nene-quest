@@ -19,7 +19,12 @@ class Arrow : public Projectile {
         bool is_dead = false;
         bool is_dying = false;
         float lifespan = 0;
-        float gravity = 0.002;
+        float gravity = 80;
+		float curveTime = 1;
+		float currentCurveTime = -4;
+		float highDeadzoneStart = 0.33f;
+		float highDeadzoneEnd = 0.66f;
+
 
         sf::Texture damage_texture;
         sf::Sprite damage_sprite;

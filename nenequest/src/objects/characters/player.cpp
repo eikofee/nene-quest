@@ -123,6 +123,10 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(*this->weapon, states);
     target.draw(*this->life, states);
 	Entity::draw(target, states);
+	for each (Entity* var in arrows)
+	{
+		target.draw(*var, states);
+	}
 }
 
 IntRect IntRectAddition(IntRect a, IntRect b) {
