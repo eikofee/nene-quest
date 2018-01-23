@@ -14,6 +14,7 @@ Weapon::Weapon(WeaponType t)
 	hitboxes.push_back(h);
 
     sprite.setOrigin(getWeaponOrigin(t));
+	h->setOrigin(getWeaponOrigin(t));
     updateAutoHitboxSize();
     updateAutoHitboxPosition();
 

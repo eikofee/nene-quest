@@ -65,12 +65,12 @@ void Arrow::update(float elapsedTime){
 		
 		this->setPosition(initial_location.x + speed.x * lifespan, initial_location.y + speed.y * (sin((lifespan / curveTime) * M_PI) /*+ sin(curveCappedValue * M_PI)*/));
 		zHitboxes.at(0)->setPosition(getPosition().x, initial_location.y);
-		sprite.setRotation(- 30 + lifespan * 60);
+		sprite.setRotation(- 30 + lifespan * 60);		// rotation start + (rotation end - rotation start) 
 		hitboxes.at(0)->setRotation(sprite.getRotation());
 		if (lifespan >= highDeadzoneStart * curveTime && lifespan <= highDeadzoneEnd * curveTime)
-			zHitboxes.at(0)->setFillColor(sf::Color(255, 128, 255, 128));
+			zHitboxes.at(0)->setFillColor(sf::Color(255, 128, 255, 128));	//pink
 		else
-			zHitboxes.at(0)->setFillColor(sf::Color(0, 0, 255, 128));
+			zHitboxes.at(0)->setFillColor(sf::Color(0, 0, 255, 128));	//blue
 
 		if (lifespan >= curveTime)
 			is_dead = true;
@@ -80,7 +80,7 @@ void Arrow::update(float elapsedTime){
             lifespan = 0;
         lifespan-= elapsedTime;
 
-        if(lifespan < -150)
+        if(lifespan < -150)	//???
             is_dead = true;
     }
 }
