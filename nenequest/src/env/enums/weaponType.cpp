@@ -2,17 +2,31 @@
 #include <SFML/Graphics.hpp>
 
 sf::Vector2f getWeaponOrigin(WeaponType w) {
-    switch (w) {
-        case Bow:
-            break;
-        case Axe:
-            return sf::Vector2f(90,190);
-        case Sword:
-            return sf::Vector2f(100,270);
-        case GreatSword:
-            return sf::Vector2f(100,260);
-    }
-    return sf::Vector2f(1,1);
+	switch (w) {
+	case Bow:
+		break;
+	case Axe:
+		return sf::Vector2f(0, 190);
+	case Sword:
+		return sf::Vector2f(100, 270);
+	case GreatSword:
+		return sf::Vector2f(100, 260);
+	}
+	return sf::Vector2f(1, 1);
+}
+
+sf::Vector2f getWeaponOffset(WeaponType w) {
+	switch (w) {
+	case Bow:
+		break;
+	case Axe:
+		return sf::Vector2f(-90, 0);	//90
+	case Sword:
+		return sf::Vector2f(100, 270);	//todo
+	case GreatSword:
+		return sf::Vector2f(100, 260);	//todo
+	}
+	return sf::Vector2f(1, 1);
 }
 
 std::string getWeaponPath(WeaponType w) {

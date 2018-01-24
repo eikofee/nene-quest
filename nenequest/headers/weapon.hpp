@@ -5,16 +5,20 @@
 #include <entity.hpp>
 #include <weaponType.hpp>
 #include <string>
+using namespace sf;
 
 class Weapon : public Entity {
     public :
         Weapon(WeaponType t);
         int getDamage();
         WeaponType getWeaponType();
+		void Animate(float lerp);
+		void setPosition(float x, float y);
 
     private :
         WeaponType type;
         int damage;
+
 };
 
 #endif

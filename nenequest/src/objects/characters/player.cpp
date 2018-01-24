@@ -109,9 +109,12 @@ Weapon* Player::getWeapon(){
 }
 
 void Player::attack(){
-    this->is_attacking = true;
+	if (is_attacking)
+		return;
+	
+	this->is_attacking = true;
+	currentAttackTime = attackTime;
     update_animation();
-    this->is_attacking = false;
 }
 
 void Player::equip(Weapon* w){
@@ -199,7 +202,16 @@ void Player::fireArrow(){
 void Player::update(float elapsedTime){
 	this->cleanArrows(elapsedTime);
 	this->manageMovements();
-}
+
+	weapon->Animate(currentAttackTime / attackTime);
+	if (currentAttackTime > 0) {
+		currentAttackTime -= elapsedTime;
+	}
+	else {
+		is_attacking = false;
+		currentAttackTime = 0;
+	}
+}	
 
 void Player::manageMovements() {
 	Vector2f finalMovement = Vector2f(0, 0);

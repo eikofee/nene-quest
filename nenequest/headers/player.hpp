@@ -52,6 +52,8 @@ class Player : public Entity {
         bool is_attacking = false;
         bool animation_state = false;
 		bool is_shooting = false;
+		float attackTime = 0.1f;
+		float currentAttackTime = 0;
 		
 		// Weapon placement
 		int weaponXOffset;

@@ -166,8 +166,8 @@ void Game::manageInputs(
 			this->players.at(id)->moving_left = true;
 		else if (e.key.code == attack) {
 			this->players.at(id)->attack();
-			if (!this->players.at(id)->isShooting())
-				this->players.at(id)->fireArrow();
+			/*if (!this->players.at(id)->isShooting())
+				this->players.at(id)->fireArrow();*/
 		}
 	}
 	else if (e.type == Event::KeyReleased) {
