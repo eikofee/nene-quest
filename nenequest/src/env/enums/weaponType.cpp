@@ -8,11 +8,11 @@ sf::Vector2f getWeaponOrigin(WeaponType w) {
 	case Axe:
 		return sf::Vector2f(0, 190);
 	case Sword:
-		return sf::Vector2f(100, 270);
+		return sf::Vector2f(0, 270);
 	case GreatSword:
-		return sf::Vector2f(100, 260);
+		return sf::Vector2f(0, 260);
 	}
-	return sf::Vector2f(1, 1);
+	return sf::Vector2f(0, 0);
 }
 
 sf::Vector2f getWeaponOffset(WeaponType w) {
@@ -20,13 +20,13 @@ sf::Vector2f getWeaponOffset(WeaponType w) {
 	case Bow:
 		break;
 	case Axe:
-		return sf::Vector2f(-90, 0);	//90
+		return sf::Vector2f(-90, 0);
 	case Sword:
-		return sf::Vector2f(100, 270);	//todo
+		return sf::Vector2f(-100, 0);
 	case GreatSword:
-		return sf::Vector2f(100, 260);	//todo
+		return sf::Vector2f(-100, 0);	//todo
 	}
-	return sf::Vector2f(1, 1);
+	return sf::Vector2f(0, 0);
 }
 
 std::string getWeaponPath(WeaponType w) {

@@ -38,6 +38,7 @@ void Weapon::Animate(float lerp) {
 		lerp = (0.5f - (lerp - 0.5f)) * 2;
 	sprite.setRotation(lerp * 60);
 	hitboxes.at(0)->setRotation(sprite.getRotation());
+	sprite.setPosition(hitboxes.at(0)->getPosition() + lerp * sf::Vector2f(-5, 10));
 }
 
 void Weapon::setPosition(float x, float y)
