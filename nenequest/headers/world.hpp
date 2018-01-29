@@ -23,10 +23,10 @@ public:
 	static std::vector<Player*> getPlayers();
 
 private:
-	static std::vector<Entity*> World::entities;
-	static std::vector<Player*> World::players;
-	static float World::elapsedTime;
-	static bool World::sortUsingFirstZHitbox(Entity* a, Entity* b);
+	static std::vector<Entity*> entities;
+	static std::vector<Player*> players;
+	static float elapsedTime;
+	static bool sortUsingFirstZHitbox(Entity* a, Entity* b);
 };
 
 #endif

@@ -31,6 +31,6 @@ ParserFunction* ParserCommand::getFunction() {
 	return this->function;
 }
 
-std::map<std::string, std::string> ParserCommand::getArguments() {
-	return this->arguments;
+std::map<std::string, std::string>* ParserCommand::getArguments() {
+	return &this->arguments;
 }

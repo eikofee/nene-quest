@@ -91,7 +91,7 @@ int Game::run(RenderWindow &app) {
     //breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(700,630)));
     //Arrow arrow = Arrow(Vector2f(100, 700), 700);
     /////////////////////////////
-	
+
 	Clock clock;
 
     // ---------------- Main Loop ----------------
@@ -120,6 +120,12 @@ int Game::run(RenderWindow &app) {
 
 			manageMetaInputs(event, kbDebugMode);
 		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+            // left key is pressed: move our character
+            //World::getPlayers().at(0)->move(Vector2f(10,10));
+            World::getPlayers().at(0)->moving_up = true;
+        }
 
 		World::setElapsedTime(elapsedTime);
 		World::updateEntities();
@@ -492,7 +498,7 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
 
     for(Entity* var : entities)
         app->draw(*var);
-	
+
 	for (auto e : World::getEntities())
 		app->draw(*e);
  }

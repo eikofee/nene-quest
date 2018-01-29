@@ -52,7 +52,7 @@ int Menu::run(RenderWindow &app) {
         t->setCharacterSize(this->TEXT_SIZE);
         t->setPosition(logo.getPosition());
         t->move(-300, 300+i*100);
-        t->setFillColor(menuTextColor);
+        t->setColor(menuTextColor);
         t->setStyle(Text::Bold);
     }
 

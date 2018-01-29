@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <screens.hpp>
 #include <iostream>
+#include "menu.hpp"
 
 using namespace std;
 using namespace sf;
@@ -9,7 +10,7 @@ int main() {
 	vector<Screen*> screens;
 	int selectedScreen = 0;
 
-	RenderWindow app(VideoMode::getDesktopMode(), "Nene Quest", Style::Close | Style::Titlebar);
+	RenderWindow app(VideoMode(1920,1080), "Nene Quest");
     app.setFramerateLimit(60);
 
 	screens.push_back(new Menu);
@@ -19,6 +20,6 @@ int main() {
 
 	while (selectedScreen >= 0)
 		selectedScreen = screens[selectedScreen]->run(app);
-		
+
 	return EXIT_SUCCESS;
 }

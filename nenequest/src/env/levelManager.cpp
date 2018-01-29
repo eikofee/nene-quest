@@ -21,7 +21,7 @@ void LevelManager::update() {
 		if (this->levelCommands.front()->getTime() <= (this->timeSync + this->clock.getElapsedTime().asSeconds())) {
 			ParserCommand* c = this->levelCommands.front();
 			this->levelCommands.pop_front();
-			c->getFunction()->exec(new CustomMap(&(c->getArguments())));
+			c->getFunction()->exec(new CustomMap((c->getArguments())));
 			this->update();
 		}
 }
@@ -67,7 +67,7 @@ void LevelManager::setBackground(Background* bck) {
 bool LevelManager::pccomp(ParserCommand* a, ParserCommand* b) {
 	if (a->getTime() >= b->getTime())
 		return false;
-	
+
 	return true;
 }
 
