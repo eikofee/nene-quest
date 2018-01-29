@@ -81,3 +81,11 @@ nene-quest.vcxproj
 /nene-quest.vcxproj.user
 *.ilk
 /Win32/Debug
+
+#Makefile
+*.cmake
+nenequest/CMakeFiles/*
+MakeFile
+CMakeLists.txt
+CMakeCache.txt
+nenequest/NeneQuest
