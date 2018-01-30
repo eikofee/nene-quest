@@ -9,7 +9,8 @@ enum EntityType
 	ENEMY,
 	BONUS,
 	PLAYER,
-	SFX
+	SFX,
+	SOLID
 };
 
 class Entity : public sf::Drawable
@@ -31,11 +32,19 @@ class Entity : public sf::Drawable
 		float distanceToPosition(sf::Vector2f position);
 		bool isIgnoringDepthOnRendering();
 		int getHealth();
-		void alterHealth(int value, bool relative);
+		virtual void alterHealth(int value, bool relative);
 		virtual void handleDeath();
+		bool collideWith(Entity* entity);
 
-		
+
+
 	protected:
+	    float hitbox_sprite_xRatio = 1;
+        float hitbox_sprite_yRatio = 1;
+        float hitbox_zHitbox_xRatio = 1;
+        float hitbox_zHitbox_yRatio = 1;
+
+
 		std::vector<sf::RectangleShape*> hitboxes;
 		std::vector<sf::RectangleShape*> zHitboxes;
 		sf::Sprite sprite;
@@ -45,9 +54,11 @@ class Entity : public sf::Drawable
 		void updateAutoSpritePosition();
 		sf::Vector2f speed; //not too fond of the name
 		bool ignoreDepthOnRendering = false;
-		int health;
+		int health = 1;
+
 
 	private:
+
 };
 
 #endif // ENTITY_H

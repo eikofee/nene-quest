@@ -13,6 +13,9 @@ class LifeBar : public sf::Drawable, sf::Transformable {
         sf::Sprite knight_head;
         sf::Texture knight_head_tex;
 
+        void increase(short int amount);
+        void decrease(short int amount);
+
     public:
         static const int LIFEBAR_WIDTH = 350;
         static const int LIFEBAR_HEIGHT = 35;
@@ -30,10 +33,10 @@ class LifeBar : public sf::Drawable, sf::Transformable {
         virtual sf::Vector2f getPosition() {
             return this->background.getPosition();
         }
-        void increase(short int amount);
-        void decrease(short int amount);
         void updateBar();
+        void modifyLife(short int amount);
         short int getValue();
+        void setValue(short int value);
 };
 
 #endif

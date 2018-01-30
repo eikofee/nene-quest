@@ -202,6 +202,7 @@ void Player::fireArrow(){
 void Player::update(float elapsedTime){
 	this->cleanArrows(elapsedTime);
 	this->manageMovements();
+	this->currentInvulnerabilityTime -= elapsedTime;
 
 	weapon->Animate(currentAttackTime / attackTime);
 	if (currentAttackTime > 0) {
@@ -227,12 +228,28 @@ void Player::manageMovements() {
 	finalMovement = this->fixMovements(finalMovement);
 	sf::Vector2f fx = sf::Vector2f(finalMovement.x, 0);
 	sf::Vector2f fy = sf::Vector2f(0, finalMovement.y);
-	if (World::testCollidingEntitiesOnZAxis(this, fx).size() == 0)
+
+    bool moveAllowed = true;
+    for(Entity* entity : World::testCollidingEntitiesOnZAxis(this, fx))
+        if(entity->getEntityType() == SOLID)
+            moveAllowed = false;
+    if(moveAllowed)
+        this->move(fx);
+
+    moveAllowed = true;
+    for(Entity* entity : World::testCollidingEntitiesOnZAxis(this, fy))
+        if(entity->getEntityType() == SOLID)
+            moveAllowed = false;
+    if(moveAllowed)
+        this->move(fy);
+
+	/*if (World::testCollidingEntitiesOnZAxis(this, fx).size() == 0)
 		this->move(fx);
 	if (World::testCollidingEntitiesOnZAxis(this, fy).size() == 0)
-		this->move(fy);
+		this->move(fy);*/
 
 	this->fixPosition();
+
 }
 
 //TODO : remove hardcoded value for cute ones
@@ -297,6 +314,9 @@ ItemWeapon* Player::getLastDroppedItem(){
     return last_dropped_item;
 }
 
+EntityType Player::getEntityType(){
+    return PLAYER;
+}
 vector<Arrow*> Player::getArrows(){
     return arrows;
 }
@@ -307,4 +327,18 @@ bool Player::isShooting() {
 
 void Player::setShootingState(bool state) {
 	is_shooting = state;
+}
+
+void Player::isHit(int damage){
+    if(currentInvulnerabilityTime < 0){
+        this->life->modifyLife(-damage);
+        currentInvulnerabilityTime = INVULNERABILITY_DURATION;
+    }
+}
+
+void Player::alterHealth(int value, bool relative){
+    if(relative)
+        this->life->modifyLife(value);
+    else
+        this->life->setValue(value);
 }

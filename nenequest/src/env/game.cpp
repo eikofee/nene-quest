@@ -19,7 +19,7 @@ Game::Game() {
 	this->parser->setLevelManager(this->manager);
 	this->parser->initialize();
 	this->parser->setLevelFilesPath("levels");
-	debugMode = false;
+	debugMode = true;
 
 	//Config loader
 	this->configManager = new ConfigManager();
@@ -70,25 +70,41 @@ int Game::run(RenderWindow &app) {
 	this->configManager->getParameter("playerTwoAttack")->getParameter(&kbPlayerTwoAttack);
 	this->configManager->getParameter("playerTwoJump")->getParameter(&kbPlayerTwoJump);
 
+	//Binding doesn't work for me for whatever reason...
+	/*kbPlayerOneLeft = Keyboard::Left;
+	kbPlayerOneRight = Keyboard::Right;
+	kbPlayerOneUp = Keyboard::Up;
+	kbPlayerOneDown = Keyboard::Down;
+	kbPlayerOneAttack = Keyboard::M;
+	kbPlayerOneJump = Keyboard::L;
+
+	kbPlayerTwoLeft = Keyboard::Q;
+	kbPlayerTwoRight = Keyboard::D;
+	kbPlayerTwoUp = Keyboard::Z;
+	kbPlayerTwoDown = Keyboard::S;
+	kbPlayerTwoAttack = Keyboard::E;
+	kbPlayerTwoJump = Keyboard::Space;*/
+
+
 	//Load Level
 	this->parser->parseFile("level0.nnq");
 
 	//Testing objects////////////
     bridge = new BridgePit(300, app.getSize().y-background.getSkyHeight(), app.getSize().y);
 	World::addEntity(bridge);
+	Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
+	World::addEntity(boar1);
+	Dragon* dragon = new Dragon(Vector2f(1000,400));
+	World::addEntity(dragon);
+	BonusHp* onigiri = new BonusHp(BONUS_ONIGIRI, Vector2f(900,900));
+    ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(800,600));
+    World::addEntity(onigiri);
+    World::addEntity(sword);
+    World::addEntity(new ItemWeapon(Axe, Vector2f(300,630)));
+    BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
+    World::addEntity(barrel);
+    World::addEntity(new BreakableObject(Barrel, Vector2f(700,430)));
 
-	//Boar* boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y/2));
-	//Dragon* dragon = new Dragon(Vector2f(1000,400));
-	//BonusHp* onigiri = new BonusHp(BonusHp::ONIGIRI, Vector2f(1000,800));
-    //ItemWeapon* sword = new ItemWeapon(Sword, Vector2f(800,600));
-    //bonuses_hp.push_back(onigiri);
-    //item_weapons.push_back(sword);
-    //item_weapons.push_back(new ItemWeapon(GreatSword, Vector2f(300,630)));
-    //enemies.push_back(dragon);
-	//enemies.push_back(boar1);
-    //BreakableObject* barrel = new BreakableObject(Chest, Vector2f(520,630));
-    //breakable_objects.push_back(barrel);
-    //breakable_objects.push_back(new BreakableObject(Barrel, Vector2f(700,630)));
     //Arrow arrow = Arrow(Vector2f(100, 700), 700);
     /////////////////////////////
 
@@ -121,14 +137,10 @@ int Game::run(RenderWindow &app) {
 			manageMetaInputs(event, kbDebugMode);
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-            // left key is pressed: move our character
-            //World::getPlayers().at(0)->move(Vector2f(10,10));
-            World::getPlayers().at(0)->moving_up = true;
-        }
-
 		World::setElapsedTime(elapsedTime);
 		World::updateEntities();
+		World::scroll();
+        World::managePlayersCollidingWithThings();
 
 		//scroll(elapsedTime, app.getSize());
 
@@ -136,12 +148,10 @@ int Game::run(RenderWindow &app) {
 		background.update();
 		//arrow.update(elapsedTime);
 		//checkCollision(elapsedTime, app.getSize());
-
 		app.clear(Color::White);
 		app.draw(background);
 		//app.draw(*bridge);
 		World::render(app);
-
 		//drawWithDepth(&app);
 		//app.draw(arrow);
 		app.display();
@@ -507,28 +517,6 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
     if(a->getDrawDepth() >= d->getDrawDepth())
         return false;
     return true;
-}
-
-void Game::dropItem(Bonus* drop, Vector2f dropPosition) {
-	switch (drop->getBonusType()) {
-		case Item_Onigiri:
-			bonuses_hp.push_back(new BonusHp(BonusHp::ONIGIRI, dropPosition));
-			break;
-		case Item_Axe:
-			item_weapons.push_back(new ItemWeapon(Axe, dropPosition));
-			break;
-		case Item_Bow:
-			item_weapons.push_back(new ItemWeapon(Bow, dropPosition));
-			break;
-		case Item_Greatsword:
-			item_weapons.push_back(new ItemWeapon(GreatSword, dropPosition));
-			break;
-		case Item_Sword:
-			item_weapons.push_back(new ItemWeapon(Sword, dropPosition));
-			break;
-		default:
-			break;
-	}
 }
 
 //Function calls for levelManager

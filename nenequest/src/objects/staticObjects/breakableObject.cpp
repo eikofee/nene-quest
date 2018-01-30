@@ -12,11 +12,20 @@ BreakableObject::BreakableObject(ObjectType o, Vector2f position) {
     getObjectTexture(o);
 
 	sprite.setTexture(texture);
+
+	sf::RectangleShape* hitbox = new sf::RectangleShape();
+    hitbox->setFillColor(sf::Color(255, 0, 0, 128));
+    hitbox->setPosition(position);
+	hitboxes.push_back(hitbox);
     updateAutoHitboxSize();
 
-	sf::RectangleShape* h = new sf::RectangleShape();
-	hitboxes.push_back(h);
-    hitboxes.at(0)->setPosition(position);
+    sf::RectangleShape* zhitbox = new sf::RectangleShape();
+    zhitbox->setFillColor(sf::Color(0, 0, 255, 128));
+    zhitbox->setSize(Vector2f(hitboxes.at(0)->getSize().x, hitboxes.at(0)->getSize().y * 0.5));
+    zhitbox->setOrigin(0, -hitboxes.at(0)->getSize().y * 0.5);
+    zhitbox->setPosition(position);
+	zHitboxes.push_back(zhitbox);
+
     updateAutoSpritePosition();
 }
 
@@ -36,21 +45,26 @@ void BreakableObject::getObjectTexture(ObjectType o){
 Bonus* BreakableObject::getDrops(){
 
     Bonus* bonus = nullptr;
-    int num = rand()% Number_of_Bonuses;
-    if(num == Item_Axe){
-        bonus = new ItemWeapon(Axe, this->getPosition());
-    }
-    else if(num == Item_Bow){
-        bonus = new ItemWeapon(Bow, this->getPosition());
-    }
-    else if(num == Item_Greatsword){
-        bonus = new ItemWeapon(GreatSword, this->getPosition());
-    }
-    else if(num == Item_Sword){
-        bonus = new ItemWeapon(Sword, this->getPosition());
-    }
-    else if(num == Item_Onigiri){
-        bonus = new BonusHp(BonusHp::ONIGIRI, this->getPosition());
+
+    switch(rand() % 2){
+        case BONUS_HP :
+            bonus = new BonusHp(BONUS_ONIGIRI, this->getPosition());
+            break;
+        case BONUS_WEAPON :
+            switch(rand() % 4){
+                case ITEM_AXE :
+                    bonus = new ItemWeapon(Axe, this->getPosition());
+                    break;
+                case ITEM_SWORD :
+                    bonus = new ItemWeapon(Sword, this->getPosition());
+                    break;
+                case ITEM_GREATSWORD :
+                    bonus = new ItemWeapon(GreatSword, this->getPosition());
+                    break;
+                case ITEM_BOW :
+                    bonus = new ItemWeapon(Bow, this->getPosition());
+                    break;
+            }
     }
 
     if(object_type == Chest)
@@ -62,6 +76,9 @@ Bonus* BreakableObject::getDrops(){
         else
             return NULL;
     }
-
-
 }
+
+ EntityType BreakableObject::getEntityType() {
+     return SOLID;
+ }
+

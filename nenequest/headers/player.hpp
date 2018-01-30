@@ -26,12 +26,14 @@ class Player : public Entity {
         void update(float elapsedTime);
 
         // Life management
-        //LifeBar* getLife();
+        void isHit(int damage);
+        virtual void alterHealth(int value, bool realtive);
 
         // override
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
         void move(sf::Vector2f g_speed);
         virtual void setPosition(float x, float y);
+        virtual EntityType getEntityType();
 
         // Jumping
         bool isJumping();
@@ -47,14 +49,18 @@ class Player : public Entity {
 		bool isShooting();
 		void setShootingState(bool state);
 
+
     private:
 		static constexpr float PLAYER_SPEED = 500;
+        static constexpr float INVULNERABILITY_DURATION = 1;
+
         bool is_attacking = false;
         bool animation_state = false;
 		bool is_shooting = false;
 		float attackTime = 0.1f;
 		float currentAttackTime = 0;
-		
+		float currentInvulnerabilityTime = 0;
+
 		// Weapon placement
 		int weaponXOffset;
 		int weaponYOffset;
@@ -70,6 +76,8 @@ class Player : public Entity {
 		void manageMovements();
 		sf::Vector2f fixMovements(sf::Vector2f movement);
 		void fixPosition();
+
+
 
 		void cleanArrows(float elapsedTime);
         ItemWeapon* last_dropped_item = NULL;

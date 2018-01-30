@@ -2,6 +2,7 @@
 
 #include <dragon.hpp>
 #include <flame.hpp>
+#include <game.hpp>
 
 using namespace sf;
 using namespace std;
@@ -20,23 +21,32 @@ Dragon::Dragon(Vector2f position) : Enemy (DRAGON_HP) {
 	sprite.setTexture(texture);
     sprite.setTextureRect(IntRect(0, texture.getSize().y/2,texture.getSize().x/2, texture.getSize().y/2));
     sprite.setPosition(position);
+
 	sf::RectangleShape* hitbox = new sf::RectangleShape();
     hitbox->setPosition(position);
 	hitbox->setSize(Vector2f(sprite.getLocalBounds().width, sprite.getLocalBounds().height));
-    hitbox->setFillColor(Color::Red);
+    hitbox->setFillColor(Color(255,0,0,128));
 	hitboxes.push_back(hitbox);
 
-	hitboxes.push_back(new RectangleShape(Vector2f(530,120)));
-	hitboxes.at(1)->setOrigin(-270, -410);
+    sf::RectangleShape* zhitbox = new sf::RectangleShape();
+	zhitbox->setSize(Vector2f(sprite.getLocalBounds().width*0.8, sprite.getLocalBounds().height*0.4));
+	zhitbox->setOrigin(-sprite.getLocalBounds().width*0.2, -sprite.getLocalBounds().height*0.6);
+    zhitbox->setPosition(position);
+    zhitbox->setFillColor(Color(0,0,255,128));
+	zHitboxes.push_back(zhitbox);
 
-    hitboxes.push_back(new RectangleShape(Vector2f(220,290)));
-	hitboxes.at(2)->setOrigin(-270, -120);
+	/*zHitboxes.push_back(new RectangleShape(Vector2f(530,120)));
+	zHitboxes.at(0)->setOrigin(-270, -410);
+	zHitboxes.at(0)->setFillColor(Color(0,0,255,128));
 
-    hitboxes.push_back(new RectangleShape(Vector2f(310,180)));
-	hitboxes.at(3)->setOrigin(-50, -30);
+    zHitboxes.push_back(new RectangleShape(Vector2f(220,290)));
+	zHitboxes.at(1)->setOrigin(-270, -120);
+    zHitboxes.at(1)->setFillColor(Color(0,0,255,128));
 
-	for(unsigned int i =1;i < hitboxes.size();i++)
-        hitboxes.at(i)->setPosition(position);
+
+    zHitboxes.push_back(new RectangleShape(Vector2f(310,180)));
+	zHitboxes.at(2)->setOrigin(-50, -30);
+    zHitboxes.at(2)->setFillColor(Color(0,0,255,128));*/
 
 	//sprite.setOrigin(sprite.getGlobalBounds().width*0.27,sprite.getGlobalBounds().height*0.5 );
     updateAutoSpritePosition();
@@ -161,9 +171,13 @@ void Dragon::breathFire(){
 
 void Dragon::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
-    /*target.draw(hitbox, states);
-    for(RectangleShape var : hitboxes)
-        target.draw(var, states);*/
+	if (Game::IsDebugMode()) {
+		for (auto h : hitboxes)
+			target.draw(*h, states);
+		for (auto zh : zHitboxes)
+			target.draw(*zh, states);
+	}
+
     target.draw(sprite, states);
 }
 

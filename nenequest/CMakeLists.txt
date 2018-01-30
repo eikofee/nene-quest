@@ -7,7 +7,7 @@ include_directories( headers )
 
 
 #Prepare executable
-set(EXECUTABLE_NAME "NeneQuest")
+set(EXECUTABLE_NAME "NeneQuest.exe")
 # Sources locations
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 add_executable( ${EXECUTABLE_NAME} ${SOURCES} )

@@ -6,6 +6,7 @@
 #include <weaponType.hpp>
 #include <SFML/Graphics.hpp>
 
+enum ItemWeaponType {ITEM_AXE, ITEM_SWORD, ITEM_GREATSWORD, ITEM_BOW };
 
 class ItemWeapon : public Bonus
 {
@@ -13,14 +14,17 @@ class ItemWeapon : public Bonus
         ItemWeapon(WeaponType type, sf::Vector2f position);
         virtual ~ItemWeapon();
         WeaponType getWeaponType();
-        bool checkIfDropped();
-        void setDropped(bool v);
+        void setWeaponType(WeaponType type);
+        virtual void update(float elapsedTime);
+        bool isPickable();
+        void isJustDropped();
 
     protected:
 
     private:
+        static constexpr float COOLDOWN_BETWEEN_PICKUP = 1.5;
         WeaponType weapon_type;
-        bool is_dropped = false;
+        float unpickableTimer = COOLDOWN_BETWEEN_PICKUP;
 };
 
 #endif // ITEMWEAPON_H
