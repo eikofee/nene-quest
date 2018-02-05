@@ -52,7 +52,7 @@ int Menu::run(RenderWindow &app) {
         t->setCharacterSize(this->TEXT_SIZE);
         t->setPosition(logo.getPosition());
         t->move(-300, 300+i*100);
-        t->setColor(menuTextColor);
+        t->setFillColor(menuTextColor);
         t->setStyle(Text::Bold);
     }
 
@@ -93,10 +93,9 @@ int Menu::run(RenderWindow &app) {
 			}
             // Mouse handling
             if (event.type == Event::MouseMoved) {
-                for (unsigned int i=0; i<menuButtons.size(); i++) {
+                for (unsigned int i=0; i<menuButtons.size(); i++)
                     if (menuButtons[i]->getGlobalBounds().contains((float)localPosition.x, (float)localPosition.y))
                         menuIndex = i;
-                }
                 selector.setPosition(menuButtons[menuIndex]->getPosition());
             }
             if (event.type == Event::MouseButtonPressed)

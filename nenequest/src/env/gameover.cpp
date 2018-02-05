@@ -1,6 +1,7 @@
 #include <SFML/Audio.hpp>
 #include <gameover.hpp>
 #include <gamemode.hpp>
+#include <screens.hpp>
 
 using namespace std;
 using namespace sf;
@@ -9,18 +10,6 @@ const string GameOver::GAMEOVER_PATH = "img/gameover/";
 const string GameOver::GAMEOVER_EXT = ".png";
 
 GameOver::GameOver(GameMode mode) {
-	vector<string> texs = {
-	    "bg_u", "ba_u", "bm_u", "be_u", "o_u", "v_u", "e_u", "r_u", "!_u",
-	    "bg_o", "ba_o", "bm_o", "be_o", "o_o", "v_o", "e_o", "r_o", "!_o"
-    };
-	for (int i = 0; i < texs.size(); i++) {
-		Texture* letterTex = new Texture();
-		letterTex->loadFromFile(this->GAMEOVER_PATH + texs.at(i) + this->GAMEOVER_EXT);
-		this->lettersSize = sf::Vector2f(letterTex->getSize());
-		Sprite* s = new Sprite(*letterTex);
-		s->setOrigin(letterTex->getSize().x/2, letterTex->getSize().y/2);
-		this->letters.insert(this->letters.begin() + i, s);
-	}
 	this->mode = mode;
 }
 
@@ -41,15 +30,15 @@ void GameOver::updateText() {
     Time elapsed = this->clockText.getElapsedTime();
     if(elapsed.asMilliseconds() >= 10) {
 		for (auto w : this->letters) {
-			//if (w->getPosition().y < this->textLimitY)
-				//w->move(0, 10);
-				w->move(0, fminf((this->textLimitY - w->getPosition().y) / 6, 30));
+			w->move(0, fminf((this->textLimitY - w->getPosition().y) / 6, 30));
 		}
 		this->clockText.restart();
     }
 }
 
 void GameOver::freeGameOver() {
+	this->letters.clear();
+	this->playersDown.clear();
 	for (auto l : this->letters)
 		delete l;
     for (auto p : this->playersDown)
@@ -59,12 +48,24 @@ void GameOver::freeGameOver() {
 int GameOver::run(RenderWindow &app) {
 	Event event;
 
+	// Place Halo
 	Texture haloTex;
 	haloTex.loadFromFile("img/gameover/light.png");
     Sprite halo(haloTex);
     halo.setOrigin(haloTex.getSize().x/2, haloTex.getSize().y/2);
     halo.setPosition(app.getSize().x/2, app.getSize().y/2*1.25);
 
+	// Place letters
+	for (int i = 0; i < this->texs.size(); i++) {
+		Texture* letterTex = new Texture();
+		letterTex->loadFromFile(this->GAMEOVER_PATH + this->texs.at(i) + this->GAMEOVER_EXT);
+		this->lettersSize = sf::Vector2f(letterTex->getSize());
+		Sprite* s = new Sprite(*letterTex);
+		s->setOrigin(letterTex->getSize().x / 2, letterTex->getSize().y / 2);
+		this->letters.insert(this->letters.begin() + i, s);
+	}
+
+	// Move letters
 	for (int i = 0; i < 18; i++) {
 		this->letters.at(i)->setPosition(
             app.getSize().x/2 -
@@ -74,12 +75,12 @@ int GameOver::run(RenderWindow &app) {
             0 - (i % 9) * this->lettersSize.y *0.5
         );
 	}
-    this->textLimitY = halo.getGlobalBounds().top/2.0;
+	this->textLimitY = halo.getGlobalBounds().top / 2.0;
 
+	// Place characters
     Texture p1DownTex;
 	p1DownTex.loadFromFile("img/gameover/p1_down.png");
     this->playersDown.push_back(new Sprite(p1DownTex));
-
     Texture p2DownTex;
 
     if (this->mode == TWO_PLAYER) {
@@ -96,6 +97,7 @@ int GameOver::run(RenderWindow &app) {
         this->playersDown[0]->setPosition(halo.getPosition());
     }
 
+	// Insert sound
     SoundBuffer sfxBuffer;
     sfxBuffer.loadFromFile("sfx/gameover.ogg");
     Sound sfx(sfxBuffer);
@@ -109,7 +111,7 @@ int GameOver::run(RenderWindow &app) {
 			if (event.type == Event::KeyPressed
 		     || event.type == Event::MouseButtonPressed) {
 				this->freeGameOver();
-				return 1;
+				return TITLE_SCREEN;
 			}
 		}
 
