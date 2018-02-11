@@ -30,8 +30,8 @@ class Game : public Screen {
     public:
         Game();
         virtual int run(sf::RenderWindow &app);
-		void addEnemyInstance(Enemy* enemy);
 		void addPlayerInstance(Player* player);
+		void addInstance(Entity* e);
 
 		static bool IsDebugMode();
 

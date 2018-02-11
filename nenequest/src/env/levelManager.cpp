@@ -2,6 +2,7 @@
 #include <player.hpp>
 #include <game.hpp>
 #include <parserCommand.hpp>
+#include <weaponType.hpp>
 
 LevelManager::LevelManager(Game* game) {
 	this->timeSync = 0;
@@ -54,6 +55,13 @@ void LevelManager::startLevel(int playerCount) {
 
 void LevelManager::spawnChest(int x, int y, std::string item, int hp) {
 	//spawn a chest on the given position
+}
+
+void LevelManager::spawnWeapon(int x, int y, std::string type) {
+	WeaponType t = parse(type);
+	Entity* e = new Weapon(t);
+	e->setPosition(x, y);
+	game->addInstance(e);
 }
 
 

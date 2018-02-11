@@ -4,7 +4,7 @@
 sf::Vector2f getWeaponOrigin(WeaponType w) {
 	switch (w) {
 	case Bow:
-		break;
+		return sf::Vector2f(0, 280);
 	case Axe:
 		return sf::Vector2f(0, 190);
 	case Sword:
@@ -18,7 +18,7 @@ sf::Vector2f getWeaponOrigin(WeaponType w) {
 sf::Vector2f getWeaponOffset(WeaponType w) {
 	switch (w) {
 	case Bow:
-		break;
+		return sf::Vector2f(-130, 0);
 	case Axe:
 		return sf::Vector2f(-90, 0);
 	case Sword:
@@ -59,4 +59,18 @@ int getWeaponDamage(WeaponType w)
 		default:
 			return 0;
     }
+}
+
+WeaponType parse(std::string s) {
+	if (s == "Bow")
+		return Bow;
+	if (s == "Axe")
+		return Axe;
+	if (s == "Sword")
+		return Sword;
+	if (s == "GreatSword")
+		return GreatSword;
+
+	//TODO: Add proper invalid value
+	return Sword;
 }

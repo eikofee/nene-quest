@@ -13,7 +13,7 @@ class Weapon : public Entity {
         int getDamage();
         WeaponType getWeaponType();
 		void Animate(float lerp);
-		void setPosition(float x, float y);
+		void setPosition(int x, int y);
 
     private :
         WeaponType type;

@@ -4,6 +4,7 @@
 #include <commands/cmdBridge.h>
 #include <commands/cmdChest.h>
 #include <commands/cmdStart.h>
+#include <commands/cmdWeapon.h>
 #include <parserCommand.hpp>
 
 LevelParser::LevelParser() {
@@ -16,20 +17,27 @@ void LevelParser::initialize()
 	this->addFunction(new cmdStart());
 	this->addFunction(new cmdChest());
 	this->addFunction(new cmdBridge());
+	this->addFunction(new cmdWeapon());
 
 	for (auto f : this->functions)
 		f->initialize(this->manager);
 }
+
+
 
 void LevelParser::parseFile(std::string filename) {
 	std::string line;
 	std::ifstream file (this->levelFilePath + "/" + filename);
 	if (file.is_open()) {
 		while (std::getline(file, line)) {
+
+
 			//get time
 			std::string ds = ":";
+			size_t pos = 0;
+			std::string token;
 			float time = std::stof(line.substr(0, line.find(ds)));
-
+			
 			//get function + args
 			std::string fa = line.substr(line.find(ds) + 1, line.length() - 1);
 
@@ -46,8 +54,7 @@ void LevelParser::parseFile(std::string filename) {
 
 
 				//C/C from SO because I have no shame
-				size_t pos = 0;
-				std::string token;
+				
 				ds = ",";
 				while ((pos = func_args.find(ds)) != std::string::npos) {
 					token = func_args.substr(0, pos);

@@ -526,8 +526,8 @@ void Game::dropItem(Bonus* drop, Vector2f dropPosition) {
 }
 
 //Function calls for levelManager
-void Game::addEnemyInstance(Enemy* enemy) {
-	World::addEntity(enemy);
+void Game::addInstance(Entity* e) {
+	World::addEntity(e);
 }
 
 void Game::addPlayerInstance(Player* player) {

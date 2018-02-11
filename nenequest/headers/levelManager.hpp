@@ -32,6 +32,8 @@ public:
 	void setScrollSpeed(int speed);
 	void startLevel(int playerCount);
 	void spawnChest(int x, int y, std::string item, int hp);
+	void spawnWeapon(int x, int y, std::string type);
+
 
 	static bool pccomp(ParserCommand* a, ParserCommand* b);
 };

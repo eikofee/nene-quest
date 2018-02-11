@@ -14,4 +14,6 @@ std::string getWeaponPath(WeaponType w);
 
 int getWeaponDamage(WeaponType w);
 
+WeaponType parse(std::string s);
+
 #endif
