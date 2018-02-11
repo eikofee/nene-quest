@@ -7,7 +7,7 @@
     - Placer l'arme correctement
     - Animation de l'attaque (rotation du sprite du Weapon)
     - Empecher de sortir de la fenere / allez trop haut-bas => Fait dans game.cpp <= and fixed back here
-    - Detection avec les ennemis => Fait dans game.cpp 
+    - Detection avec les ennemis => Fait dans game.cpp
     - Frame immortalite lorsqu'on perd de la vie => Fait dans game.cpp mais c'est mieux ici donc fait le +(animation clignotante dans l'ideal)
     - Saut (immortalite temporaire) => Fait dans game.cpp <= need to be here
 **/
@@ -63,10 +63,10 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 
 	//Hitboxes + debug coloring
 	sf::RectangleShape* h = new sf::RectangleShape();
-	h->setFillColor(sf::Color(255, 0, 0, 128));	
+	h->setFillColor(sf::Color(255, 0, 0, 128));
 	sf::RectangleShape* zh = new sf::RectangleShape();
 	zh->setFillColor(sf::Color(0, 0, 255, 128));
-	
+
 	hitboxes.push_back(h);
 	zHitboxes.push_back(zh);
 
@@ -85,7 +85,7 @@ Player::Player(Weapon* w, Vector2f position, bool secondPlayer) { // 150,170
 	vector<IntRect> animationRects;
 	int sizeX = texture.getSize().x;
 	int sizeY = texture.getSize().y;
-	for each (FloatRect rect in fanimationRects)
+	for (FloatRect rect : fanimationRects)
 	{
 		IntRect r;
 		r.left = rect.left * sizeX;
@@ -111,7 +111,7 @@ Weapon* Player::getWeapon(){
 void Player::attack(){
 	if (is_attacking)
 		return;
-	
+
 	this->is_attacking = true;
 	currentAttackTime = attackTime;
     update_animation();
@@ -126,7 +126,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
     target.draw(*this->weapon, states);
     target.draw(*this->life, states);
 	Entity::draw(target, states);
-	for each (Entity* var in arrows)
+	for (Entity* var : arrows)
 	{
 		target.draw(*var, states);
 	}
@@ -142,7 +142,7 @@ void Player::update_animation(){
 	int weaponXDecal = this->weaponXOffset;
 	int weaponYDecal = this->weaponYOffset;
 	IntRect result;
-    
+
 	if (this->animation_state) { // jambes croisees
 		result = walk2normal;
 		weaponXDecal += this->weaponXOffsetVariation;
@@ -151,10 +151,10 @@ void Player::update_animation(){
 	else {
 		result = walk1normal;
 	}
-	
+
 	if (this->isJumping())
         return;	// result = IntRectAddition(result, moddifierJump);
-	
+
 	if (is_attacking)
 		result = IntRectAddition(result, moddifierAttack);
 
@@ -202,6 +202,7 @@ void Player::fireArrow(){
 void Player::update(float elapsedTime){
 	this->cleanArrows(elapsedTime);
 	this->manageMovements();
+	this->currentInvulnerabilityTime -= elapsedTime;
 
 	weapon->Animate(currentAttackTime / attackTime);
 	if (currentAttackTime > 0) {
@@ -211,7 +212,7 @@ void Player::update(float elapsedTime){
 		is_attacking = false;
 		currentAttackTime = 0;
 	}
-}	
+}
 
 void Player::manageMovements() {
 	Vector2f finalMovement = Vector2f(0, 0);
@@ -227,12 +228,28 @@ void Player::manageMovements() {
 	finalMovement = this->fixMovements(finalMovement);
 	sf::Vector2f fx = sf::Vector2f(finalMovement.x, 0);
 	sf::Vector2f fy = sf::Vector2f(0, finalMovement.y);
-	if (World::testCollidingEntitiesOnZAxis(this, fx).size() == 0)
+
+    bool moveAllowed = true;
+    for(Entity* entity : World::testCollidingEntitiesOnZAxis(this, fx))
+        if(entity->getEntityType() == SOLID)
+            moveAllowed = false;
+    if(moveAllowed)
+        this->move(fx);
+
+    moveAllowed = true;
+    for(Entity* entity : World::testCollidingEntitiesOnZAxis(this, fy))
+        if(entity->getEntityType() == SOLID)
+            moveAllowed = false;
+    if(moveAllowed)
+        this->move(fy);
+
+	/*if (World::testCollidingEntitiesOnZAxis(this, fx).size() == 0)
 		this->move(fx);
 	if (World::testCollidingEntitiesOnZAxis(this, fy).size() == 0)
-		this->move(fy);
+		this->move(fy);*/
 
 	this->fixPosition();
+
 }
 
 //TODO : remove hardcoded value for cute ones
@@ -254,8 +271,8 @@ sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
 	if (this->hitboxes.at(0)->getGlobalBounds().top + this->hitboxes.at(0)->getGlobalBounds().height + result.y > 1080 /*Gameroom size (bottom)*/)
 		result.y = 0;
 		//result.y = 1080 - this->hitbox.getGlobalBounds().top - this->hitbox.getGlobalBounds().height;
-	
-	
+
+
 	return result;
 }
 
@@ -297,6 +314,9 @@ ItemWeapon* Player::getLastDroppedItem(){
     return last_dropped_item;
 }
 
+EntityType Player::getEntityType(){
+    return PLAYER;
+}
 vector<Arrow*> Player::getArrows(){
     return arrows;
 }
@@ -307,4 +327,18 @@ bool Player::isShooting() {
 
 void Player::setShootingState(bool state) {
 	is_shooting = state;
+}
+
+void Player::isHit(int damage){
+    if(currentInvulnerabilityTime < 0){
+        this->life->modifyLife(-damage);
+        currentInvulnerabilityTime = INVULNERABILITY_DURATION;
+    }
+}
+
+void Player::alterHealth(int value, bool relative){
+    if(relative)
+        this->life->modifyLife(value);
+    else
+        this->life->setValue(value);
 }

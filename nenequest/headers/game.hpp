@@ -42,7 +42,6 @@ class Game : public Screen {
         //void playerMove(Player* player, float elapsedTime, sf::Vector2u windowSize, float skyHeight);
         void drawWithDepth(sf::RenderWindow* app);
         static bool cmp(Entity* a, Entity* d);
-        void dropItem(Bonus* drop, sf::Vector2f dropPosition);
 		void manageInputs(
 			sf::Event e,
 			PlayerID id,
@@ -62,7 +61,7 @@ class Game : public Screen {
         BreakableObject* getCollidingObject(Player* p);
 
         //std::vector<Enemy*> enemies
-		
+
 		std::vector<Player*> players;
         std::vector<BonusHp*> bonuses_hp;
         std::vector<ItemWeapon*> item_weapons;

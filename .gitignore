@@ -69,6 +69,9 @@ $RECYCLE.BIN/
 # End of https://www.gitignore.io/api/c++,windows,codeblocks
 
 # VS stuff
+Debug/
+*.vcxproj
+*.user
 *.pdb
 x64/Release/nene-quest.tlog/unsuccessfulbuild
 *.suo
@@ -81,3 +84,11 @@ nene-quest.vcxproj
 /nene-quest.vcxproj.user
 *.ilk
 /Win32/Debug
+
+#Makefile
+*.cmake
+nenequest/CMakeFiles/*
+MakeFile
+CMakeLists.txt
+CMakeCache.txt
+nenequest/NeneQuest

@@ -23,7 +23,7 @@ class Dragon : public Enemy {
     protected:
 
     private:
-        static int const DRAGON_DAMAGE = 2;
+        static int const DRAGON_DAMAGE = 50;
         static int const MOVEMENT_DURATION = 1000; //Milliseconds
         static int const DELAY_BETWEEN_FLAMES = 100; //Milliseconds
         static float constexpr ANIMATION_DELAY = 0.5;//Seconds

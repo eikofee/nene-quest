@@ -17,8 +17,14 @@ Reproduction of Nene Sakura's game "Nene Quest" from "New Game!!" (2nd season, e
 We currently don't have any release yet so you have to compile the project by yourself.
 
 * Download SFML 2.4.2 : https://www.sfml-dev.org/download/sfml/2.4.2/
+* Or install it with  : `apt-get install libsfml-dev`
 
-* Link SFML to your IDE :
+* Cmake :
+  + Go to the folder nene-quest/nenequest/
+  + run `cmake .` (version 3.5 or higher of `cmake` require)
+  + run `make`
+
+* IDE :
   + Windows
     - Visual Studio : https://www.sfml-dev.org/tutorials/2.4/start-vc.php
     - Code Blocks : https://www.sfml-dev.org/tutorials/2.4/start-cb.php

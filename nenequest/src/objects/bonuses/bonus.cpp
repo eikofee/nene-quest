@@ -11,3 +11,7 @@ Bonus::~Bonus() {
 BonusType Bonus::getBonusType(){
     return bonus_type;
 }
+
+EntityType Bonus::getEntityType() {
+	return BONUS;
+}

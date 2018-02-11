@@ -29,6 +29,8 @@ Flame::Flame(Vector2f position, float f, float g_depth, bool straightLine){
 	hitboxes.push_back(hitbox);
 	updateAutoHitboxPosition();
 
+	zHitboxes.push_back(hitbox);
+
 	speed = Vector2f(-2.7,1);
 
 }

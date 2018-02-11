@@ -93,10 +93,9 @@ int Menu::run(RenderWindow &app) {
 			}
             // Mouse handling
             if (event.type == Event::MouseMoved) {
-                for (unsigned int i=0; i<menuButtons.size(); i++) {
+                for (unsigned int i=0; i<menuButtons.size(); i++)
                     if (menuButtons[i]->getGlobalBounds().contains((float)localPosition.x, (float)localPosition.y))
                         menuIndex = i;
-                }
                 selector.setPosition(menuButtons[menuIndex]->getPosition());
             }
             if (event.type == Event::MouseButtonPressed)

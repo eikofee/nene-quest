@@ -33,3 +33,7 @@ short int Enemy::getAttackDamage(){
  bool Enemy::isDying() {
 	 return this->hp < 0; //idk
  }
+
+ EntityType Enemy::getEntityType() {
+     return ENEMY;
+ }

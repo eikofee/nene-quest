@@ -6,6 +6,11 @@
 #include <SFML/Graphics.hpp>
 #include <entity.hpp>
 #include <player.hpp>
+#include <enemy.hpp>
+#include <bonus.hpp>
+#include <bonusHp.hpp>
+#include <itemWeapon.hpp>
+
 class World {
 public:
 	static void initialize();
@@ -21,12 +26,19 @@ public:
 	static std::vector<Entity*> testCollidingEntities(Entity* entity, sf::Vector2f movement);
 	static std::vector<Entity*> testCollidingEntitiesOnZAxis(Entity* entity, sf::Vector2f movement);
 	static std::vector<Player*> getPlayers();
+	static void scroll();
+	static void managePlayersCollidingWithThings();
+	static void managePlayerCollidingWithBonus(Player* player, Bonus* bonus);
+    static void managePlayerCollidingWithEnemy(Player* player, Enemy* enemy);
 
 private:
-	static std::vector<Entity*> World::entities;
-	static std::vector<Player*> World::players;
-	static float World::elapsedTime;
-	static bool World::sortUsingFirstZHitbox(Entity* a, Entity* b);
+    static constexpr float SCROLL_SPEED = 30;
+    static constexpr float SCROLL_DAMAGE = 30;//When the player is pressed between the wall and a object by the scrolling
+
+	static std::vector<Entity*> entities;
+	static std::vector<Player*> players;
+	static float elapsedTime;
+	static bool sortUsingFirstZHitbox(Entity* a, Entity* b);
 };
 
 #endif

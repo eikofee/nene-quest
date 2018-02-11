@@ -3,8 +3,11 @@
 std::vector<Entity*> World::entities;
 std::vector<Player*> World::players;
 float World::elapsedTime;
+
+using namespace std;
+
 void World::initialize() {
-	
+
 }
 
 std::vector<Entity*> World::getEntities() {
@@ -116,7 +119,8 @@ float World::getElapsedTime() {
 }
 
 void World::render(sf::RenderWindow &app) {
-	std::sort(entities.begin(), entities.begin() + entities.size(), sortUsingFirstZHitbox);
+	std::sort(entities.begin(), entities.end(), sortUsingFirstZHitbox);
+
 	for (auto e : entities)
 		app.draw(*e);
 }
@@ -134,4 +138,67 @@ bool World::sortUsingFirstZHitbox(Entity* a, Entity* b) {
 	auto ha = a->getZHitboxes().at(0)->getPosition().y + a->getZHitboxes().at(0)->getSize().y;
 	auto hb = b->getZHitboxes().at(0)->getPosition().y + b->getZHitboxes().at(0)->getSize().y;
 	return ha < hb;
+}
+
+void World::managePlayersCollidingWithThings(){
+
+    for(auto player : players)
+        for(Entity* ent : World::getCollidingEntitiesOnZAxis(player)){
+            switch(ent->getEntityType()){
+                case EntityType::BONUS :
+                    World::managePlayerCollidingWithBonus(player, (Bonus*)ent);
+                    break;
+                case EntityType::ENEMY :
+                    World::managePlayerCollidingWithEnemy(player, (Enemy*)ent);
+                    break;
+            }
+        }
+}
+
+void World::managePlayerCollidingWithBonus(Player* player, Bonus* bonus){
+
+    switch(bonus->getBonusType()){
+        case BONUS_HP :
+            player->alterHealth(((BonusHp*)bonus)->getHealedAmount(), true);
+            bonus->alterHealth(-1, false);
+            break;
+        case BONUS_WEAPON :
+            if(((ItemWeapon*)bonus)->isPickable()){
+                WeaponType playerWeapon = player->getWeapon()->getWeaponType();
+                player->equip(new Weapon(((ItemWeapon*)bonus)->getWeaponType()));
+                ((ItemWeapon*)bonus)->setWeaponType(playerWeapon);
+                ((ItemWeapon*)bonus)->isJustDropped();
+            }
+        break;
+    }
+}
+
+void World::managePlayerCollidingWithEnemy(Player* player, Enemy* enemy){
+    player->isHit(enemy->getAttackDamage());
+}
+
+void World::scroll(){
+
+    //Move all entities
+    for(Entity* entity : entities){
+        if(entity->getEntityType() != PLAYER){
+            entity->move(Vector2f(-SCROLL_SPEED * World::getElapsedTime() , 0));
+            if(entity->getZHitboxes().at(0)->getGlobalBounds().left + entity->getZHitboxes().at(0)->getGlobalBounds().width < 0)
+                entity->alterHealth(-1, false);
+            //Check if a player is pushed
+            else if(entity->getEntityType() == SOLID){
+                for(Player* player : players)
+                    while(player->collideWith(entity)){
+                        if(player->getHitboxes().at(0)->getGlobalBounds().left > 0)
+                            player->move(sf::Vector2f(-1, 0));
+                        else{
+                            entity->alterHealth(-1, false);
+                            player->isHit(SCROLL_DAMAGE);
+                            break;
+                        }
+                    }
+            }
+        }
+    }
+
 }

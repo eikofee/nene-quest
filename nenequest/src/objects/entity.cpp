@@ -1,6 +1,7 @@
 #include <entity.hpp>
 #include <math.h>
 #include <game.hpp>
+
 using namespace sf;
 
 std::vector<sf::RectangleShape*> Entity::getHitboxes() {
@@ -18,7 +19,7 @@ void Entity::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 		for (auto zh : zHitboxes)
 			target.draw(*zh, states);
 	}
-	
+
 	target.draw(sprite, states);
 }
 
@@ -76,7 +77,7 @@ void Entity::update(float elapsedTime) {
 }
 
 bool Entity::isDead() {
-	return false;
+	return health < 0;
 }
 
 float Entity::distanceToPosition(sf::Vector2f position) {
@@ -100,4 +101,14 @@ void Entity::alterHealth(int value, bool relative) {
 
 void Entity::handleDeath() {
 	//if (health <= 0) { do something }
-} 
+}
+
+bool Entity::collideWith(Entity* entity){
+
+    for (auto h : this->getZHitboxes())
+        for (auto sh : entity->getZHitboxes())
+            if (h->getGlobalBounds().intersects(sh->getGlobalBounds()))
+                return true;
+
+    return false;
+}
