@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <iostream>
 #include <time.h>
-#include <configManager.h>
-#include <configParser.h>
-#include <configParameter.h>
+#include <configManager.hpp>
+#include <configParser.hpp>
+#include <configParameter.hpp>
 
 using namespace std;
 using namespace sf;

@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include <levelManager.hpp>
-#include <customMap.h>
+#include <customMap.hpp>
 
 class ParserFunction {
 

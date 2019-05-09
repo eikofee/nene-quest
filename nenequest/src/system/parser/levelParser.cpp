@@ -1,10 +1,10 @@
 #include <levelParser.hpp>
 
-#include <commands/cmdScroll.h>
-#include <commands/cmdBridge.h>
-#include <commands/cmdChest.h>
-#include <commands/cmdStart.h>
-#include <commands/cmdWeapon.h>
+#include <commands/cmdScroll.hpp>
+#include <commands/cmdBridge.hpp>
+#include <commands/cmdChest.hpp>
+#include <commands/cmdStart.hpp>
+#include <commands/cmdWeapon.hpp>
 #include <parserCommand.hpp>
 
 LevelParser::LevelParser() {

@@ -5,7 +5,7 @@
 #include <vector>
 #include <list>
 #include <SFML/Graphics.hpp>
-#include <configProperty.h>
+#include <configProperty.hpp>
 class ConfigParameter;
 class ConfigManager {
 

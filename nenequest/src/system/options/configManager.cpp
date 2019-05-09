@@ -1,6 +1,6 @@
-#include<configManager.h>
-#include<configProperty.h>
-#include <configParameter.h>
+#include<configManager.hpp>
+#include<configProperty.hpp>
+#include <configParameter.hpp>
 ConfigManager::ConfigManager(){
 }
 

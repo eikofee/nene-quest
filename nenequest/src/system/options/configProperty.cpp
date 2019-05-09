@@ -1,4 +1,4 @@
-#include<configProperty.h>
+#include<configProperty.hpp>
 
 ConfigProperty::ConfigProperty(std::string name, ConfigParameter * param)
 {
