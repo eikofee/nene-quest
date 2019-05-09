@@ -25,9 +25,9 @@ project by yourself.
 
     ```sh
     cd nenequest/
-    cmake -B build
+    cmake -B build . # -DCMAKE_BUILD_TYPE=Debug
     make -C build
-    ./build/NeneQuest.exe
+    ./build/NeneQuest
     ```
 
 * IDE: https://www.sfml-dev.org/tutorials/2.5/#getting-started
