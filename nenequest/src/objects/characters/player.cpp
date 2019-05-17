@@ -164,16 +164,14 @@ void Player::update_animation(){
 
 
 // Called every frame by manageMovements->fixPosition->move
-void Player::move(Vector2f g_speed){
-	float elapsedTime = World::getElapsedTime();
+void Player::move(Vector2f g_speed) {
     if (clock.getElapsedTime().asSeconds() > this->ANIMATION_DELAY) {
         update_animation();
         clock.restart();
     }
 
-	Entity::move(g_speed);
-	//sf::Vector2f v = sf::Vector2f(g_speed.x * elapsedTime, g_speed.y*elapsedTime);
-	this->getWeapon()->move(g_speed);
+    Entity::move(g_speed);
+    this->getWeapon()->move(g_speed);
 }
 
 //Deprecated : use Entity->get/alterHealth()
@@ -248,7 +246,7 @@ void Player::manageMovements() {
 	if (World::testCollidingEntitiesOnZAxis(this, fy).size() == 0)
 		this->move(fy);*/
 
-	this->fixPosition();
+    this->fixPosition();
 
 }
 

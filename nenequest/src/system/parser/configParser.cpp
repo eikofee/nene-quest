@@ -9,13 +9,13 @@ ConfigParser::ConfigParser()
 
 void ConfigParser::initialize()
 {
-	paramsKeyboardType = { 
+	paramsKeyboardType = {
 		"playerOneMoveUp" , "playerOneMoveDown", "playerOneMoveLeft",
 		"playerOneMoveRight", "playerOneJump", "playerOneAttack",
-		
+
 		"playerTwoMoveUp" , "playerTwoMoveDown", "playerTwoMoveLeft",
 		"playerTwoMoveRight", "playerTwoJump", "playerTwoAttack",
-	
+
 		"togglePause", "toggleDebugMode"
 	};
 
@@ -81,9 +81,10 @@ void ConfigParser::setConfigManager(ConfigManager * manager)
 }
 
 sf::Keyboard::Key ConfigParser::parseKey(std::string str) {
-	for (int i = 0; i < configKeyboardNames.size(); i++)
-		if (!str.compare(configKeyboardNames.at(i)))
-			return configKeyboardEquiv.at(i);
+	for (decltype(configKeyboardNames)::size_type i = 0;
+		i < configKeyboardNames.size(); ++i)
+		if (str == configKeyboardNames[i])
+			return configKeyboardEquiv[i];
 
 	return sf::Keyboard::Key::Unknown;
 }

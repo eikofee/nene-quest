@@ -13,12 +13,9 @@ RandomCloud::RandomCloud() {
 
 RandomCloud::~RandomCloud() {
 	delete this->cloudBody;
-	for (int i = 0; i < this->cloudBorder.size(); i++) {
-		delete(this->cloudBorder.at(i));
-		this->cloudBorder.erase(this->cloudBorder.begin() + i);
-		i--;
-	}
-
+	for (auto &cb : this->cloudBorder)
+		delete cb;
+	this->cloudBorder.clear();
 }
 
 void RandomCloud::generateBorder() {

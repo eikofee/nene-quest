@@ -10,8 +10,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-static int PLAYER_HP = 100;
-
 class Player : public Entity {
     public:
         Player(Weapon* weapon, sf::Vector2f position, bool secondPlayer = false);
@@ -27,7 +25,7 @@ class Player : public Entity {
 
         // Life management
         void isHit(int damage);
-        virtual void alterHealth(int value, bool realtive);
+        virtual void alterHealth(int value, bool relative);
 
         // override
 		virtual void draw(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates::Default) const;
@@ -49,6 +47,7 @@ class Player : public Entity {
 		bool isShooting();
 		void setShootingState(bool state);
 
+        static constexpr int PLAYER_HP = 100;
 
     private:
 		static constexpr float PLAYER_SPEED = 500;

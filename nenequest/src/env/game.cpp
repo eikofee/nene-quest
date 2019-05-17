@@ -494,8 +494,8 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
     for(Player* var : players)
         entities.push_back((Entity*)var);
 
-	for (ItemWeapon* var : item_weapons)
-		entities.push_back((Entity*)var);
+    for (ItemWeapon* var : item_weapons)
+        entities.push_back((Entity*)var);
 
     for(BreakableObject* var : breakable_objects)
         entities.push_back((Entity*)var);
@@ -509,8 +509,8 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
     for(Entity* var : entities)
         app->draw(*var);
 
-	for (auto e : World::getEntities())
-		app->draw(*e);
+    for (auto e : World::getEntities())
+        app->draw(*e);
  }
 
  bool Game::cmp(Entity* a, Entity* d) {

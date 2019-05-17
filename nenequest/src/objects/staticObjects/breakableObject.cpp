@@ -69,16 +69,11 @@ Bonus* BreakableObject::getDrops(){
 
     if(object_type == Chest)
         return bonus;
-
-    else if(object_type == Barrel){
-        if(rand() % 10 < BARREL_DROP_CHANCE)
-            return bonus;
-        else
-            return NULL;
-    }
+    else if (object_type == Barrel && rand() % 10 < BARREL_DROP_CHANCE)
+        return bonus;
+    return NULL;
 }
 
  EntityType BreakableObject::getEntityType() {
      return SOLID;
  }
-

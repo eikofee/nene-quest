@@ -37,7 +37,7 @@ void LevelParser::parseFile(std::string filename) {
 			size_t pos = 0;
 			std::string token;
 			float time = std::stof(line.substr(0, line.find(ds)));
-			
+
 			//get function + args
 			std::string fa = line.substr(line.find(ds) + 1, line.length() - 1);
 
@@ -54,7 +54,7 @@ void LevelParser::parseFile(std::string filename) {
 
 
 				//C/C from SO because I have no shame
-				
+
 				ds = ",";
 				while ((pos = func_args.find(ds)) != std::string::npos) {
 					token = func_args.substr(0, pos);
@@ -87,7 +87,7 @@ void LevelParser::parseFile(std::string filename) {
 
 	for (auto c : this->commands) {
 		ParserFunction* f = this->functions.at(0);
-		int i = 0;
+		decltype(this->functions)::size_type i = 0;
 		while (i < this->functions.size() && !f->isCorrect(c->getName()))
 			f = this->functions.at(i++);
 
@@ -95,7 +95,6 @@ void LevelParser::parseFile(std::string filename) {
 	}
 
 	manager->setLevelCommands(this->commands);
-
 }
 
 void LevelParser::setLevelFilesPath(std::string path) {

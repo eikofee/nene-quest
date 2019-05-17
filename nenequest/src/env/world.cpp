@@ -151,6 +151,11 @@ void World::managePlayersCollidingWithThings(){
                 case EntityType::ENEMY :
                     World::managePlayerCollidingWithEnemy(player, (Enemy*)ent);
                     break;
+                case EntityType::NONE:
+                case EntityType::PLAYER:
+                case EntityType::SFX:
+                case EntityType::SOLID:
+                    break; // do nothing?
             }
         }
 }

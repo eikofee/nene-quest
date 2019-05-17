@@ -56,7 +56,7 @@ int GameOver::run(RenderWindow &app) {
     halo.setPosition(app.getSize().x/2, app.getSize().y/2*1.25);
 
 	// Place letters
-	for (int i = 0; i < this->texs.size(); i++) {
+	for (decltype(this->texs)::size_type i = 0; i < this->texs.size(); i++) {
 		Texture* letterTex = new Texture();
 		letterTex->loadFromFile(this->GAMEOVER_PATH + this->texs.at(i) + this->GAMEOVER_EXT);
 		this->lettersSize = sf::Vector2f(letterTex->getSize());

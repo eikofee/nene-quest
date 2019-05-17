@@ -1,6 +1,7 @@
 #include <background.hpp>
 #include <randomCloud.hpp>
 #include <randomMountain.hpp>
+#include <algorithm>
 
 using namespace sf;
 
@@ -23,31 +24,24 @@ Background::Background(Vector2u v) {
 }
 
 void Background::update() {
-	for (int i = 0; i < this->clouds.size(); i++) {
-		bool active = this->clouds.at(i)->isAlive();
-		if (active) {
-			this->clouds.at(i)->translate(- (scrollSpeed + 1) * cloudSpeedModifier, 0);
-			this->clouds.at(i)->update();
-		}
-		else {
-			delete(this->clouds.at(i));
-			this->clouds.erase(this->clouds.begin() + i);
-			i--;
-		}
-	}
-
-	for (int i = 0; i < this->mountains.size(); i++) {
-		bool active = this->mountains.at(i)->isAlive();
-		if (active) {
-			this->mountains.at(i)->translate(- scrollSpeed * mountainSpeedModifier, 0);
-			this->mountains.at(i)->update();
-		}
-		else {
-			delete(this->mountains.at(i));
-			this->mountains.erase(this->mountains.begin() + i);
-			i--;
-		}
-	}
+    auto del = [](RandomShape *r) {
+                   bool b = !r->isAlive();
+                   if (b) delete r;
+                   return b;
+               };
+    auto upd = [&del, this](std::vector<RandomShape *> &shapes,
+                             float speedModifier) {
+                   auto rm = std::remove_if(shapes.begin(),
+                                            shapes.end(),
+                                            del);
+                   for (auto it = shapes.begin(); it != rm; ++it) {
+                       (*it)->translate(-(scrollSpeed + 1) * speedModifier, 0);
+                       (*it)->update();
+                   }
+                   shapes.erase(rm, shapes.end());
+               };
+    upd(this->clouds, this->cloudSpeedModifier);
+    upd(this->mountains, this->mountainSpeedModifier);
 
 	this->createClouds();
 	this->createMountains();
