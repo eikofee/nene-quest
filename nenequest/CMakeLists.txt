@@ -26,3 +26,14 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
 
 find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
 target_link_libraries(${EXECUTABLE_NAME} sfml-graphics sfml-audio)
+
+include(GNUInstallDirs)
+install(DIRECTORY bgm fonts img levels sfx
+  DESTINATION ${CMAKE_INSTALL_DATADIR}/${EXECUTABLE_NAME})
+install(FILES config/config.ini
+  DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/${EXECUTABLE_NAME})
+install(TARGETS ${EXECUTABLE_NAME}
+  DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+# Package Generator
+include(CPack)
