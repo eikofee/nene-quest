@@ -1,7 +1,7 @@
 #ifndef BOAR_HPP
 #define BOAR_HPP
 
-#include <enemy.hpp>
+#include "enemy.hpp"
 
 #include <SFML/Graphics.hpp>
 

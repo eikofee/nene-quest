@@ -2,8 +2,8 @@
 #define WEAPON_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include <entity.hpp>
-#include <weaponType.hpp>
+#include "entity.hpp"
+#include "weaponType.hpp"
 #include <string>
 using namespace sf;
 

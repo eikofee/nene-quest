@@ -1,5 +1,5 @@
 #include <iostream>
-#include <randomMountain.hpp>
+#include "randomMountain.hpp"
 
 using namespace std;
 using namespace sf;

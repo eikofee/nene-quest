@@ -2,7 +2,7 @@
 #define BREAKABLEOBJECT_H
 
 #include <SFML/Graphics.hpp>
-#include <entity.hpp>
+#include "entity.hpp"
 
 class Bonus;
 

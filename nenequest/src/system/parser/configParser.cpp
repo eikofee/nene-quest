@@ -1,5 +1,5 @@
-#include <configParser.hpp>
-#include <configManager.hpp>
+#include "configParser.hpp"
+#include "configManager.hpp"
 #include <SFML/Window.hpp>
 
 ConfigParser::ConfigParser()

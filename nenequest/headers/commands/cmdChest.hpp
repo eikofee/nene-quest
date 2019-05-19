@@ -1,7 +1,7 @@
 #ifndef CMDCHEST_HPP_INCLUDED
 #define CMDCHEST_HPP_INCLUDED
 
-#include <parserFunction.hpp>
+#include "parserFunction.hpp"
 #include <random>
 
 class cmdChest : public ParserFunction {

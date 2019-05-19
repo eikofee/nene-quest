@@ -1,7 +1,7 @@
 #ifndef CMDWEAPON_HPP_INCLUDED
 #define CMDWEAPON_HPP_INCLUDED
 
-#include <parserFunction.hpp>
+#include "parserFunction.hpp"
 #include <random>
 
 class cmdWeapon : public ParserFunction {

@@ -1,5 +1,5 @@
-#include <menu.hpp>
-#include <lifebar.hpp>
+#include "menu.hpp"
+#include "lifebar.hpp"
 
 using namespace std;
 using namespace sf;

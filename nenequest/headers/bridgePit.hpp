@@ -2,7 +2,7 @@
 #define BRIDGEPIT_H
 
 #include <SFML/Graphics.hpp>
-#include <entity.hpp>
+#include "entity.hpp"
 
 class BridgePit : public Entity
 {

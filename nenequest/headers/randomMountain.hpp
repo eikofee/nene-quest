@@ -2,7 +2,7 @@
 #define RANDOMMOUNTAIN_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include <randomShape.hpp>
+#include "randomShape.hpp"
 #include <list>
 #include <stdlib.h>
 #include <time.h>

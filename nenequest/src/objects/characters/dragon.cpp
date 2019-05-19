@@ -1,8 +1,8 @@
 #include<time.h>
 
-#include <dragon.hpp>
-#include <flame.hpp>
-#include <game.hpp>
+#include "dragon.hpp"
+#include "flame.hpp"
+#include "game.hpp"
 
 using namespace sf;
 using namespace std;

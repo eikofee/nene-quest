@@ -1,7 +1,7 @@
 #ifndef CMDBRIDGE_HPP_INCLUDED
 #define CMDBRIDGE_HPP_INCLUDED
 
-#include <parserFunction.hpp>
+#include "parserFunction.hpp"
 
 class cmdBridge : public ParserFunction {
 

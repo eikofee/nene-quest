@@ -1,4 +1,4 @@
-#include <flame.hpp>
+#include "flame.hpp"
 #include <stdio.h>
 #include <math.h>
 using namespace sf;

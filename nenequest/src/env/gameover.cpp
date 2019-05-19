@@ -1,7 +1,7 @@
 #include <SFML/Audio.hpp>
-#include <gameover.hpp>
-#include <gamemode.hpp>
-#include <screens.hpp>
+#include "gameover.hpp"
+#include "gamemode.hpp"
+#include "screens.hpp"
 
 using namespace std;
 using namespace sf;

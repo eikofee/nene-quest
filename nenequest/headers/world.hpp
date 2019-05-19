@@ -4,12 +4,12 @@
 #include <stdlib.h>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include <entity.hpp>
-#include <player.hpp>
-#include <enemy.hpp>
-#include <bonus.hpp>
-#include <bonusHp.hpp>
-#include <itemWeapon.hpp>
+#include "entity.hpp"
+#include "player.hpp"
+#include "enemy.hpp"
+#include "bonus.hpp"
+#include "bonusHp.hpp"
+#include "itemWeapon.hpp"
 
 class World {
 public:

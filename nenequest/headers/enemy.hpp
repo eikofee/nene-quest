@@ -2,7 +2,7 @@
 #define ENNEMY_H
 
 #include <SFML/Graphics.hpp>
-#include <entity.hpp>
+#include "entity.hpp"
 
 enum EnemyType {Enemy_Dragon, Enemy_Boar};
 

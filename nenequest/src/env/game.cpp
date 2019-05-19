@@ -1,11 +1,11 @@
-#include <game.hpp>
-#include <world.hpp>
+#include "game.hpp"
+#include "world.hpp"
 #include <stdlib.h>
 #include <iostream>
 #include <time.h>
-#include <configManager.hpp>
-#include <configParser.hpp>
-#include <configParameter.hpp>
+#include "configManager.hpp"
+#include "configParser.hpp"
+#include "configParameter.hpp"
 
 using namespace std;
 using namespace sf;

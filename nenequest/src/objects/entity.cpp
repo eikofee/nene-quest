@@ -1,6 +1,6 @@
-#include <entity.hpp>
+#include "entity.hpp"
 #include <math.h>
-#include <game.hpp>
+#include "game.hpp"
 
 using namespace sf;
 

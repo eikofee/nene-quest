@@ -1,5 +1,5 @@
 #include <iostream>
-#include <lifebar.hpp>
+#include "lifebar.hpp"
 
 using namespace std;
 using namespace sf;

@@ -1,8 +1,8 @@
-#include <levelManager.hpp>
-#include <player.hpp>
-#include <game.hpp>
-#include <parserCommand.hpp>
-#include <weaponType.hpp>
+#include "levelManager.hpp"
+#include "player.hpp"
+#include "game.hpp"
+#include "parserCommand.hpp"
+#include "weaponType.hpp"
 
 LevelManager::LevelManager(Game* game) {
 	this->timeSync = 0;

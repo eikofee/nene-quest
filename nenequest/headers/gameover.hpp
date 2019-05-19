@@ -2,8 +2,8 @@
 #define GAMEOVER_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include <screen.hpp>
-#include <gamemode.hpp>
+#include "screen.hpp"
+#include "gamemode.hpp"
 #include <math.h>
 
 class GameOver : public Screen {

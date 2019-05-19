@@ -1,4 +1,4 @@
-#include <configParameter.hpp>
+#include "configParameter.hpp"
 
 void ConfigParameter::getParameter(sf::Keyboard::Key* k)
 {
