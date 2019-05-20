@@ -1,4 +1,5 @@
 #include "levelManager.hpp"
+
 #include "player.hpp"
 #include "game.hpp"
 #include "parserCommand.hpp"
@@ -78,4 +79,3 @@ bool LevelManager::pccomp(ParserCommand* a, ParserCommand* b) {
 
 	return true;
 }
-

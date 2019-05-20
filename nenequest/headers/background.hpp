@@ -1,10 +1,10 @@
 #ifndef BACKGROUND_HPP_INCLUDED
 #define BACKGROUND_HPP_INCLUDED
 
-#include <SFML/Graphics.hpp>
-#include "randomShape.hpp"
 #include <list>
+#include <SFML/Graphics.hpp>
 
+#include "randomShape.hpp"
 
 class Background : public sf::Drawable, sf::Transformable {
     private:

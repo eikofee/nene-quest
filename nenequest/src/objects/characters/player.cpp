@@ -1,7 +1,10 @@
 #include "player.hpp"
-#include "world.hpp"
-#include <SFML/Graphics.hpp>
+
 #include <iostream>
+#include <SFML/Graphics.hpp>
+
+#include "world.hpp"
+
 /**
     TODO (not updated) :
     - Placer l'arme correctement

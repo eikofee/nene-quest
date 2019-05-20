@@ -1,5 +1,7 @@
 #include "entity.hpp"
+
 #include <math.h>
+
 #include "game.hpp"
 
 using namespace sf;

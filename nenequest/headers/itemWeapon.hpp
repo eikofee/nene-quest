@@ -1,10 +1,10 @@
 #ifndef ITEMWEAPON_H
 #define ITEMWEAPON_H
 
+#include <SFML/Graphics.hpp>
 
 #include "bonus.hpp"
 #include "weaponType.hpp"
-#include <SFML/Graphics.hpp>
 
 enum ItemWeaponType {ITEM_AXE, ITEM_SWORD, ITEM_GREATSWORD, ITEM_BOW };
 

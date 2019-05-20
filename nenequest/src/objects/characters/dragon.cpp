@@ -1,6 +1,7 @@
-#include<time.h>
-
 #include "dragon.hpp"
+
+#include <time.h>
+
 #include "flame.hpp"
 #include "game.hpp"
 

@@ -1,7 +1,7 @@
 #define _USE_MATH_DEFINES
 
-
 #include "arrow.hpp"
+
 #include <math.h>
 
 using namespace sf;
@@ -62,10 +62,10 @@ void Arrow::update(float elapsedTime){
         if(this->getPosition().y > initial_location.y)
             is_dead = true;
     */
-		
+
 		this->setPosition(initial_location.x + speed.x * lifespan, initial_location.y + speed.y * (sin((lifespan / curveTime) * M_PI) /*+ sin(curveCappedValue * M_PI)*/));
 		zHitboxes.at(0)->setPosition(getPosition().x, initial_location.y);
-		sprite.setRotation(- 30 + lifespan * 60);		// rotation start + (rotation end - rotation start) 
+		sprite.setRotation(- 30 + lifespan * 60);		// rotation start + (rotation end - rotation start)
 		hitboxes.at(0)->setRotation(sprite.getRotation());
 		if (lifespan >= highDeadzoneStart * curveTime && lifespan <= highDeadzoneEnd * curveTime)
 			zHitboxes.at(0)->setFillColor(sf::Color(255, 128, 255, 128));	//pink

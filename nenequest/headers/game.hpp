@@ -4,24 +4,24 @@
 //TODO : Clean all this
 
 #include <SFML/Graphics.hpp>
-#include "screen.hpp"
-#include "../headers/lifebar.hpp"
-#include "../headers/randomCloud.hpp"
-#include "../headers/background.hpp"
-#include "../headers/enemy.hpp"
-#include "../headers/boar.hpp"
-#include "../headers/dragon.hpp"
-#include "../headers/player.hpp"
-#include "../headers/bonusHp.hpp"
-#include "../headers/itemWeapon.hpp"
-#include "../headers/flame.hpp"
-#include "../headers/weaponType.hpp"
-#include "../headers/breakableObject.hpp"
-#include "../headers/bonus.hpp"
-#include"../headers/arrow.hpp"
-#include "../headers/bridgePit.hpp"
 
-#include "../headers/levelParser.hpp"
+#include "screen.hpp"
+#include "lifebar.hpp"
+#include "randomCloud.hpp"
+#include "background.hpp"
+#include "enemy.hpp"
+#include "boar.hpp"
+#include "dragon.hpp"
+#include "player.hpp"
+#include "bonusHp.hpp"
+#include "itemWeapon.hpp"
+#include "flame.hpp"
+#include "weaponType.hpp"
+#include "breakableObject.hpp"
+#include "bonus.hpp"
+#include "arrow.hpp"
+#include "bridgePit.hpp"
+#include "levelParser.hpp"
 
 class ConfigManager;
 class ConfigParser;

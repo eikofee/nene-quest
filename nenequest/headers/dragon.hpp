@@ -2,6 +2,7 @@
 #define DRAGON_H
 
 #include <SFML/Graphics.hpp>
+
 #include "enemy.hpp"
 
 class Projectile;

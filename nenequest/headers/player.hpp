@@ -1,14 +1,14 @@
 #ifndef PLAYER_HPP_INCLUDED
 #define PLAYER_HPP_INCLUDED
 
+#include <iostream>
+#include <SFML/Graphics.hpp>
+
 #include "weapon.hpp"
 #include "lifebar.hpp"
 #include "arrow.hpp"
 #include "itemWeapon.hpp"
 #include "entity.hpp"
-
-#include <SFML/Graphics.hpp>
-#include <iostream>
 
 class Player : public Entity {
     public:

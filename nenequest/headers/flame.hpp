@@ -2,6 +2,7 @@
 #define FLAME_H
 
 #include <SFML/Graphics.hpp>
+
 #include "projectile.hpp"
 
 class Flame : public Projectile {

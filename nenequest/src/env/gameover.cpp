@@ -1,5 +1,7 @@
-#include <SFML/Audio.hpp>
 #include "gameover.hpp"
+
+#include <SFML/Audio.hpp>
+
 #include "gamemode.hpp"
 #include "screens.hpp"
 

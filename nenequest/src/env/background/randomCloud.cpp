@@ -1,6 +1,7 @@
+#include "randomCloud.hpp"
+
 #include <iostream>
 #include <math.h>
-#include "randomCloud.hpp"
 
 using namespace std;
 using namespace sf;

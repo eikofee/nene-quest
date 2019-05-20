@@ -1,9 +1,10 @@
-#include <SFML/Graphics.hpp>
-#include "screens.hpp"
 #include <assert.h>
 #include <stdio.h>
 #include <iostream>
+#include <SFML/Graphics.hpp>
+
 #include "menu.hpp"
+#include "screens.hpp"
 
 using namespace std;
 using namespace sf;
@@ -16,7 +17,7 @@ int main() {
     app.setFramerateLimit(60);
 
 	// Make sure that the enum in screens.hpp
-	// matches the order in the vector 'screens' 
+	// matches the order in the vector 'screens'
 	assert (
 		TITLE_SCREEN == 0 &&
 		GAME_SCREEN == 1 &&

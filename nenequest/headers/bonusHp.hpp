@@ -1,8 +1,9 @@
 #ifndef BONUSHP_H
 #define BONUSHP_H
 
-#include "bonus.hpp"
 #include <SFML/Graphics.hpp>
+
+#include "bonus.hpp"
 
 enum BonusHpType {BONUS_ONIGIRI};
 

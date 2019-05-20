@@ -1,11 +1,12 @@
 #ifndef RANDOMCLOUD_HPP_INCLUDED
 #define RANDOMCLOUD_HPP_INCLUDED
 
-#include <SFML/Graphics.hpp>
-#include "randomShape.hpp"
 #include <list>
 #include <stdlib.h>
 #include <time.h>
+#include <SFML/Graphics.hpp>
+
+#include "randomShape.hpp"
 
 class RandomCloud : public RandomShape {
 	private:

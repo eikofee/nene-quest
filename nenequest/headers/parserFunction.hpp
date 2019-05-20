@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+
 #include "levelManager.hpp"
 #include "customMap.hpp"
 
@@ -17,7 +18,7 @@ public:
 	virtual void initialize(LevelManager* manager);
 	bool isCorrect(std::string command);
 	virtual void exec(CustomMap* args);
-	
+
 };
 
 #endif

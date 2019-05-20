@@ -1,6 +1,8 @@
 #include "configParser.hpp"
-#include "configManager.hpp"
+
 #include <SFML/Window.hpp>
+
+#include "configManager.hpp"
 
 ConfigParser::ConfigParser()
 {

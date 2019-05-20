@@ -1,7 +1,8 @@
 #ifndef CONFIGPARAMETER_H
 #define CONFIGPARAMETER_H
-#include <SFML/Window.hpp>
+
 #include <string>
+#include <SFML/Window.hpp>
 
 class ConfigParameter {
 public :

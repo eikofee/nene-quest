@@ -1,9 +1,9 @@
 #ifndef BOAR_HPP
 #define BOAR_HPP
 
-#include "enemy.hpp"
-
 #include <SFML/Graphics.hpp>
+
+#include "enemy.hpp"
 
 class Boar : public Enemy {
 

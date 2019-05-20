@@ -1,7 +1,9 @@
 #include "background.hpp"
+
+#include <algorithm>
+
 #include "randomCloud.hpp"
 #include "randomMountain.hpp"
-#include <algorithm>
 
 using namespace sf;
 

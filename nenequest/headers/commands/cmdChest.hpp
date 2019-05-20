@@ -1,8 +1,9 @@
 #ifndef CMDCHEST_HPP_INCLUDED
 #define CMDCHEST_HPP_INCLUDED
 
-#include "parserFunction.hpp"
 #include <random>
+
+#include "parserFunction.hpp"
 
 class cmdChest : public ParserFunction {
 
@@ -27,7 +28,7 @@ public:
 
 		if (y == -1)
 			y = rand() * (randy_max - randy_min) + randy_min;
-		
+
 		ParserFunction::manager->spawnChest(x, y, item, hp);
 	}
 

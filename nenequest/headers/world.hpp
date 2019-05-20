@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <SFML/Graphics.hpp>
+
 #include "entity.hpp"
 #include "player.hpp"
 #include "enemy.hpp"

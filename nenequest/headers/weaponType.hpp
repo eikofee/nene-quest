@@ -1,8 +1,9 @@
 #ifndef WEAPONTYPE_HPP_INCLUDED
 #define WEAPONTYPE_HPP_INCLUDED
 
-#include <SFML/Graphics.hpp>
 #include <string>
+
+#include <SFML/Graphics.hpp>
 
 enum WeaponType {Bow, Axe, Sword, GreatSword};
 
