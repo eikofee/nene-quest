@@ -4,13 +4,12 @@
 #include <map>
 
 class CustomMap {
+   private:
+    std::map<std::string, std::string> *map;
 
-private:
-	std::map<std::string, std::string>* map;
-
-public:
-	CustomMap(std::map<std::string, std::string>* map);
-	std::string getOrDefault(std::string key, std::string def_value);
+   public:
+    CustomMap(std::map<std::string, std::string> *map);
+    std::string getOrDefault(std::string key, std::string def_value);
 };
 
 #endif

@@ -49,3 +49,10 @@ project by yourself.
   + You can navigate in the files with the "Solutions and folders"
     button in the right corner
   + Now, you should be able to compile the project
+
+Please format the code before committing, with
+
+``` sh
+cd nenequest/
+clang-format -i headers/**/*.hpp src/**/*.cpp
+```

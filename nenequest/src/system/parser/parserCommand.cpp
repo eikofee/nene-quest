@@ -1,36 +1,25 @@
 #include "parserCommand.hpp"
 
-ParserCommand::ParserCommand() {
-}
+ParserCommand::ParserCommand() {}
 
-void ParserCommand::setTime(float time){
-	this->time = time;
-}
+void ParserCommand::setTime(float time) { this->time = time; }
 
-void ParserCommand::setName(std::string name) {
-	this->name = name;
-}
+void ParserCommand::setName(std::string name) { this->name = name; }
 
-void ParserCommand::setFunction(ParserFunction* function) {
-	this->function = function;
+void ParserCommand::setFunction(ParserFunction *function) {
+    this->function = function;
 }
 
 void ParserCommand::addArgument(std::string key, std::string value) {
-	this->arguments.insert({ key, value });
+    this->arguments.insert({key, value});
 }
 
-float ParserCommand::getTime() {
-	return this->time;
-}
+float ParserCommand::getTime() { return this->time; }
 
-std::string ParserCommand::getName() {
-	return this->name;
-}
+std::string ParserCommand::getName() { return this->name; }
 
-ParserFunction* ParserCommand::getFunction() {
-	return this->function;
-}
+ParserFunction *ParserCommand::getFunction() { return this->function; }
 
-std::map<std::string, std::string>* ParserCommand::getArguments() {
-	return &this->arguments;
+std::map<std::string, std::string> *ParserCommand::getArguments() {
+    return &this->arguments;
 }

@@ -3,19 +3,17 @@
 
 #include "entity.hpp"
 
+class Projectile : public Entity {
+   public:
+    Projectile();
+    virtual ~Projectile();
+    virtual float getDepth();
+    virtual float getDrawDepth();
 
-class Projectile : public Entity
-{
-    public:
-        Projectile();
-        virtual ~Projectile();
-        virtual float getDepth();
-        virtual float getDrawDepth();
+   protected:
+    float depth;
 
-    protected:
-        float depth;
-
-    private:
+   private:
 };
 
-#endif // PROJECTILE_H
+#endif  // PROJECTILE_H

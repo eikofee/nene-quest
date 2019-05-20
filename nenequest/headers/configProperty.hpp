@@ -5,15 +5,15 @@
 class ConfigParameter;
 
 class ConfigProperty {
-public:
-	ConfigProperty(std::string name, ConfigParameter* param);
-	std::string getName();
-	ConfigParameter* getParameter();
-	void setParameter(ConfigParameter * param);
-private:
-	std::string name;
-	ConfigParameter* param;
+   public:
+    ConfigProperty(std::string name, ConfigParameter *param);
+    std::string getName();
+    ConfigParameter *getParameter();
+    void setParameter(ConfigParameter *param);
+
+   private:
+    std::string name;
+    ConfigParameter *param;
 };
 
-
-#endif // !CONFIGPROPERTY_H
+#endif  // !CONFIGPROPERTY_H

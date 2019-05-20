@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 
-enum WeaponType {Bow, Axe, Sword, GreatSword};
+enum WeaponType { Bow, Axe, Sword, GreatSword };
 
 sf::Vector2f getWeaponOrigin(WeaponType w);
 
