@@ -18,7 +18,9 @@ short int Menu::validateMenu(short int menuIndex) {
     }
 }
 
-int Menu::run(RenderWindow &app) {
+void Menu::cleanScreen() { }
+
+int Menu::run(RenderWindow& app) {
     Event event;
     int menuIndex = 0;
 

@@ -14,6 +14,7 @@ class Menu : public Screen {
     Menu();
     virtual int run(sf::RenderWindow &app);
     short int validateMenu(short int menuIndex);
+    void cleanScreen();
 };
 
 #endif

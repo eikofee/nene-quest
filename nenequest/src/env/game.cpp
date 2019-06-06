@@ -8,6 +8,7 @@
 #include "configParameter.hpp"
 #include "configParser.hpp"
 #include "world.hpp"
+#include "screens.hpp"
 
 using namespace std;
 using namespace sf;
@@ -31,11 +32,12 @@ Game::Game() {
     this->configParser->initialize();
 }
 
-int Game::run(RenderWindow &app) {
+int Game::run(RenderWindow& app) {
+
     Event event;
     Background background = Background(app.getSize());
     this->manager->setBackground(&background);
-
+    std::cout << "??";
     // Load settings
     this->configParser->parseFile("config.ini");
     // Bind keys
@@ -103,7 +105,7 @@ int Game::run(RenderWindow &app) {
 
     // Load Level
     this->parser->parseFile("level0.nnq");
-
+    std::cout << "Test1";
     // Testing objects////////////
     bridge = new BridgePit(300, app.getSize().y - background.getSkyHeight(),
                            app.getSize().y);
@@ -123,6 +125,8 @@ int Game::run(RenderWindow &app) {
     World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
 
     // Arrow arrow = Arrow(Vector2f(100, 700), 700);
+    World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
+    std::cout << "Test2";
     /////////////////////////////
 
     Clock clock;
@@ -133,6 +137,10 @@ int Game::run(RenderWindow &app) {
 
         while (app.pollEvent(event)) {
             if (event.type == Event::Closed) return (-1);
+	    if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape){
+	      cleanScreen();
+	      return TITLE_SCREEN;
+	    }
             manageInputs(event, PlayerID::PLAYER1, kbPlayerOneUp,
                          kbPlayerOneDown, kbPlayerOneLeft, kbPlayerOneRight,
                          kbPlayerOneJump);
@@ -206,6 +214,23 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
         if (e.key.code == toggleDebug) debugMode = !debugMode;
     }
 }
+
+//Collision detection
+//TODO: Move this somewhere else (World class)
+//void Game::checkCollision(float elapsedTime, Vector2u windowSize){
+void Game::cleanScreen() {
+  for (auto e : World::getEntities()) {
+    delete e;
+  }
+  // no need to delete elements of the following vectors as they are
+  // membre of World::getEntities()
+  /* this->players.clear();
+  this->bonuses_hp.clear();
+  this->item_weapons.clear();
+  this->breakable_objects.clear();
+  World::getEntities().clear(); */
+}
+
 
 // Collision detection
 // TODO: Move this somewhere else (World class)
@@ -511,31 +536,6 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
 
 // Move to Render class
 void Game::drawWithDepth(RenderWindow *app) {
-    list<Entity *> entities;
-
-    for (BonusHp *var : bonuses_hp) entities.push_back((Entity *)var);
-
-    /*for(Enemy* var : enemies){
-        entities.push_back((Entity*)var);
-        if(var->getEnemyType() == Enemy_Dragon)
-            for(Flame* flame : ((Dragon*)var)->getFlames())
-                entities.push_back((Entity*)flame);
-    }*/
-    for (Player *var : players) entities.push_back((Entity *)var);
-
-    for (ItemWeapon *var : item_weapons) entities.push_back((Entity *)var);
-
-    for (BreakableObject *var : breakable_objects)
-        entities.push_back((Entity *)var);
-
-    for (Player *player : players)
-        for (Arrow *arrow : player->getArrows())
-            entities.push_back((Entity *)arrow);
-
-    entities.sort(cmp);
-
-    for (Entity *var : entities) app->draw(*var);
-
     for (auto e : World::getEntities()) app->draw(*e);
 }
 

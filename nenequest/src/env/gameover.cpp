@@ -34,11 +34,11 @@ void GameOver::updateText() {
     }
 }
 
-void GameOver::freeGameOver() {
-    this->letters.clear();
-    this->playersDown.clear();
+void GameOver::cleanScreen() {
     for (auto l : this->letters) delete l;
     for (auto p : this->playersDown) delete p;
+    this->letters.clear();
+    this->playersDown.clear();
 }
 
 int GameOver::run(RenderWindow &app) {
@@ -103,9 +103,8 @@ int GameOver::run(RenderWindow &app) {
     while (true) {
         while (app.pollEvent(event)) {
             if (event.type == Event::Closed) return (-1);
-            if (event.type == Event::KeyPressed ||
-                event.type == Event::MouseButtonPressed) {
-                this->freeGameOver();
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape) {
+                this->cleanScreen();
                 return TITLE_SCREEN;
             }
         }

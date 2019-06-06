@@ -29,7 +29,7 @@ class GameOver : public Screen {
     virtual int run(sf::RenderWindow &app);
     void updateSprite(sf::Vector2f origin);
     void updateText();
-    void freeGameOver();
+    void cleanScreen();
 };
 
 #endif

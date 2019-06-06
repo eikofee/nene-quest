@@ -29,10 +29,10 @@ class LevelManager;
 class Game : public Screen {
    public:
     Game();
-    virtual int run(sf::RenderWindow &app);
-    void addPlayerInstance(Player *player);
-    void addInstance(Entity *e);
-
+    virtual int run(sf::RenderWindow& app);
+    void addPlayerInstance(Player* player);
+    void addInstance(Entity* e);
+    void cleanScreen();
     static bool IsDebugMode();
 
    private:
