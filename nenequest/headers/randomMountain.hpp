@@ -1,39 +1,38 @@
 #ifndef RANDOMMOUNTAIN_HPP_INCLUDED
 #define RANDOMMOUNTAIN_HPP_INCLUDED
 
-#include <SFML/Graphics.hpp>
-#include <randomShape.hpp>
-#include <list>
 #include <stdlib.h>
 #include <time.h>
+#include <SFML/Graphics.hpp>
+#include <list>
 
-class RandomMountain :  public RandomShape {
-private:
-	static const int MAX_HEIGHT = 500;
-	static const int MIN_HEIGHT = 400;
-	static const int RANDOM_ANGLE = 5;
+#include "randomShape.hpp"
 
-	sf::RectangleShape* body;
-	bool alive = true;
+class RandomMountain : public RandomShape {
+   private:
+    static const int MAX_HEIGHT = 500;
+    static const int MIN_HEIGHT = 400;
+    static const int RANDOM_ANGLE = 5;
 
-public:
-	RandomMountain();
-	~RandomMountain();
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
-		target.draw(*(this->body));
-	}
+    sf::RectangleShape *body;
+    bool alive = true;
 
-	virtual void setPosition(float x, float y) {
-		this->setPosition(sf::Vector2f(x, y));
-	}
+   public:
+    RandomMountain();
+    ~RandomMountain();
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+        target.draw(*(this->body));
+    }
 
-	virtual void setPosition(sf::Vector2f v) {
-		this->body->setPosition(v);
-	}
+    virtual void setPosition(float x, float y) {
+        this->setPosition(sf::Vector2f(x, y));
+    }
 
-	void update();
-	bool isAlive();
-	void translate(float x, float y);
+    virtual void setPosition(sf::Vector2f v) { this->body->setPosition(v); }
+
+    void update();
+    bool isAlive();
+    void translate(float x, float y);
 };
 
 #endif

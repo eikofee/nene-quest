@@ -2,23 +2,22 @@
 #define WEAPON_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include <entity.hpp>
-#include <weaponType.hpp>
 #include <string>
+#include "entity.hpp"
+#include "weaponType.hpp"
 using namespace sf;
 
 class Weapon : public Entity {
-    public :
-        Weapon(WeaponType t);
-        int getDamage();
-        WeaponType getWeaponType();
-		void Animate(float lerp);
-		void setPosition(int x, int y);
+   public:
+    Weapon(WeaponType t);
+    int getDamage();
+    WeaponType getWeaponType();
+    void Animate(float lerp);
+    void setPosition(int x, int y);
 
-    private :
-        WeaponType type;
-        int damage;
-
+   private:
+    WeaponType type;
+    int damage;
 };
 
 #endif

@@ -2,60 +2,57 @@
 #define BACKGROUND_HPP_INCLUDED
 
 #include <SFML/Graphics.hpp>
-#include <randomShape.hpp>
 #include <list>
 
+#include "randomShape.hpp"
 
 class Background : public sf::Drawable, sf::Transformable {
-    private:
-        sf::RectangleShape sky;
-        sf::RectangleShape ground;
-		sf::Vector2u v;
+   private:
+    sf::RectangleShape sky;
+    sf::RectangleShape ground;
+    sf::Vector2u v;
 
-		static const int CLOUD_SPAWN_INTERVAL = 5;
-		static const int CLOUD_SPAWN_INTERVAL_RANDOM = 2;
-		static const int MOUNTAIN_SPAWN_INTERVAL = 2;
-		static const int MOUNTAIN_SPAWN_INTERVAL_RANDOM = 1;
-		static const int CLOUD_SPAWN_Y_TOP = 0;
-		static const int CLOUD_SPAWN_Y_BOTTOM = 200;
-		static const int MOUNTAIN_VAR_Y_OFFSET = 30;
+    static const int CLOUD_SPAWN_INTERVAL = 5;
+    static const int CLOUD_SPAWN_INTERVAL_RANDOM = 2;
+    static const int MOUNTAIN_SPAWN_INTERVAL = 2;
+    static const int MOUNTAIN_SPAWN_INTERVAL_RANDOM = 1;
+    static const int CLOUD_SPAWN_Y_TOP = 0;
+    static const int CLOUD_SPAWN_Y_BOTTOM = 200;
+    static const int MOUNTAIN_VAR_Y_OFFSET = 30;
 
-		float cloudSpeedModifier = 1.0f;
-		float mountainSpeedModifier = 1.5f;
-		int scrollSpeed = 0;
+    float cloudSpeedModifier = 1.0f;
+    float mountainSpeedModifier = 1.5f;
+    int scrollSpeed = 0;
 
-		std::vector<RandomShape*> clouds;
-		std::vector<RandomShape*> mountains;
-		float nextCloud = 0;
-		float nextMountain = 0;
-		sf::Clock cloudClock;
-		sf::Clock mountainClock;
+    std::vector<RandomShape *> clouds;
+    std::vector<RandomShape *> mountains;
+    float nextCloud = 0;
+    float nextMountain = 0;
+    sf::Clock cloudClock;
+    sf::Clock mountainClock;
 
+   public:
+    Background(sf::Vector2u v);
 
-    public:
-        Background(sf::Vector2u v);
+    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+        target.draw(this->sky);
+        for (auto rc : this->clouds) target.draw(*rc);
 
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const {
-            target.draw(this->sky);
-			for (auto rc : this->clouds)
-				target.draw(*rc);
+        for (auto rm : this->mountains) target.draw(*rm);
 
-			for (auto rm : this->mountains)
-				target.draw(*rm);
+        target.draw(this->ground);
+    }
 
-            target.draw(this->ground);
-        }
+    virtual void setPosition(float x, float y) {
+        this->sky.setPosition(x, y);
+        this->ground.setPosition(x, y);
+    }
+    float getSkyHeight();
 
-        virtual void setPosition(float x, float y) {
-            this->sky.setPosition(x, y);
-            this->ground.setPosition(x, y);
-        }
-        float getSkyHeight();
-
-		void update();
-		void createClouds();
-		void createMountains();
-		void setSpeed(int speed);
+    void update();
+    void createClouds();
+    void createMountains();
+    void setSpeed(int speed);
 };
 
 #endif

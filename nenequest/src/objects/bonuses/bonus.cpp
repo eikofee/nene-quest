@@ -1,17 +1,13 @@
-#include <bonus.hpp>
+#include "bonus.hpp"
 
 Bonus::Bonus() {
-    //ctor
+    // ctor
 }
 
 Bonus::~Bonus() {
-    //dtor
+    // dtor
 }
 
-BonusType Bonus::getBonusType(){
-    return bonus_type;
-}
+BonusType Bonus::getBonusType() { return bonus_type; }
 
-EntityType Bonus::getEntityType() {
-	return BONUS;
-}
+EntityType Bonus::getEntityType() { return BONUS; }

@@ -1,39 +1,28 @@
-#include <enemy.hpp>
+#include "enemy.hpp"
 
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
 
-//need to initialize hp and stuff
-Enemy::Enemy(int hp) : Entity () {
-	this->hp = hp;
-}
+// need to initialize hp and stuff
+Enemy::Enemy(int hp) : Entity() { this->hp = hp; }
 
 Enemy::~Enemy() {
-    //dtor
+    // dtor
 }
 
-short int Enemy::getAttackDamage(){
-    return attack_damage;
+short int Enemy::getAttackDamage() { return attack_damage; }
+
+void Enemy::update(float elapsedTime) {
+    // this->move(elapsedTime);
 }
 
- void Enemy::update(float elapsedTime){
+EnemyType Enemy::getEnemyType() { return enemy_type; }
 
-    //this->move(elapsedTime);
- }
+bool Enemy::isDead() { return is_dead; }
 
- EnemyType Enemy::getEnemyType(){
-    return enemy_type;
- }
+bool Enemy::isDying() {
+    return this->hp < 0;  // idk
+}
 
- bool Enemy::isDead(){
-    return is_dead;
- }
-
- bool Enemy::isDying() {
-	 return this->hp < 0; //idk
- }
-
- EntityType Enemy::getEntityType() {
-     return ENEMY;
- }
+EntityType Enemy::getEntityType() { return ENEMY; }

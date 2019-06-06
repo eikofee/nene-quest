@@ -1,21 +1,14 @@
-#include<configProperty.h>
+#include "configProperty.hpp"
 
-ConfigProperty::ConfigProperty(std::string name, ConfigParameter * param)
-{
-	this->name = name;
-	this->param = param;
+ConfigProperty::ConfigProperty(std::string name, ConfigParameter *param) {
+    this->name = name;
+    this->param = param;
 }
 
-std::string ConfigProperty::getName()
-{
-	return this->name;
-}
+std::string ConfigProperty::getName() { return this->name; }
 
-ConfigParameter * ConfigProperty::getParameter()
-{
-	return this->param;
-}
+ConfigParameter *ConfigProperty::getParameter() { return this->param; }
 
-void ConfigProperty::setParameter(ConfigParameter* param) {
-	this->param = param;
+void ConfigProperty::setParameter(ConfigParameter *param) {
+    this->param = param;
 }
