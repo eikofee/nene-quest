@@ -1,7 +1,7 @@
 <p align="center"><img src="title.png" alt="title"></p>
 
 Reproduction of Nene Sakura's game "Nene Quest" from "New Game!!" (2nd
-season, episode 3) written in C++ with the SFML library
+season, episode 3) written in C++ with the SFML library.
 
 # Preview
 
