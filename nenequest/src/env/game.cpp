@@ -37,7 +37,6 @@ int Game::run(RenderWindow& app) {
     Event event;
     Background background = Background(app.getSize());
     this->manager->setBackground(&background);
-    std::cout << "??";
     // Load settings
     this->configParser->parseFile("config.ini");
     // Bind keys
