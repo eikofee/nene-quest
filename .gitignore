@@ -457,4 +457,8 @@ MigrationBackup/
 
 # Cmake
 *.cmake
+
+# build folder
+build/*
+
 # End of https://www.gitignore.io/api/c++,cmake,linux,windows,codeblocks,visualstudio,visualstudiocode
