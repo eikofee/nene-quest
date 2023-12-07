@@ -21,6 +21,7 @@ class World {
     static std::vector<Entity *> getCollidingEntities(Entity *entity);
     static std::vector<Entity *> getCollidingEntitiesOnZAxis(Entity *entity);
     static void addEntity(Entity *entity, bool isPlayer = false);
+    static void clearEntities();
     static void updateEntities();
     static void setElapsedTime(float time);
     static float getElapsedTime();

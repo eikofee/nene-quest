@@ -106,6 +106,14 @@ void World::addEntity(Entity *entity, bool isPlayer) {
     if (isPlayer) players.push_back((Player *)entity);
 }
 
+void World::clearEntities() {
+    for (auto e : entities) {
+        delete e;
+    }
+    entities.clear();
+    players.clear();
+}
+
 void World::updateEntities() {
     for (unsigned int i = 0; i < entities.size(); i++) {
         entities.at(i)->update(elapsedTime);

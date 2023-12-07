@@ -129,25 +129,38 @@ int Game::run(RenderWindow& app) {
     /////////////////////////////
 
     Clock clock;
-
     // ---------------- Main Loop ----------------
+    this->manager->update();
+    this->players = World::getPlayers();
     while (true) {
+
         float elapsedTime = clock.restart().asMilliseconds();
 
         while (app.pollEvent(event)) {
             if (event.type == Event::Closed) return (-1);
-	    if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape){
-	      cleanScreen();
-	      return TITLE_SCREEN;
-	    }
+            
+            if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape){
+                cleanScreen();
+                return TITLE_SCREEN;
+            }
+
+            // std::cout << "player id of p1 = " << PlayerID::PLAYER1 << "\n";
+            std::cout << "is Dead : " << this->players.at(PlayerID::PLAYER1)->isDead() << "\n";
+            std::cout << "player health : " << this->players.at(PlayerID::PLAYER1)->getHealth() << "\n";
+            if (this->players.size() == 1 && this->players.at(PlayerID::PLAYER1)->isDead())
+            {
+                cleanScreen();
+                return GAME_OVER_1P;
+            }
+
             manageInputs(event, PlayerID::PLAYER1, kbPlayerOneUp,
-                         kbPlayerOneDown, kbPlayerOneLeft, kbPlayerOneRight,
-                         kbPlayerOneJump);
+                            kbPlayerOneDown, kbPlayerOneLeft, kbPlayerOneRight,
+                            kbPlayerOneJump);
 
             if (this->players.size() == 2)
                 manageInputs(event, PlayerID::PLAYER2, kbPlayerTwoUp,
-                             kbPlayerTwoDown, kbPlayerTwoLeft, kbPlayerTwoRight,
-                             kbPlayerTwoJump);
+                            kbPlayerTwoDown, kbPlayerTwoLeft, kbPlayerTwoRight,
+                            kbPlayerTwoJump);
 
             manageMetaInputs(event, kbDebugMode);
         }
@@ -179,7 +192,8 @@ int Game::run(RenderWindow& app) {
 void Game::manageInputs(sf::Event e, PlayerID id, Keyboard::Key up,
                         Keyboard::Key down, Keyboard::Key left,
                         Keyboard::Key right, Keyboard::Key attack) {
-    this->players = World::getPlayers();
+   // this->players = World::getPlayers(); // Moved before the main loop of the game
+   // std::cout << "ManageInputs, size of players = " << this->players.size() << "\n";
     if (e.type == Event::KeyPressed) {
         if (e.key.code == up)
             this->players.at(id)->moving_up = true;
@@ -218,9 +232,7 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
 //TODO: Move this somewhere else (World class)
 //void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 void Game::cleanScreen() {
-  for (auto e : World::getEntities()) {
-    delete e;
-  }
+  World::clearEntities();
   // no need to delete elements of the following vectors as they are
   // membre of World::getEntities()
   /* this->players.clear();
