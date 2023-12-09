@@ -101,9 +101,12 @@ std::vector<Entity *> World::testCollidingEntitiesOnZAxis(
 
 void World::setElapsedTime(float time) { elapsedTime = time / 1000; }
 
-void World::addEntity(Entity *entity, bool isPlayer) {
+void World::addEntity(Entity *entity) {
     entities.push_back(entity);
-    if (isPlayer) players.push_back((Player *)entity);
+}
+
+void World::addPlayer(Player *player) {
+    players.push_back(player);
 }
 
 void World::clearEntities() {
@@ -115,11 +118,26 @@ void World::clearEntities() {
 }
 
 void World::updateEntities() {
+    cout << "------------------------" << endl;
+    cout << "[World] - updateEntities" << endl;
     for (unsigned int i = 0; i < entities.size(); i++) {
         entities.at(i)->update(elapsedTime);
+        cout << "[World] - updateEntities - call isDead by" << typeid(entities.at(i)).name() << endl;
+        cout << "[World] - updateEntities - what is entity : " << entities.at(i)->getEntityType() << endl;
         if (entities.at(i)->isDead()) {
             delete (entities.at(i));
             entities.erase(entities.begin() + i);
+        }
+    }
+    cout << "---------------------" << endl;
+}
+
+void World::updatePlayers() {
+    for (unsigned int i = 0; i < players.size(); i++) {
+        players.at(i)->update(elapsedTime);
+        if (players.at(i)->isDead()) {
+            delete (players.at(i));
+            players.erase(players.begin() + i);
         }
     }
 }
@@ -128,8 +146,10 @@ float World::getElapsedTime() { return elapsedTime; }
 
 void World::render(sf::RenderWindow &app) {
     std::sort(entities.begin(), entities.end(), sortUsingFirstZHitbox);
+    std::sort(players.begin(), players.end(), sortUsingFirstZHitbox);
 
     for (auto e : entities) app.draw(*e);
+    for (auto e : players) app.draw(*e);
 }
 
 std::vector<Player *> World::getPlayers() { return players; }
@@ -191,10 +211,13 @@ void World::scroll() {
     for (Entity *entity : entities) {
         if (entity->getEntityType() != PLAYER) {
             entity->move(Vector2f(-SCROLL_SPEED * World::getElapsedTime(), 0));
-            if (entity->getZHitboxes().at(0)->getGlobalBounds().left +
+            if (entity->getZHitboxes().at(0)->getGlobalBounds().left + // TODO : This condition is false.
                     entity->getZHitboxes().at(0)->getGlobalBounds().width <
-                0)
+                0) {
+                std::cout << "[World] - scroll, before calling entity->alterHealth on " << typeid(*entity).name() << std::endl;
                 entity->alterHealth(-1, false);
+                }
+
             // Check if a player is pushed
             else if (entity->getEntityType() == SOLID) {
                 for (Player *player : players)

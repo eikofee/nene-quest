@@ -149,10 +149,11 @@ int Game::run(RenderWindow& app) {
             std::cout << "player health : " << this->players.at(PlayerID::PLAYER1)->getHealth() << "\n";
             if (this->players.size() == 1 && this->players.at(PlayerID::PLAYER1)->isDead())
             {
+                std::cout << "[game.cpp] - enter death condition" << std::endl;
                 cleanScreen();
                 return GAME_OVER_1P;
             }
-
+            
             manageInputs(event, PlayerID::PLAYER1, kbPlayerOneUp,
                             kbPlayerOneDown, kbPlayerOneLeft, kbPlayerOneRight,
                             kbPlayerOneJump);
@@ -167,6 +168,7 @@ int Game::run(RenderWindow& app) {
 
         World::setElapsedTime(elapsedTime);
         World::updateEntities();
+        World::updatePlayers();
         World::scroll();
         World::managePlayersCollidingWithThings();
 
@@ -559,8 +561,7 @@ bool Game::cmp(Entity *a, Entity *d) {
 void Game::addInstance(Entity *e) { World::addEntity(e); }
 
 void Game::addPlayerInstance(Player *player) {
-    // this->players.push_back(player);
-    World::addEntity(player, true);
+    World::addPlayer(player);
 }
 
 bool Game::IsDebugMode() { return debugMode; }

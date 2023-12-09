@@ -20,9 +20,11 @@ class World {
                                                  float radius);
     static std::vector<Entity *> getCollidingEntities(Entity *entity);
     static std::vector<Entity *> getCollidingEntitiesOnZAxis(Entity *entity);
-    static void addEntity(Entity *entity, bool isPlayer = false);
+    static void addEntity(Entity *entity);
+    static void addPlayer(Player *player);
     static void clearEntities();
     static void updateEntities();
+    static void updatePlayers();
     static void setElapsedTime(float time);
     static float getElapsedTime();
     static void render(sf::RenderWindow &app);

@@ -48,16 +48,16 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
 
     this->weapon = w;
     if (!secondPlayer) {
-        this->life =
-            new LifeBar(PLAYER_HP, Vector2f(300, 100), PlayerID::PLAYER1);
+        // this->life =
+            // new LifeBar(PLAYER_HP, Vector2f(300, 100), PlayerID::PLAYER1);
         this->texture.loadFromFile("img/player1.png");
         this->weaponXOffset = weaponXOffsetP1;
         this->weaponYOffset = weaponYOffsetP1;
         this->weaponXOffsetVariation = weaponXOffsetVariationP1;
         this->weaponYOffsetVariation = weaponYOffsetVariationP1;
     } else {
-        this->life =
-            new LifeBar(PLAYER_HP, Vector2f(800, 100), PlayerID::PLAYER2);
+        // this->life =
+        //     new LifeBar(PLAYER_HP, Vector2f(800, 100), PlayerID::PLAYER2);
         this->texture.loadFromFile("img/player2.png");
         this->weaponXOffset = weaponXOffsetP2;
         this->weaponYOffset = weaponYOffsetP2;
@@ -114,6 +114,9 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
     walk1normal = animationRects.at(0);
     walk2normal = animationRects.at(1);
     moddifierAttack = animationRects.at(2);
+    std::cout << "[Player - Constructor : call for alterHealth" << std::endl;
+    this->alterHealth(100, false);
+    std::cout << "Player created with success" << endl;
 }
 
 Player::~Player() { delete this->weapon; }
@@ -136,7 +139,7 @@ void Player::equip(Weapon *w) {
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(*this->weapon, states);
-    target.draw(*this->life, states);
+//    target.draw(*this->life, states);
     Entity::draw(target, states);
     for (Entity *var : arrows) {
         target.draw(*var, states);
@@ -320,14 +323,7 @@ void Player::setShootingState(bool state) { is_shooting = state; }
 
 void Player::isHit(int damage) {
     if (currentInvulnerabilityTime < 0) {
-        this->life->modifyLife(-damage);
+        this->alterHealth(-damage, true);
         currentInvulnerabilityTime = INVULNERABILITY_DURATION;
     }
-}
-
-void Player::alterHealth(int value, bool relative) {
-    if (relative)
-        this->life->modifyLife(value);
-    else
-        this->life->setValue(value);
 }
