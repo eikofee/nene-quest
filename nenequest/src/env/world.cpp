@@ -1,5 +1,6 @@
 #include "world.hpp"
 
+GameMode World::gameMode;
 std::vector<Entity *> World::entities;
 std::vector<Player *> World::players;
 float World::elapsedTime;
@@ -114,6 +115,12 @@ void World::clearEntities() {
         delete e;
     }
     entities.clear();
+}
+
+void World::clearPlayers() {
+    for (auto e : players) {
+        delete e;
+    }
     players.clear();
 }
 
@@ -130,6 +137,19 @@ void World::updateEntities() {
         }
     }
     cout << "---------------------" << endl;
+}
+
+bool World::isTwoPlayer() {
+    return gameMode == TWO_PLAYERS;
+}
+
+void World::setGameMode(GameMode x) {
+    gameMode = x;
+}
+
+
+bool World::isGameOver() {
+    return (players.size() == 0);
 }
 
 void World::updatePlayers() {
@@ -153,6 +173,8 @@ void World::render(sf::RenderWindow &app) {
 }
 
 std::vector<Player *> World::getPlayers() { return players; }
+Player* World::getPlayer(int id) { return players.at(id); }
+
 
 bool World::sortUsingFirstZHitbox(Entity *a, Entity *b) {
     if (a->isIgnoringDepthOnRendering()) return true;

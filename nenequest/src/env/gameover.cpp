@@ -78,7 +78,7 @@ int GameOver::run(RenderWindow &app) {
     this->playersDown.push_back(new Sprite(p1DownTex));
     Texture p2DownTex;
 
-    if (this->mode == TWO_PLAYER) {
+    if (this->mode == TWO_PLAYERS) {
         p2DownTex.loadFromFile("img/gameover/p2_down.png");
         this->playersDown.push_back(new Sprite(p2DownTex));
 

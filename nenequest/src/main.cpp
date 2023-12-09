@@ -24,7 +24,7 @@ int main() {
     screens.push_back(new Menu);
     screens.push_back(new Game);
     screens.push_back(new GameOver(ONE_PLAYER));
-    screens.push_back(new GameOver(TWO_PLAYER));
+    screens.push_back(new GameOver(TWO_PLAYERS));
 
     while (selectedScreen >= 0)
         selectedScreen = screens[selectedScreen]->run(app);

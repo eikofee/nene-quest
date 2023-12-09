@@ -131,10 +131,16 @@ int Game::run(RenderWindow& app) {
     Clock clock;
     // ---------------- Main Loop ----------------
     this->manager->update();
-    this->players = World::getPlayers();
     while (true) {
 
         float elapsedTime = clock.restart().asMilliseconds();
+
+        if(World::isGameOver()) {
+            cleanScreen();
+            if (World::isTwoPlayer)
+                return GAME_OVER_2P;
+            return GAME_OVER_1P;
+        }    
 
         while (app.pollEvent(event)) {
             if (event.type == Event::Closed) return (-1);
@@ -142,23 +148,13 @@ int Game::run(RenderWindow& app) {
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape){
                 cleanScreen();
                 return TITLE_SCREEN;
-            }
-
-            // std::cout << "player id of p1 = " << PlayerID::PLAYER1 << "\n";
-            std::cout << "is Dead : " << this->players.at(PlayerID::PLAYER1)->isDead() << "\n";
-            std::cout << "player health : " << this->players.at(PlayerID::PLAYER1)->getHealth() << "\n";
-            if (this->players.size() == 1 && this->players.at(PlayerID::PLAYER1)->isDead())
-            {
-                std::cout << "[game.cpp] - enter death condition" << std::endl;
-                cleanScreen();
-                return GAME_OVER_1P;
-            }
+            }      
             
             manageInputs(event, PlayerID::PLAYER1, kbPlayerOneUp,
                             kbPlayerOneDown, kbPlayerOneLeft, kbPlayerOneRight,
                             kbPlayerOneJump);
 
-            if (this->players.size() == 2)
+            if (World::isTwoPlayer())
                 manageInputs(event, PlayerID::PLAYER2, kbPlayerTwoUp,
                             kbPlayerTwoDown, kbPlayerTwoLeft, kbPlayerTwoRight,
                             kbPlayerTwoJump);
@@ -196,31 +192,32 @@ void Game::manageInputs(sf::Event e, PlayerID id, Keyboard::Key up,
                         Keyboard::Key right, Keyboard::Key attack) {
    // this->players = World::getPlayers(); // Moved before the main loop of the game
    // std::cout << "ManageInputs, size of players = " << this->players.size() << "\n";
+   Player* player = World::getPlayer(id);
     if (e.type == Event::KeyPressed) {
         if (e.key.code == up)
-            this->players.at(id)->moving_up = true;
+            player->moving_up = true;
         else if (e.key.code == down)
-            this->players.at(id)->moving_down = true;
+            player->moving_down = true;
         else if (e.key.code == right)
-            this->players.at(id)->moving_right = true;
+            player->moving_right = true;
         else if (e.key.code == left)
-            this->players.at(id)->moving_left = true;
+            player->moving_left = true;
         else if (e.key.code == attack) {
-            this->players.at(id)->attack();
+            player->attack();
             /*if (!this->players.at(id)->isShooting())
                     this->players.at(id)->fireArrow();*/
         }
     } else if (e.type == Event::KeyReleased) {
         if (e.key.code == up)
-            this->players.at(id)->moving_up = false;
+            player->moving_up = false;
         else if (e.key.code == down)
-            this->players.at(id)->moving_down = false;
+            player->moving_down = false;
         else if (e.key.code == right)
-            this->players.at(id)->moving_right = false;
+            player->moving_right = false;
         else if (e.key.code == left)
-            this->players.at(id)->moving_left = false;
+            player->moving_left = false;
         else if (e.key.code == attack)
-            this->players.at(id)->setShootingState(false);
+            player->setShootingState(false);
     }
 }
 
@@ -235,13 +232,7 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
 //void Game::checkCollision(float elapsedTime, Vector2u windowSize){
 void Game::cleanScreen() {
   World::clearEntities();
-  // no need to delete elements of the following vectors as they are
-  // membre of World::getEntities()
-  /* this->players.clear();
-  this->bonuses_hp.clear();
-  this->item_weapons.clear();
-  this->breakable_objects.clear();
-  World::getEntities().clear(); */
+  World::clearPlayers();
 }
 
 

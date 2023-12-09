@@ -57,7 +57,6 @@ class Game : public Screen {
 
     // std::vector<Enemy*> enemies
 
-    std::vector<Player *> players;
     std::vector<BonusHp *> bonuses_hp;
     std::vector<ItemWeapon *> item_weapons;
     std::vector<BreakableObject *> breakable_objects;
