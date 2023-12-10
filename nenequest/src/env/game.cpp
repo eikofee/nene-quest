@@ -8,7 +8,6 @@
 #include "configParameter.hpp"
 #include "configParser.hpp"
 #include "world.hpp"
-#include "screens.hpp"
 
 using namespace std;
 using namespace sf;
@@ -32,7 +31,7 @@ Game::Game() {
     this->configParser->initialize();
 }
 
-int Game::run(RenderWindow& app) {
+ScreenState Game::run(RenderWindow& app) {
 
     Event event;
     Background background = Background(app.getSize());
@@ -137,10 +136,10 @@ int Game::run(RenderWindow& app) {
         float elapsedTime = clock.restart().asMilliseconds();
 
         while (app.pollEvent(event)) {
-            if (event.type == Event::Closed) return (-1);
+            if (event.type == Event::Closed) return EXIT_GAME;
             
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape){
-                cleanScreen();
+                // cleanScreen();
                 return TITLE_SCREEN;
             }
 
@@ -149,8 +148,8 @@ int Game::run(RenderWindow& app) {
             std::cout << "player health : " << this->players.at(PlayerID::PLAYER1)->getHealth() << "\n";
             if (this->players.size() == 1 && this->players.at(PlayerID::PLAYER1)->isDead())
             {
-                cleanScreen();
-                return GAME_OVER_1P;
+                // cleanScreen();
+                return GAME_OVER;
             }
 
             manageInputs(event, PlayerID::PLAYER1, kbPlayerOneUp,
@@ -185,7 +184,7 @@ int Game::run(RenderWindow& app) {
         app.display();
     }
 
-    return (-1);
+    return EXIT_GAME;
 }
 
 // Temporary solution for input management
@@ -231,7 +230,7 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
 //Collision detection
 //TODO: Move this somewhere else (World class)
 //void Game::checkCollision(float elapsedTime, Vector2u windowSize){
-void Game::cleanScreen() {
+Game::~Game() {
   World::clearEntities();
   // no need to delete elements of the following vectors as they are
   // membre of World::getEntities()

@@ -1,9 +1,7 @@
-#include "gameover.hpp"
-
 #include <SFML/Audio.hpp>
 
+#include "gameover.hpp"
 #include "gamemode.hpp"
-#include "screens.hpp"
 
 using namespace std;
 using namespace sf;
@@ -11,7 +9,7 @@ using namespace sf;
 const string GameOver::GAMEOVER_PATH = "img/gameover/";
 const string GameOver::GAMEOVER_EXT = ".png";
 
-GameOver::GameOver(GameMode mode) { this->mode = mode; }
+GameOver::GameOver() { }
 
 void GameOver::updateSprite(Vector2f origin) {
     Time elapsed = this->clockSprite.getElapsedTime();
@@ -34,14 +32,14 @@ void GameOver::updateText() {
     }
 }
 
-void GameOver::cleanScreen() {
+GameOver::~GameOver() {
     for (auto l : this->letters) delete l;
     for (auto p : this->playersDown) delete p;
     this->letters.clear();
     this->playersDown.clear();
 }
 
-int GameOver::run(RenderWindow &app) {
+ScreenState GameOver::run(RenderWindow &app) {
     Event event;
 
     // Place Halo
@@ -102,9 +100,9 @@ int GameOver::run(RenderWindow &app) {
     // ---------------- Main Loop ----------------
     while (true) {
         while (app.pollEvent(event)) {
-            if (event.type == Event::Closed) return (-1);
+            if (event.type == Event::Closed) return EXIT_GAME;
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape) {
-                this->cleanScreen();
+                // this->cleanScreen();
                 return TITLE_SCREEN;
             }
         }
@@ -118,5 +116,5 @@ int GameOver::run(RenderWindow &app) {
         app.display();
     }
 
-    return (-1);
+    return EXIT_GAME;
 }

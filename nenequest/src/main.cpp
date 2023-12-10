@@ -1,32 +1,28 @@
-#include <assert.h>
-#include <stdio.h>
 #include <SFML/Graphics.hpp>
-#include <iostream>
-
 #include "menu.hpp"
-#include "screens.hpp"
+#include "game.hpp"
+#include "gameover.hpp"
+#include "menu.hpp"
+#include "screen.hpp"
+#include "screenState.hpp"
 
-using namespace std;
-using namespace sf;
+#define WINDOW_X 1920
+#define WINDOW_Y 1080
+#define WINDOW_NAME "Nene Quest"
+#define FPS_RATE 60
 
 int main() {
-    vector<Screen *> screens;
-    int selectedScreen = 0;
+    std::map<ScreenState, Screen*> screens;
+    ScreenState selectedScreen = TITLE_SCREEN;
 
-    RenderWindow app(VideoMode(1920, 1080), "Nene Quest");
-    app.setFramerateLimit(60);
+    sf::RenderWindow app(sf::VideoMode(WINDOW_X, WINDOW_Y), WINDOW_NAME);
+    app.setFramerateLimit(FPS_RATE);
 
-    // Make sure that the enum in screens.hpp
-    // matches the order in the vector 'screens'
-    assert(TITLE_SCREEN == 0 && GAME_SCREEN == 1 && GAME_OVER_1P == 2 &&
-           GAME_OVER_2P == 3);
+    screens[TITLE_SCREEN] = new Menu();
+    screens[GAME_SCREEN] = new Game();
+    screens[GAME_OVER] = new GameOver();
 
-    screens.push_back(new Menu);
-    screens.push_back(new Game);
-    screens.push_back(new GameOver(ONE_PLAYER));
-    screens.push_back(new GameOver(TWO_PLAYER));
-
-    while (selectedScreen >= 0)
+    while (selectedScreen != EXIT_GAME)
         selectedScreen = screens[selectedScreen]->run(app);
 
     return EXIT_SUCCESS;

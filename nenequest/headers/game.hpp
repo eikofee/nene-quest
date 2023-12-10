@@ -21,6 +21,7 @@
 #include "player.hpp"
 #include "randomCloud.hpp"
 #include "screen.hpp"
+#include "screenState.hpp"
 #include "weaponType.hpp"
 
 class ConfigManager;
@@ -29,10 +30,10 @@ class LevelManager;
 class Game : public Screen {
    public:
     Game();
-    virtual int run(sf::RenderWindow& app);
+    ~Game();
+    virtual ScreenState run(sf::RenderWindow& app);
     void addPlayerInstance(Player* player);
     void addInstance(Entity* e);
-    void cleanScreen();
     static bool IsDebugMode();
 
    private:

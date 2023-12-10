@@ -1,0 +1,11 @@
+#ifndef SCREENSTATE_HPP_INCLUDED
+#define SCREENSTATE_HPP_INCLUDED
+
+enum ScreenState {
+    TITLE_SCREEN,
+    GAME_SCREEN,
+    GAME_OVER,
+    EXIT_GAME
+};
+
+#endif
