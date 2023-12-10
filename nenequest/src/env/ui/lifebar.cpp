@@ -5,19 +5,6 @@
 using namespace std;
 using namespace sf;
 
-/** 
-
- Set a new variable in lifebar.hpp called "bool hasBar" Set to true
- only for players and dragon (since it's supposed to be the boss)
-
-In the increase / decrease, don't update the bar if "hasBar" is set to
- false (i.e. for mobs and destroyable items)
-
-Make sure that every entity have a lifeBar
-
-Then in entity.cpp modify the isDead and getHealth functions by using
-the one from the LifeBar
-*/
 LifeBar::LifeBar() {}
 
 LifeBar::LifeBar(short int max, Vector2f position, PlayerID id) {

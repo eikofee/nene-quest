@@ -30,7 +30,7 @@ class LevelManager;
 class Game : public Screen {
    public:
     Game();
-    ~Game();
+    void cleanScreen();
     virtual ScreenState run(sf::RenderWindow& app);
     void addPlayerInstance(Player* player);
     void addInstance(Entity* e);
@@ -58,7 +58,6 @@ class Game : public Screen {
 
     // std::vector<Enemy*> enemies
 
-    std::vector<Player *> players;
     std::vector<BonusHp *> bonuses_hp;
     std::vector<ItemWeapon *> item_weapons;
     std::vector<BreakableObject *> breakable_objects;

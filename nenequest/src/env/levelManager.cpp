@@ -4,6 +4,8 @@
 #include "parserCommand.hpp"
 #include "player.hpp"
 #include "weaponType.hpp"
+#include "world.hpp"
+#include "gamemode.hpp"
 
 LevelManager::LevelManager(Game *game) {
     this->timeSync = 0;
@@ -45,10 +47,12 @@ void LevelManager::setScrollSpeed(int speed) {
 
 void LevelManager::startLevel(int playerCount) {
     if (playerCount >= 1) {
+        World::setGameMode(ONE_PLAYER);
         Player *player = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
         game->addPlayerInstance(player);
     };
     if (playerCount >= 2) {
+        World::setGameMode(TWO_PLAYERS);
         Player *player =
             new Player(new Weapon(Sword), sf::Vector2f(70, 620), true);
         game->addPlayerInstance(player);

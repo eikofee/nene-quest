@@ -25,7 +25,6 @@ class Player : public Entity {
 
     // Life management
     void isHit(int damage);
-    virtual void alterHealth(int value, bool relative);
 
     // override
     virtual void draw(
@@ -81,7 +80,7 @@ class Player : public Entity {
     void cleanArrows(float elapsedTime);
     ItemWeapon *last_dropped_item = NULL;
 
-    LifeBar *life;
+    // LifeBar *life;
     Weapon *weapon;
 };
 

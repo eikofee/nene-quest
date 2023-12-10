@@ -69,7 +69,9 @@ void Entity::update(float elapsedTime) {
     // do nothing
 }
 
-bool Entity::isDead() { return health < 0; }
+bool Entity::isDead() { 
+    std::cout << "[Entity] - isDead - called by " << typeid(*this).name() << std::endl;
+    return health < 0; }
 
 float Entity::distanceToPosition(sf::Vector2f position) {
     return sqrtf(powf(this->getPosition().x - position.x, 2) +
@@ -78,9 +80,12 @@ float Entity::distanceToPosition(sf::Vector2f position) {
 
 bool Entity::isIgnoringDepthOnRendering() { return ignoreDepthOnRendering; }
 
-int Entity::getHealth() { return health; }
+int Entity::getHealth() { 
+    std::cout << "[Entity] - getHealth - called by " << typeid(*this).name() << std::endl;
+    return health; }
 
 void Entity::alterHealth(int value, bool relative) {
+    std::cout << "[Entity] - alterHealth - called by " << typeid(*this).name() << std::endl;
     if (relative)
         health += value;
     else
