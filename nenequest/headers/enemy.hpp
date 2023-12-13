@@ -14,9 +14,7 @@ class Enemy : public Entity {
     short int getAttackDamage();
     void update(float elapsedTime);
     EnemyType getEnemyType();
-    bool isDead();
-    virtual bool
-    isDying();  // Called for dying animation (blinking or dragon's death)
+    virtual bool isDying();  // Called for dying animation (blinking or dragon's death)
     virtual EntityType getEntityType();
 
    protected:
@@ -26,7 +24,6 @@ class Enemy : public Entity {
     EnemyType enemy_type;
     static int const DRAGON_HP = 20;
     static int const BOAR_HP = 3;
-    bool is_dead = false;
     int hp;
 
    private:

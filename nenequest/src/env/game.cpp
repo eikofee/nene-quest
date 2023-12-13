@@ -103,28 +103,26 @@ ScreenState Game::run(RenderWindow& app) {
 
     // Load Level
     this->parser->parseFile("level0.nnq");
-    std::cout << "Test1";
-    // Testing objects////////////
-    bridge = new BridgePit(300, app.getSize().y - background.getSkyHeight(),
+     // Testing objects////////////
+   /* bridge = new BridgePit(300, app.getSize().y - background.getSkyHeight(),
                            app.getSize().y);
-    World::addEntity(bridge);
+    World::addEntity(bridge); */
     Boar *boar1 =
         new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y / 2));
     World::addEntity(boar1);
-    Dragon *dragon = new Dragon(Vector2f(1000, 400));
-    World::addEntity(dragon);
-    BonusHp *onigiri = new BonusHp(BONUS_ONIGIRI, Vector2f(900, 900));
-    ItemWeapon *sword = new ItemWeapon(Sword, Vector2f(800, 600));
-    World::addEntity(onigiri);
-    World::addEntity(sword);
-    World::addEntity(new ItemWeapon(Axe, Vector2f(300, 630)));
-    BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 630));
-    World::addEntity(barrel);
-    World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
+    // Dragon *dragon = new Dragon(Vector2f(1000, 400));
+    // World::addEntity(dragon);
+    // BonusHp *onigiri = new BonusHp(BONUS_ONIGIRI, Vector2f(900, 900));
+    // ItemWeapon *sword = new ItemWeapon(Sword, Vector2f(800, 600));
+    // World::addEntity(onigiri);
+    // World::addEntity(sword);
+    // World::addEntity(new ItemWeapon(Axe, Vector2f(300, 630)));
+    // BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 630));
+    // World::addEntity(barrel);
+    // World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
 
-    // Arrow arrow = Arrow(Vector2f(100, 700), 700);
-    World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
-    std::cout << "Test2";
+    // // Arrow arrow = Arrow(Vector2f(100, 700), 700);
+    // World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
     /////////////////////////////
 
     Clock clock;

@@ -114,9 +114,7 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
     walk1normal = animationRects.at(0);
     walk2normal = animationRects.at(1);
     moddifierAttack = animationRects.at(2);
-    std::cout << "[Player - Constructor : call for alterHealth" << std::endl;
     this->alterHealth(100, false);
-    std::cout << "Player created with success" << endl;
 }
 
 Player::~Player() { delete this->weapon; }

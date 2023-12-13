@@ -1,4 +1,5 @@
 #include "world.hpp"
+#include <string.h>
 
 GameMode World::gameMode;
 std::vector<Entity *> World::entities;
@@ -125,18 +126,13 @@ void World::clearPlayers() {
 }
 
 void World::updateEntities() {
-    cout << "------------------------" << endl;
-    cout << "[World] - updateEntities" << endl;
     for (unsigned int i = 0; i < entities.size(); i++) {
         entities.at(i)->update(elapsedTime);
-        cout << "[World] - updateEntities - call isDead by" << typeid(entities.at(i)).name() << endl;
-        cout << "[World] - updateEntities - what is entity : " << entities.at(i)->getEntityType() << endl;
         if (entities.at(i)->isDead()) {
             delete (entities.at(i));
             entities.erase(entities.begin() + i);
         }
     }
-    cout << "---------------------" << endl;
 }
 
 bool World::isTwoPlayer() {
@@ -235,9 +231,8 @@ void World::scroll() {
             entity->move(Vector2f(-SCROLL_SPEED * World::getElapsedTime(), 0));
             if (entity->getZHitboxes().at(0)->getGlobalBounds().left + // TODO : This condition is false.
                     entity->getZHitboxes().at(0)->getGlobalBounds().width <
-                0) {
-                std::cout << "[World] - scroll, before calling entity->alterHealth on " << typeid(*entity).name() << std::endl;
-                entity->alterHealth(-1, false);
+                0) { 
+                    entity->alterHealth(-1, false); // so that entity is killed on the next-frame
                 }
 
             // Check if a player is pushed
