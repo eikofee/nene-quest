@@ -134,7 +134,7 @@ ScreenState Game::run(RenderWindow& app) {
 
         if(World::isGameOver()) {
             cleanScreen();
-            if (World::isTwoPlayer)
+            if (World::isTwoPlayer())
                 return GAME_OVER;
             return GAME_OVER;
         }    

@@ -1,4 +1,5 @@
 #include "lifebar.hpp"
+#include "player.hpp"
 
 #include <iostream>
 
@@ -7,9 +8,7 @@ using namespace sf;
 
 LifeBar::LifeBar() {}
 
-LifeBar::LifeBar(short int max, Vector2f position, PlayerID id) {
-    this->max = max;
-    this->value = this->max;
+LifeBar::LifeBar(Vector2f position, PlayerID id) {
 
     this->background = RectangleShape(Vector2f(this->LIFEBAR_WIDTH, 35));
     this->background.setFillColor(Color::White);
@@ -40,34 +39,12 @@ LifeBar::LifeBar(short int max, Vector2f position, PlayerID id) {
     this->knight_head.setPosition(position);
 }
 
-void LifeBar::updateBar() {
+void LifeBar::updateBar(int value) {
     float newLength =
-        this->LIFEBAR_WIDTH * ((float)this->value / (float)this->max);
+        this->LIFEBAR_WIDTH * ((float) value / (float) (Player::PLAYER_MAX_HP));
     this->bar.setSize(Vector2f(newLength, this->LIFEBAR_HEIGHT));
 }
 
-void LifeBar::increase(short int amount) {
-    this->value += amount;
-    if (this->value > this->max) this->value = this->max;
-    updateBar();
-}
-
-void LifeBar::decrease(short int amount) {
-    this->value -= amount;
-    if (this->value < 0) this->value = 0;
-    updateBar();
-}
-
-short int LifeBar::getValue() { return this->value; }
-
-void LifeBar::modifyLife(short int amount) {
-    if (amount >= 0)
-        this->increase(amount);
-    else
-        this->decrease(-amount);
-}
-
 void LifeBar::setValue(short int value) {
-    if (value >= 0 && value <= this->max) this->value = value;
-    updateBar();
+    if (value >= 0 && value <= (Player::PLAYER_MAX_HP)) updateBar(value);
 }

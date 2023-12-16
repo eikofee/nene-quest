@@ -50,6 +50,7 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
     if (!secondPlayer) {
         // this->life =
             // new LifeBar(PLAYER_HP, Vector2f(300, 100), PlayerID::PLAYER1);
+        this->id = PlayerID::PLAYER1;
         this->texture.loadFromFile("img/player1.png");
         this->weaponXOffset = weaponXOffsetP1;
         this->weaponYOffset = weaponYOffsetP1;
@@ -58,6 +59,7 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
     } else {
         // this->life =
         //     new LifeBar(PLAYER_HP, Vector2f(800, 100), PlayerID::PLAYER2);
+        this->id = PlayerID::PLAYER2;
         this->texture.loadFromFile("img/player2.png");
         this->weaponXOffset = weaponXOffsetP2;
         this->weaponYOffset = weaponYOffsetP2;
@@ -114,7 +116,7 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
     walk1normal = animationRects.at(0);
     walk2normal = animationRects.at(1);
     moddifierAttack = animationRects.at(2);
-    this->alterHealth(100, false);
+    this->alterHealth(PLAYER_MAX_HP, false);
 }
 
 Player::~Player() { delete this->weapon; }
@@ -133,6 +135,10 @@ void Player::equip(Weapon *w) {
     this->weapon = w;
     this->weapon->setPosition(this->getPosition().x + this->weaponXOffset,
                               this->getPosition().y + this->weaponYOffset);
+}
+
+PlayerID Player::getId() {
+    return this->id;
 }
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {

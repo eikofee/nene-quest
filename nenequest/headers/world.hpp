@@ -12,6 +12,7 @@
 #include "itemWeapon.hpp"
 #include "player.hpp"
 #include "gamemode.hpp"
+#include "lifebar.hpp"
 
 class World {
    public:
@@ -52,6 +53,7 @@ class World {
     static GameMode gameMode;
     static std::vector<Entity *> entities;
     static std::vector<Player *> players;
+    static std::vector<LifeBar *> lifebars;
     static float elapsedTime;
     static bool sortUsingFirstZHitbox(Entity *a, Entity *b);
 };

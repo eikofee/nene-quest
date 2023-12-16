@@ -7,21 +7,16 @@
 
 class LifeBar : public sf::Drawable, sf::Transformable {
    private:
-    short int max;
-    short int value;
     sf::RectangleShape background;
     sf::RectangleShape bar;
     sf::Sprite knight_head;
     sf::Texture knight_head_tex;
 
-    void increase(short int amount);
-    void decrease(short int amount);
-
    public:
     static const int LIFEBAR_WIDTH = 350;
     static const int LIFEBAR_HEIGHT = 35;
     LifeBar();
-    LifeBar(short int max, sf::Vector2f position, PlayerID id);
+    LifeBar(sf::Vector2f position, PlayerID id);
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
         target.draw(this->background);
         target.draw(this->bar);
@@ -34,9 +29,7 @@ class LifeBar : public sf::Drawable, sf::Transformable {
     virtual sf::Vector2f getPosition() {
         return this->background.getPosition();
     }
-    void updateBar();
-    void modifyLife(short int amount);
-    short int getValue();
+    void updateBar(int value);
     void setValue(short int value);
 };
 

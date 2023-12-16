@@ -33,6 +33,7 @@ class Player : public Entity {
     void move(sf::Vector2f g_speed);
     virtual void setPosition(float x, float y);
     virtual EntityType getEntityType();
+    virtual PlayerID getId();
 
     // Jumping
     bool isJumping();
@@ -48,11 +49,13 @@ class Player : public Entity {
     bool isShooting();
     void setShootingState(bool state);
 
-    static constexpr int PLAYER_HP = 100;
+    static constexpr int PLAYER_MAX_HP = 100;
+
 
    private:
     static constexpr float PLAYER_SPEED = 500;
     static constexpr float INVULNERABILITY_DURATION = 1;
+
 
     bool is_attacking = false;
     bool animation_state = false;
@@ -79,8 +82,7 @@ class Player : public Entity {
 
     void cleanArrows(float elapsedTime);
     ItemWeapon *last_dropped_item = NULL;
-
-    // LifeBar *life;
+    PlayerID id;
     Weapon *weapon;
 };
 

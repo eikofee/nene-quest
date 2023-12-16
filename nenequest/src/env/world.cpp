@@ -4,6 +4,7 @@
 GameMode World::gameMode;
 std::vector<Entity *> World::entities;
 std::vector<Player *> World::players;
+std::vector<LifeBar *> World::lifebars;
 float World::elapsedTime;
 
 using namespace std;
@@ -109,6 +110,10 @@ void World::addEntity(Entity *entity) {
 
 void World::addPlayer(Player *player) {
     players.push_back(player);
+    if(players.size() == 1) 
+        lifebars.push_back(new LifeBar(Vector2f(300, 100), PlayerID::PLAYER1));
+    else 
+    lifebars.push_back(new LifeBar(Vector2f(800, 100), PlayerID::PLAYER2));
 }
 
 void World::clearEntities() {
@@ -166,6 +171,7 @@ void World::render(sf::RenderWindow &app) {
 
     for (auto e : entities) app.draw(*e);
     for (auto e : players) app.draw(*e);
+    for (auto e : lifebars) { app.draw(*e); }
 }
 
 std::vector<Player *> World::getPlayers() { return players; }
@@ -205,9 +211,12 @@ void World::managePlayersCollidingWithThings() {
 void World::managePlayerCollidingWithBonus(Player *player, Bonus *bonus) {
     switch (bonus->getBonusType()) {
         case BONUS_HP:
-            player->alterHealth(((BonusHp *)bonus)->getHealedAmount(), true);
+            { short valueHealed = ((BonusHp *)bonus)->getHealedAmount();
+            player->alterHealth(valueHealed, true);
+            lifebars.at(player->getId())->updateBar(player->getHealth());
             bonus->alterHealth(-1, false);
             break;
+            }
         case BONUS_WEAPON:
             if (((ItemWeapon *)bonus)->isPickable()) {
                 WeaponType playerWeapon = player->getWeapon()->getWeaponType();
@@ -221,7 +230,9 @@ void World::managePlayerCollidingWithBonus(Player *player, Bonus *bonus) {
 }
 
 void World::managePlayerCollidingWithEnemy(Player *player, Enemy *enemy) {
-    player->isHit(enemy->getAttackDamage());
+    short ennemyDamage = enemy->getAttackDamage();
+    player->isHit(ennemyDamage);
+    lifebars.at(player->getId())->updateBar(player->getHealth());
 }
 
 void World::scroll() {
