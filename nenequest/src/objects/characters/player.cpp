@@ -325,6 +325,19 @@ bool Player::isShooting() { return is_shooting; }
 
 void Player::setShootingState(bool state) { is_shooting = state; }
 
+
+void Player::alterHealth(int value, bool relative) {
+    if (relative)
+        health += value;
+    else
+        health = value;
+
+    if (health > Player::PLAYER_MAX_HP)
+        health = Player::PLAYER_MAX_HP;
+    if (health < 0) 
+        health = 0;
+}
+
 void Player::isHit(int damage) {
     if (currentInvulnerabilityTime < 0) {
         this->alterHealth(-damage, true);

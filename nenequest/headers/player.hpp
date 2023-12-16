@@ -34,6 +34,7 @@ class Player : public Entity {
     virtual void setPosition(float x, float y);
     virtual EntityType getEntityType();
     virtual PlayerID getId();
+    virtual void alterHealth(int value, bool relative);
 
     // Jumping
     bool isJumping();

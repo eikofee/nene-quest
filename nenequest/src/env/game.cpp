@@ -112,9 +112,9 @@ ScreenState Game::run(RenderWindow& app) {
     World::addEntity(boar1);
     // Dragon *dragon = new Dragon(Vector2f(1000, 400));
     // World::addEntity(dragon);
-    // BonusHp *onigiri = new BonusHp(BONUS_ONIGIRI, Vector2f(900, 900));
+    BonusHp *onigiri = new BonusHp(BONUS_ONIGIRI, Vector2f(900, 900));
     // ItemWeapon *sword = new ItemWeapon(Sword, Vector2f(800, 600));
-    // World::addEntity(onigiri);
+    World::addEntity(onigiri);
     // World::addEntity(sword);
     // World::addEntity(new ItemWeapon(Axe, Vector2f(300, 630)));
     // BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 630));
