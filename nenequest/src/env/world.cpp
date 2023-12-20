@@ -130,6 +130,12 @@ void World::clearPlayers() {
     players.clear();
 }
 
+void World::clearLifebars() {
+    for(auto e : lifebars)
+        delete e;
+    lifebars.clear();
+}
+
 void World::updateEntities() {
     for (unsigned int i = 0; i < entities.size(); i++) {
         entities.at(i)->update(elapsedTime);
@@ -227,6 +233,33 @@ void World::managePlayerCollidingWithBonus(Player *player, Bonus *bonus) {
             }
             break;
     }
+}
+
+void World::manageAttackingPlayers() {
+    for (auto player : players) {
+        if (player->isAttacking()) {
+            Weapon *w = player->getWeapon();
+            manageWeaponCollidingWithThings(w);
+        }
+    }
+}
+
+void World::manageWeaponCollidingWithThings(Weapon *weapon) {
+    vector<Entity *> collided = getCollidingEntitiesOnZAxis(weapon);
+    for(auto e : collided) {
+        switch (e->getEntityType()) {
+            case ENEMY:
+                e->alterHealth(weapon->getDamage(), false);
+                ((Enemy *)e)->stun();
+            case NONE:
+            case PLAYER:
+            case SFX:
+            case SOLID:
+            case BONUS:
+                break;  // do nothing?
+        }
+    }
+
 }
 
 void World::managePlayerCollidingWithEnemy(Player *player, Enemy *enemy) {

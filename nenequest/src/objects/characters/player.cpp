@@ -131,6 +131,10 @@ void Player::attack() {
     update_animation();
 }
 
+bool Player::isAttacking() {
+    return is_attacking;
+}
+
 void Player::equip(Weapon *w) {
     this->weapon = w;
     this->weapon->setPosition(this->getPosition().x + this->weaponXOffset,
@@ -162,7 +166,7 @@ void Player::update_animation() {
     int weaponYDecal = this->weaponYOffset;
     IntRect result;
 
-    if (this->animation_state) {  // jambes croisees
+    if (this->animation_state) {  // crossed legs
         result = walk2normal;
         weaponXDecal += this->weaponXOffsetVariation;
         weaponYDecal += this->weaponYOffsetVariation;
@@ -190,11 +194,6 @@ void Player::move(Vector2f g_speed) {
     Entity::move(g_speed);
     this->getWeapon()->move(g_speed);
 }
-
-// Deprecated : use Entity->get/alterHealth()
-// LifeBar* Player::getLife(){
-//    return this->life;
-//}
 
 bool Player::isJumping() { return this->is_jumping; }
 

@@ -156,6 +156,8 @@ ScreenState Game::run(RenderWindow& app) {
                             kbPlayerTwoDown, kbPlayerTwoLeft, kbPlayerTwoRight,
                             kbPlayerTwoJump);
 
+            World::manageAttackingPlayers();
+
             manageMetaInputs(event, kbDebugMode);
         }
 

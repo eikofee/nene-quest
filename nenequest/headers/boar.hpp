@@ -17,7 +17,7 @@ class Boar : public Enemy {
     static const int BOAR_DAMAGE = 1;
     static const int STUN_DURATION = 1000;         // Milliseconds
     static constexpr float ANIMATION_DELAY = 0.1;  // Seconds
-    static constexpr float BOAR_SPEED = 10;        // Pixels/millisecond
+    static constexpr float BOAR_SPEED = 0;        // Pixels/millisecond
 
     bool is_stunned = false;
     int stun_timer = 0;

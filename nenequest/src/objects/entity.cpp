@@ -70,7 +70,7 @@ void Entity::update(float elapsedTime) {
 }
 
 bool Entity::isDead() { 
-    return health < 0;
+    return health <= 0;
 }
 
 float Entity::distanceToPosition(sf::Vector2f position) {

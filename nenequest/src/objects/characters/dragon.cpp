@@ -222,3 +222,4 @@ sf::Vector2f Dragon::computeMove(float elapsedTime) {
 //    return hitboxes.at(0).getGlobalBounds().top +
 //    hitboxes.at(0).getGlobalBounds().height +70;
 //}
+

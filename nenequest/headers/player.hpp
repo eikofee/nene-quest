@@ -22,6 +22,7 @@ class Player : public Entity {
     void fireArrow();
     void equip(Weapon *w);
     void update(float elapsedTime);
+    bool isAttacking();
 
     // Life management
     void isHit(int damage);

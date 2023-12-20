@@ -29,6 +29,7 @@ class World {
     static bool isGameOver();
     static void clearEntities();
     static void clearPlayers();
+    static void clearLifebars();
     static void updateEntities();
     static void updatePlayers();
     static void setElapsedTime(float time);
@@ -44,9 +45,12 @@ class World {
     static void managePlayersCollidingWithThings();
     static void managePlayerCollidingWithBonus(Player *player, Bonus *bonus);
     static void managePlayerCollidingWithEnemy(Player *player, Enemy *enemy);
+    // Management player's attacking 
+    static void manageAttackingPlayers();
+    static void manageWeaponCollidingWithThings(Weapon *weapon);
 
    private:
-    static constexpr float SCROLL_SPEED = 30;
+    static constexpr float SCROLL_SPEED = 0; // Used to be 30
     static constexpr float SCROLL_DAMAGE =
         30;  // When the player is pressed between the wall and a object by the
              // scrolling

@@ -16,6 +16,7 @@ class Enemy : public Entity {
     EnemyType getEnemyType();
     virtual bool isDying();  // Called for dying animation (blinking or dragon's death)
     virtual EntityType getEntityType();
+    virtual void stun();
 
    protected:
     sf::Clock clock;

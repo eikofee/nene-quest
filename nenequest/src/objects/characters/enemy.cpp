@@ -24,3 +24,5 @@ bool Enemy::isDying() {
 }
 
 EntityType Enemy::getEntityType() { return ENEMY; }
+
+void Enemy::stun() { }

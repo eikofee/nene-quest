@@ -9,7 +9,7 @@ enum BonusHpType { BONUS_ONIGIRI };
 
 class BonusHp : public Bonus {
    public:
-    static const short int ONIGIRI = 1;
+    
     BonusHp(BonusHpType bonusType, sf::Vector2f position);
     virtual ~BonusHp();
     short int getHealedAmount();
