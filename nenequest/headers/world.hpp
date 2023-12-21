@@ -13,6 +13,7 @@
 #include "player.hpp"
 #include "gamemode.hpp"
 #include "lifebar.hpp"
+#include "breakableObject.hpp"
 
 class World {
    public:

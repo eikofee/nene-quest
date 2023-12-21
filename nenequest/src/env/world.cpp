@@ -140,6 +140,8 @@ void World::updateEntities() {
     for (unsigned int i = 0; i < entities.size(); i++) {
         entities.at(i)->update(elapsedTime);
         if (entities.at(i)->isDead()) {
+            if(entities.at(i)->getEntityType() == SOLID)
+                ((BreakableObject *) entities.at(i))->getDrops();
             delete (entities.at(i));
             entities.erase(entities.begin() + i);
         }
@@ -255,6 +257,7 @@ void World::manageWeaponCollidingWithThings(Weapon *weapon) {
             case PLAYER:
             case SFX:
             case SOLID:
+                e->alterHealth(weapon->getDamage(), false);
             case BONUS:
                 break;  // do nothing?
         }
