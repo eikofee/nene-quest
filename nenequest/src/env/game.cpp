@@ -117,7 +117,7 @@ ScreenState Game::run(RenderWindow& app) {
     World::addEntity(onigiri);
     World::addEntity(sword);
     // World::addEntity(new ItemWeapon(Axe, Vector2f(300, 630)));
-    BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 630));
+    BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 330));
     World::addEntity(barrel);
     // World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
 

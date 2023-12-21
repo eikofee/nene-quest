@@ -42,24 +42,30 @@ void BreakableObject::getObjectTexture(ObjectType o) {
 
 Bonus *BreakableObject::getDrops() {
     Bonus *bonus = nullptr;
+    Vector2f position_bonus(sprite.getLocalBounds().width,
+                                     sprite.getLocalBounds().height);
+    
+    position_bonus.x = this->getPosition().x + (sprite.getLocalBounds().width / 2);
+    
+    position_bonus.y = this->getPosition().y + (sprite.getLocalBounds().height / 2); // * 0.5; // + (sprite.getLocalBounds().height);
 
     switch (rand() % 2) {
         case BONUS_HP:
-            bonus = new BonusHp(BONUS_ONIGIRI, this->getPosition());
+            bonus = new BonusHp(BONUS_ONIGIRI, position_bonus);
             break;
         case BONUS_WEAPON:
             switch (rand() % 4) {
                 case ITEM_AXE:
-                    bonus = new ItemWeapon(Axe, this->getPosition());
+                    bonus = new ItemWeapon(Axe, position_bonus);
                     break;
                 case ITEM_SWORD:
-                    bonus = new ItemWeapon(Sword, this->getPosition());
+                    bonus = new ItemWeapon(Sword, position_bonus);
                     break;
                 case ITEM_GREATSWORD:
-                    bonus = new ItemWeapon(GreatSword, this->getPosition());
+                    bonus = new ItemWeapon(GreatSword, position_bonus);
                     break;
                 case ITEM_BOW:
-                    bonus = new ItemWeapon(Bow, this->getPosition());
+                    bonus = new ItemWeapon(Bow, position_bonus);
                     break;
             }
     }

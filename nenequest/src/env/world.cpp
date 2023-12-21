@@ -137,15 +137,18 @@ void World::clearLifebars() {
 }
 
 void World::updateEntities() {
+    vector<Entity *> added;
     for (unsigned int i = 0; i < entities.size(); i++) {
         entities.at(i)->update(elapsedTime);
         if (entities.at(i)->isDead()) {
-            if(entities.at(i)->getEntityType() == SOLID)
-                ((BreakableObject *) entities.at(i))->getDrops();
+            if(entities.at(i)->getEntityType() == SOLID) {
+                added.push_back(((BreakableObject *) entities.at(i))->getDrops());
+            }
             delete (entities.at(i));
             entities.erase(entities.begin() + i);
         }
     }
+    entities.insert(entities.end(), added.begin(), added.end());
 }
 
 bool World::isTwoPlayer() {
