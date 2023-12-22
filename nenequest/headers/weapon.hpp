@@ -16,6 +16,7 @@ class Weapon : public Entity {
     void setPosition(int x, int y);
 
    private:
+    int weaponDamageByType(WeaponType t);
     WeaponType type;
     int damage;
 };

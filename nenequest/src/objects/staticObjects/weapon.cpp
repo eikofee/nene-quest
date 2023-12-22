@@ -26,7 +26,7 @@ Weapon::Weapon(WeaponType t) {
     updateAutoHitboxSize();
     updateAutoHitboxPosition();
     h->setPosition(h->getPosition() + getWeaponOffset(t));
-    this->damage = damage;
+    this->damage = weaponDamageByType(t);
     auto zh = new sf::RectangleShape();
     zh->setFillColor(sf::Color(0, 0, 255, 128));
     zh->setSize(Vector2f(spriteWidth, spriteHeight / 5));
@@ -37,6 +37,25 @@ Weapon::Weapon(WeaponType t) {
 int Weapon::getDamage() { return this->damage; }
 
 WeaponType Weapon::getWeaponType() { return this->type; }
+
+int Weapon::weaponDamageByType(WeaponType t) {
+    int x;
+    switch (t) {
+        case Bow:
+            x = 0;
+            break;
+        case Sword:
+            x = 3;
+            break;
+        case Axe:
+            x = 5;
+            break;
+        case GreatSword:
+            x = 10;
+            break;
+    }
+    return x;
+}
 
 void Weapon::Animate(float lerp) {
     if (lerp <= 0.5f)

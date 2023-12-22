@@ -254,13 +254,15 @@ void World::manageWeaponCollidingWithThings(Weapon *weapon) {
     for(auto e : collided) {
         switch (e->getEntityType()) {
             case ENEMY:
-                e->alterHealth(weapon->getDamage(), false);
+                e->alterHealth(- weapon->getDamage(), true);
                 ((Enemy *)e)->stun();
             case NONE:
             case PLAYER:
             case SFX:
             case SOLID:
-                e->alterHealth(weapon->getDamage(), false);
+                cout << "\n==== Hit a solid ====\n";
+                cout << "Weapon damage : " << weapon->getDamage() << endl;
+                e->alterHealth(- weapon->getDamage(), true);
             case BONUS:
                 break;  // do nothing?
         }

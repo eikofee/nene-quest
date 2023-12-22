@@ -45,7 +45,7 @@ class Entity : public sf::Drawable {
     void updateAutoSpritePosition();
     sf::Vector2f speed;  // not too fond of the name
     bool ignoreDepthOnRendering = false;
-    int health = 1;
+    int health = 11;
 
    private:
 };

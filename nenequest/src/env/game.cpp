@@ -117,13 +117,16 @@ ScreenState Game::run(RenderWindow& app) {
     World::addEntity(onigiri);
     World::addEntity(sword);
     // World::addEntity(new ItemWeapon(Axe, Vector2f(300, 630)));
-    BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 330));
+    BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 430)); 
     World::addEntity(barrel);
     // World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
 
     // // Arrow arrow = Arrow(Vector2f(100, 700), 700);
     // World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
     /////////////////////////////
+
+    for (auto e : World::getEntities())
+        cout << typeid(*e).name() << endl;
 
     Clock clock;
     // ---------------- Main Loop ----------------

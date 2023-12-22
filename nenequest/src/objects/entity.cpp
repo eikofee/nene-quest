@@ -84,7 +84,7 @@ int Entity::getHealth() {
     return health; 
 }
 
-void Entity::alterHealth(int value, bool relative) {
+void Entity::alterHealth(int value, bool relative) { // Develop invicibility frame
     if (relative)
         health += value;
     else
