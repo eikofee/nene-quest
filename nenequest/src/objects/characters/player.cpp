@@ -337,9 +337,10 @@ void Player::alterHealth(int value, bool relative) {
         health = 0;
 }
 
+// Move the invulnerability management inside player
 void Player::isHit(int damage) {
     if (currentInvulnerabilityTime < 0) {
         this->alterHealth(-damage, true);
-        currentInvulnerabilityTime = INVULNERABILITY_DURATION;
+        currentInvulnerabilityTime = INVULNERABILITY_DURATION; 
     }
 }
