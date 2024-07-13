@@ -20,7 +20,7 @@ class ActionPair {
 ScreenState Menu::run(RenderWindow& app) {
     Event event;
     int menuIndex = 0;
-    ScreenState selectedScreen = GAME_SCREEN;
+    ScreenState selectedScreen = GAME_SCREEN_1;
 
     // ---------------- Logo ----------------
     Texture logoTex;
@@ -40,8 +40,8 @@ ScreenState Menu::run(RenderWindow& app) {
     Text exitButton(L"\u304A\u308F\u308B", font);
 
     vector<ActionPair> actionPairs = {
-        ActionPair(&p1button, GAME_SCREEN),
-        ActionPair(&p2button, GAME_OVER), // TODO : temporary, for tests
+        ActionPair(&p1button, GAME_SCREEN_1),
+        ActionPair(&p2button, GAME_SCREEN_2),
         ActionPair(&exitButton, EXIT_GAME)
     };
 

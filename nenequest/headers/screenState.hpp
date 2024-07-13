@@ -3,8 +3,10 @@
 
 enum ScreenState {
     TITLE_SCREEN,
-    GAME_SCREEN,
-    GAME_OVER,
+    GAME_SCREEN_1,
+    GAME_SCREEN_2,
+    GAME_OVER_1,
+    GAME_OVER_2,
     EXIT_GAME
 };
 
