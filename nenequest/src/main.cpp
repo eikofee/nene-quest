@@ -19,11 +19,11 @@ int main() {
     while (selectedScreen != EXIT_GAME) {
         switch (selectedScreen) {
             case GAME_SCREEN_1:
-                selectedScreen = (new Game())->run(app);
+                selectedScreen = (new Game(1))->run(app);
                 break;
             
             case GAME_SCREEN_2:
-                selectedScreen = (new Game())->run(app);
+                selectedScreen = (new Game(2))->run(app);
                 break;
 
             case GAME_OVER_1:

@@ -11,10 +11,11 @@ using namespace sf;
 
 bool Game::debugMode;
 
-Game::Game() {
+Game::Game(int playerCount) {
     // Final game objects (should only include Game, Players, LevelManagers and
     // other UI events)
     debugMode = true;
+    this->playerCount = playerCount;
 }
 
 ScreenState Game::run(RenderWindow& app) {
@@ -43,9 +44,19 @@ ScreenState Game::run(RenderWindow& app) {
    /* bridge = new BridgePit(300, app.getSize().y - background.getSkyHeight(),
                            app.getSize().y);
     World::addEntity(bridge); */
-    World::setGameMode(ONE_PLAYER);
-    Player *player = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
-    this->addPlayerInstance(player);
+    if (this->playerCount == 1) {
+        World::setGameMode(ONE_PLAYER);
+        Player *player = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
+        World::addPlayer(player);
+    } else if (this->playerCount == 2) {
+        // don't remember if we did something for p1 and p2 to have different skins & weapons
+        World::setGameMode(TWO_PLAYERS);
+        Player *player1 = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
+        World::addPlayer(player1);
+        Player *player2 = new Player(new Weapon(Sword), sf::Vector2f(50, 560), true);
+        World::addPlayer(player2);
+    }
+    
     Boar *boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y / 2));
     World::addEntity(boar1);
     // Dragon *dragon = new Dragon(Vector2f(1000, 400));
@@ -74,16 +85,14 @@ ScreenState Game::run(RenderWindow& app) {
 
         if(World::isGameOver()) {
             cleanScreen();
-            if (World::isTwoPlayer())
-                return GAME_OVER;
-            return GAME_OVER;
+            return GAME_OVER_1;
         }    
 
         while (app.pollEvent(event)) {
             if (event.type == Event::Closed) return EXIT_GAME;
             
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape){
-                // cleanScreen();
+                cleanScreen();
                 return TITLE_SCREEN;
             }      
             
@@ -178,13 +187,6 @@ void Game::drawWithDepth(RenderWindow *app) {
 bool Game::cmp(Entity *a, Entity *d) {
     if (a->getDrawDepth() >= d->getDrawDepth()) return false;
     return true;
-}
-
-// Function calls for levelManager
-void Game::addInstance(Entity *e) { World::addEntity(e); }
-
-void Game::addPlayerInstance(Player *player) {
-    World::addPlayer(player);
 }
 
 bool Game::IsDebugMode() { return debugMode; }

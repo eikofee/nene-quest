@@ -26,19 +26,15 @@
 class LevelManager;
 class Game : public Screen {
    public:
-    Game();
+    Game(int playerCount);
     void cleanScreen();
     virtual ScreenState run(sf::RenderWindow& app);
-    void addPlayerInstance(Player* player);
-    void addInstance(Entity* e);
     static bool IsDebugMode();
 
    private:
-    // void checkCollision(float elapsedTime, sf::Vector2u windowSize);
-    // void scroll(float elapsedTime, sf::Vector2u windowSize);
+
+    int playerCount;
     bool playerIsColliding(Player *p);
-    // void playerMove(Player* player, float elapsedTime, sf::Vector2u
-    // windowSize, float skyHeight);
     void drawWithDepth(sf::RenderWindow *app);
     static bool cmp(Entity *a, Entity *d);
     void manageInputs(sf::Event e, PlayerID id, sf::Keyboard::Key up,
