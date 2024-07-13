@@ -93,7 +93,10 @@ ScreenState Menu::run(RenderWindow& app) {
 
             if (event.type == Event::MouseMoved) {
                 for (auto action : actionPairs) {
-                    if (action.button->getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    if (action.button->getGlobalBounds().contains(
+                        mousePos.x,
+                        mousePos.y)
+                    ) {
                         cursor.setPosition(action.button->getPosition());
                         selectedScreen = action.screen;
                     }
