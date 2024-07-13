@@ -261,6 +261,7 @@ void World::manageWeaponCollidingWithThings(Weapon *weapon) {
             case SFX:
             case SOLID:
                 cout << "\n==== Hit a solid ====\n";
+                cout << "Hit : " << typeid(e).name() << endl;
                 cout << "Weapon damage : " << weapon->getDamage() << endl;
                 e->alterHealth(- weapon->getDamage(), true);
             case BONUS:

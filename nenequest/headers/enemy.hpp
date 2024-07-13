@@ -17,8 +17,13 @@ class Enemy : public Entity {
     virtual bool isDying();  // Called for dying animation (blinking or dragon's death)
     virtual EntityType getEntityType();
     virtual void stun();
+    virtual void alterHealth(int value, bool relative);
 
    protected:
+
+    static constexpr float DRAGON_INVULNERABILITY_TIME = 1;
+    static constexpr float BOAR_INVULNERABILITY_TIME = 1;
+
     sf::Clock clock;
     short int animation_state = 0;
     short int attack_damage = 0;
@@ -28,6 +33,10 @@ class Enemy : public Entity {
     int hp;
 
    private:
+   
+    float currentInvulnerabilityTime = 0;
+    float getInvunerabilityDuration(EnemyType t);
+
 };
 
 #endif  // ENNEMY_H
