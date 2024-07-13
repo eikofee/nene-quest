@@ -18,6 +18,7 @@
 class World {
    public:
     static void initialize();
+    static void clearAll();
     static std::vector<Entity *> getEntities();
     static std::vector<Entity *> getNearEntities(sf::Vector2f position,
                                                  float radius);

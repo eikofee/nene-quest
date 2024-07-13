@@ -1,13 +1,14 @@
 #include "world.hpp"
 #include <string.h>
 
+using namespace std;
+
 GameMode World::gameMode;
 std::vector<Entity *> World::entities;
 std::vector<Player *> World::players;
 std::vector<LifeBar *> World::lifebars;
-float World::elapsedTime;
 
-using namespace std;
+float World::elapsedTime;
 
 void World::initialize() {}
 
@@ -110,10 +111,10 @@ void World::addEntity(Entity *entity) {
 
 void World::addPlayer(Player *player) {
     players.push_back(player);
-    if(players.size() == 1) 
+    if (players.size() == 1)
         lifebars.push_back(new LifeBar(Vector2f(300, 100), PlayerID::PLAYER1));
-    else 
-    lifebars.push_back(new LifeBar(Vector2f(800, 100), PlayerID::PLAYER2));
+    else
+        lifebars.push_back(new LifeBar(Vector2f(800, 100), PlayerID::PLAYER2));
 }
 
 void World::clearEntities() {

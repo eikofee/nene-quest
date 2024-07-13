@@ -5,7 +5,7 @@ using namespace std;
 using namespace sf;
 
 Menu::Menu() { }
-Menu::~Menu() { }
+void Menu::clearAll() { }
 
 class ActionPair {
   public:
@@ -16,6 +16,7 @@ class ActionPair {
     Text* button;
     ScreenState screen;
 };
+
 
 ScreenState Menu::run(RenderWindow& app) {
     Event event;
@@ -72,7 +73,7 @@ ScreenState Menu::run(RenderWindow& app) {
 
         while (app.pollEvent(event)) {
             if (event.type == Event::Closed)
-                return EXIT_GAME;
+                return this->gotoScreen(EXIT_GAME);
 
             if (event.type == Event::KeyPressed) {
                 switch (event.key.code) {
@@ -83,7 +84,7 @@ ScreenState Menu::run(RenderWindow& app) {
                       menuIndex = (menuIndex+1)%actionPairs.size();
                       break;
                     case Keyboard::Return:
-                      return actionPairs[menuIndex].screen;
+                      return this->gotoScreen(actionPairs[menuIndex].screen);
                       break;
                     default:
                       break;
@@ -104,7 +105,7 @@ ScreenState Menu::run(RenderWindow& app) {
             }
 
             if (event.type == Event::MouseButtonPressed)
-                return selectedScreen;
+                return this->gotoScreen(selectedScreen);
         }
 
         app.clear(Color::White);
@@ -115,5 +116,5 @@ ScreenState Menu::run(RenderWindow& app) {
         app.display();
     }
 
-    return EXIT_GAME;
+    return this->gotoScreen(EXIT_GAME);
 }

@@ -30,8 +30,8 @@ class LevelManager;
 class Game : public Screen {
    public:
     Game();
-    void cleanScreen();
     virtual ScreenState run(sf::RenderWindow& app);
+    virtual void clearAll();
     void addPlayerInstance(Player* player);
     void addInstance(Entity* e);
     static bool IsDebugMode();
