@@ -4,9 +4,6 @@
 #include <time.h>
 #include <iostream>
 
-#include "configManager.hpp"
-#include "configParameter.hpp"
-#include "configParser.hpp"
 #include "world.hpp"
 
 using namespace std;
@@ -17,98 +14,39 @@ bool Game::debugMode;
 Game::Game() {
     // Final game objects (should only include Game, Players, LevelManagers and
     // other UI events)
-    this->manager = new LevelManager(this);
-    this->parser = new LevelParser();
-    this->parser->setLevelManager(this->manager);
-    this->parser->initialize();
-    this->parser->setLevelFilesPath("levels");
     debugMode = true;
-
-    // Config loader
-    this->configManager = new ConfigManager();
-    this->configParser = new ConfigParser();
-    this->configParser->setConfigManager(this->configManager);
-    this->configParser->initialize();
 }
 
 ScreenState Game::run(RenderWindow& app) {
 
     Event event;
     Background background = Background(app.getSize());
-    this->manager->setBackground(&background);
-    // Load settings
-    this->configParser->parseFile("config.ini");
+
     // Bind keys
-    Keyboard::Key kbDebugMode;
-    Keyboard::Key kbPause;
-
-    Keyboard::Key kbPlayerOneLeft;
-    Keyboard::Key kbPlayerOneRight;
-    Keyboard::Key kbPlayerOneUp;
-    Keyboard::Key kbPlayerOneDown;
-    Keyboard::Key kbPlayerOneAttack;
-    Keyboard::Key kbPlayerOneJump;
-
-    Keyboard::Key kbPlayerTwoLeft;
-    Keyboard::Key kbPlayerTwoRight;
-    Keyboard::Key kbPlayerTwoUp;
-    Keyboard::Key kbPlayerTwoDown;
-    Keyboard::Key kbPlayerTwoAttack;
-    Keyboard::Key kbPlayerTwoJump;
-
-    this->configManager->getParameter("toggleDebugMode")
-        ->getParameter(&kbDebugMode);
-    this->configManager->getParameter("togglePause")->getParameter(&kbPause);
-
-    this->configManager->getParameter("playerOneMoveLeft")
-        ->getParameter(&kbPlayerOneLeft);
-    this->configManager->getParameter("playerOneMoveRight")
-        ->getParameter(&kbPlayerOneRight);
-    this->configManager->getParameter("playerOneMoveUp")
-        ->getParameter(&kbPlayerOneUp);
-    this->configManager->getParameter("playerOneMoveDown")
-        ->getParameter(&kbPlayerOneDown);
-    this->configManager->getParameter("playerOneAttack")
-        ->getParameter(&kbPlayerOneAttack);
-    this->configManager->getParameter("playerOneJump")
-        ->getParameter(&kbPlayerOneJump);
-
-    this->configManager->getParameter("playerTwoMoveLeft")
-        ->getParameter(&kbPlayerTwoLeft);
-    this->configManager->getParameter("playerTwoMoveRight")
-        ->getParameter(&kbPlayerTwoRight);
-    this->configManager->getParameter("playerTwoMoveUp")
-        ->getParameter(&kbPlayerTwoUp);
-    this->configManager->getParameter("playerTwoMoveDown")
-        ->getParameter(&kbPlayerTwoDown);
-    this->configManager->getParameter("playerTwoAttack")
-        ->getParameter(&kbPlayerTwoAttack);
-    this->configManager->getParameter("playerTwoJump")
-        ->getParameter(&kbPlayerTwoJump);
-
-    // Binding doesn't work for me for whatever reason...
-    /*kbPlayerOneLeft = Keyboard::Left;
-    kbPlayerOneRight = Keyboard::Right;
-    kbPlayerOneUp = Keyboard::Up;
-    kbPlayerOneDown = Keyboard::Down;
-    kbPlayerOneAttack = Keyboard::M;
-    kbPlayerOneJump = Keyboard::L;
-
-    kbPlayerTwoLeft = Keyboard::Q;
-    kbPlayerTwoRight = Keyboard::D;
-    kbPlayerTwoUp = Keyboard::Z;
-    kbPlayerTwoDown = Keyboard::S;
-    kbPlayerTwoAttack = Keyboard::E;
-    kbPlayerTwoJump = Keyboard::Space;*/
-
+    Keyboard::Key kbPlayerOneLeft = Keyboard::Left;
+    Keyboard::Key kbPlayerOneRight = Keyboard::Right;
+    Keyboard::Key kbPlayerOneUp = Keyboard::Up;
+    Keyboard::Key kbPlayerOneDown = Keyboard::Down;
+    Keyboard::Key kbPlayerOneAttack = Keyboard::M;
+    Keyboard::Key kbPlayerOneJump = Keyboard::L;
+    Keyboard::Key kbPlayerTwoLeft = Keyboard::Q;
+    Keyboard::Key kbPlayerTwoRight = Keyboard::D;
+    Keyboard::Key kbPlayerTwoUp = Keyboard::Z;
+    Keyboard::Key kbPlayerTwoDown = Keyboard::S;
+    Keyboard::Key kbPlayerTwoAttack = Keyboard::E;
+    Keyboard::Key kbPlayerTwoJump = Keyboard::Space;
+    Keyboard::Key kbDebugMode = Keyboard::T;
+    Keyboard::Key kbPause = Keyboard::Return;
+     
     // Load Level
-    this->parser->parseFile("level0.nnq");
      // Testing objects////////////
    /* bridge = new BridgePit(300, app.getSize().y - background.getSkyHeight(),
                            app.getSize().y);
     World::addEntity(bridge); */
-    Boar *boar1 =
-        new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y / 2));
+    World::setGameMode(ONE_PLAYER);
+    Player *player = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
+    this->addPlayerInstance(player);
+    Boar *boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y / 2));
     World::addEntity(boar1);
     // Dragon *dragon = new Dragon(Vector2f(1000, 400));
     // World::addEntity(dragon);
@@ -130,7 +68,6 @@ ScreenState Game::run(RenderWindow& app) {
 
     Clock clock;
     // ---------------- Main Loop ----------------
-    this->manager->update();
     while (true) {
 
         float elapsedTime = clock.restart().asMilliseconds();
@@ -172,7 +109,6 @@ ScreenState Game::run(RenderWindow& app) {
 
         // scroll(elapsedTime, app.getSize());
 
-        this->manager->update();
         background.update();
         // arrow.update(elapsedTime);
         // checkCollision(elapsedTime, app.getSize());
@@ -233,309 +169,6 @@ void Game::cleanScreen() {
   World::clearEntities();
   World::clearPlayers();
 }
-
-
-// Collision detection
-// TODO: Move this somewhere else (World class)
-// void Game::checkCollision(float elapsedTime, Vector2u windowSize){
-//
-//    for(unsigned int i = 0; i < players.size(); i++){
-//
-//        for(Arrow* arrow : players.at(i)->getArrows()){
-//            for(unsigned int j = 0; j < enemies.size(); j++){
-//                if(enemies.at(j)->detectHit(arrow)){
-//                    enemies.at(j)->take_damage(Arrow::ARROW_DAMAGE);
-//                    arrow->kill();
-//                }
-//            }
-//            for(unsigned int j = 0; j < breakable_objects.size(); j++){
-//                if(arrow->detectHit(breakable_objects.at(j))){
-//                    arrow->kill();
-//
-//                    if(Bonus* tmp = breakable_objects.at(j)->getDrops()){
-//                        Vector2f dropPosition =
-//                        Vector2f(breakable_objects.at(j)->getHitbox().getGlobalBounds().left
-//                                                        ,
-//                                                        breakable_objects.at(j)->getHitbox().getGlobalBounds().top
-//                                                        +
-//                                                        breakable_objects.at(j)->getHitbox().getGlobalBounds().height
-//                                                        -100);
-//                        dropItem(tmp, dropPosition);
-//                    }
-//
-//
-//                    delete(breakable_objects.at(j));
-//                    breakable_objects.erase(breakable_objects.begin()+j);
-//
-//                }
-//            }
-//        }
-//        if(!players.at(i)->isJumping()){
-//
-//            //Collisions with enemies
-//            if(player_invulnerability_timer <= 0){
-//                for(unsigned int j = 0; j < enemies.size(); j++){
-//                    if(enemies.at(j)->detectHit(players.at(i))){
-//                        players.at(i)->getLife()->decrease(enemies.at(j)->getAttackDamage());
-//                        player_invulnerability_timer = 200;
-//                        break;
-//                    }
-//                    if(enemies.at(j)->getEnemyType() == Enemy_Dragon){
-//                       vector<Flame*> flames =
-//                       ((Dragon*)enemies.at(j))->getFlames(); for(Flame* flame
-//                       : flames){
-//                            if(players.at(i)->detectHit(flame)){
-//                               players.at(i)->getLife()->decrease(Flame::FLAMES_DAMAGE);
-//                               player_invulnerability_timer = 200;
-//                               break;
-//                            }
-//                       }
-//                    }
-//
-//                }
-//            }
-//            else{
-//                player_invulnerability_timer -= elapsedTime;
-//            }
-//
-//            //Collisions with bonus hp
-//            for(unsigned int j = 0; j < bonuses_hp.size(); j++){
-//
-//                //Check for collisions between the player and the item
-//                if(players.at(i)->detectHit(bonuses_hp.at(j))){
-//
-//                    players.at(i)->getLife()->increase(bonuses_hp.at(j)->getHealedAmount());
-//                    delete(bonuses_hp.at(j));
-//                    bonuses_hp.erase(bonuses_hp.begin()+j);
-//                }
-//            }
-//
-//            //Collisions with weapon items
-//            for(unsigned int j = 0; j < item_weapons.size(); j++){
-//
-//                //Check for collisions between the player and the item
-//                if(players.at(i)->getLastDroppedItem() == NULL ||
-//                !players.at(i)->detectHit(players.at(i)->getLastDroppedItem())){
-//                    players.at(i)->setLastDroppedItem(NULL);
-//                    if(item_weapons.at(j)->detectHit(players.at(i))){
-//
-//                        WeaponType weaponType =
-//                        item_weapons.at(j)->getWeaponType();
-//                        if(players.at(i)->getWeapon()->getWeaponType() !=
-//                        weaponType){
-//
-//                            //Drop old weapon
-//                            ItemWeapon* tmp = new
-//                            ItemWeapon(players.at(i)->getWeapon()->getWeaponType(),
-//                            item_weapons.at(j)->getPosition());
-//
-//                            //setDropped used to prevent the player from
-//                            interacting with the item again when he's still
-//                            standing on it item_weapons.push_back(tmp);
-//                            players.at(i)->setLastDroppedItem(tmp);
-//
-//                            //If an other player is standing on the item,
-//                            change it's last dropped item for(Player* var :
-//                            players)
-//                                if(var->getLastDroppedItem() ==
-//                                item_weapons.at(j))
-//                                    var->setLastDroppedItem(tmp);
-//
-//                            delete(item_weapons.at(j));
-//                            item_weapons.erase(item_weapons.begin()+j);
-//
-//                            //Equip new weapon
-//                            players.at(i)->equip(new Weapon(weaponType));
-//
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
-// Some of the code here should be moved into entities' or in a World class
-// void Game::scroll(float elapsedTime, Vector2u windowSize){
-//   for(unsigned int j = 0; j < item_weapons.size(); j++){
-//       item_weapons.at(j)->move(Vector2f(SCROLL_SPEED, 0));
-//       //Check if the item is still on screen
-//       if(!item_weapons.at(j)->isOnScreen(windowSize)){
-//           delete(item_weapons.at(j));
-//           item_weapons.erase(item_weapons.begin()+j);
-//       }
-//   }
-//   for(unsigned int j = 0; j < bonuses_hp.size(); j++){
-//       bonuses_hp.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
-//       //Check if the item is still on screen
-//       if(!bonuses_hp.at(j)->isOnScreen(windowSize)){
-//           delete(bonuses_hp.at(j));
-//           bonuses_hp.erase(bonuses_hp.begin()+j);
-//       }
-//   }
-//   for(unsigned int j = 0; j < breakable_objects.size(); j++){
-//       breakable_objects.at(j)->move(Vector2f(SCROLL_SPEED, 0), elapsedTime);
-//       //Check if the item is still on screen
-//       if(!breakable_objects.at(j)->isOnScreen(windowSize)){
-//           delete(breakable_objects.at(j));
-//           breakable_objects.erase(breakable_objects.begin()+j);
-//       }
-//   }
-
-//   //Check if player is pushed by the scrolling
-//   for(Player* player : players){
-//       if(playerIsColliding(player)){
-//           //Move the player of 1 pixel to the left until he isn't in
-//           collision within any object do{
-//               player->setPosition(player->getPosition().x -1,
-//               player->getPosition().y);
-
-//               //If the scrolling pushes the player into the border of the
-//               screen, destroy the item pushing him and damage the player
-//               if(player->getPosition().x <= 0){
-//                   for(unsigned int j = 0;j < breakable_objects.size();j++){
-//                       if(player->detectHit(breakable_objects.at(j)))
-//                           delete(breakable_objects.at(j));
-//                           breakable_objects.erase(breakable_objects.begin()+j);
-//                           life.decrease(SCROLLING_DAMAGE);
-//                           player->setPosition(0,player->getPosition().y);
-//                   }
-
-//               }
-
-//           }while(playerIsColliding(player));
-//       }
-//   }
-//}
-
-// Unused
-// bool Game::playerIsColliding(Player* p){
-//    for(unsigned int j = 0; j < breakable_objects.size(); j++){
-//        if(p->detectHit(breakable_objects.at(j))){
-//            return true;
-//        }
-//    }
-//    return false;
-//
-// }
-//
-// BreakableObject* Game::getCollidingObject(Player* p){
-//    for(BreakableObject* obj : breakable_objects)
-//        if(p->detectHit(obj))
-//            return obj;
-//
-//    return NULL;
-// }
-
-// Deprecated
-// void Game::playerMove(Player* player, float elapsedTime, Vector2u windowSize,
-// float skyHeight){
-/*    for(Player* player : players){
-         Vector2f playerSpeed = Vector2f(0,0);
-
-        if (player->moving_up) {
-            playerSpeed.y -= PLAYER_SPEED;
-        } if (player->moving_down) {
-            playerSpeed.y += PLAYER_SPEED;
-        } if (player->moving_right) {
-            playerSpeed.x += PLAYER_SPEED;
-        } if (player->moving_left) {
-            playerSpeed.x -= PLAYER_SPEED;
-        }
-
-        if(playerSpeed.x != 0){
-            player->move(Vector2f(playerSpeed.x, 0), elapsedTime);
-
-            //Check if the player isn't leaving the screen
-            if(player->getPosition().x +
- player->getHitbox().getLocalBounds().width > windowSize.x)
-                player->setPosition(windowSize.x -
- player->getHitbox().getGlobalBounds().width, player->getPosition().y); else
- if(player->getPosition().x + playerSpeed.x*elapsedTime < 0)
-                player->setPosition(0, player->getPosition().y);
-
-            if(bridge->detectHit(player)){
-                if(playerSpeed.x > 0)
-                    player->setPosition(bridge->getSpriteBounds().left -
- player->getHitbox().getGlobalBounds().width, player->getPosition().y); else
-                    player->setPosition(bridge->getSpriteBounds().left +
- bridge->getSpriteBounds().width, player->getPosition().y);
-            }
-
-            if(playerIsColliding(player)){
-                //Do/While in case the player collide several object at the same
- time do{ BreakableObject* tmp = getCollidingObject(player); if(playerSpeed.x >
- 0){ player->setPosition(tmp->getPosition().x -
- player->getHitbox().getGlobalBounds().width, player->getPosition().y);
-                    }
-                    else{
-                        player->setPosition(tmp->getPosition().x +
- tmp->getHitbox().getGlobalBounds().width, player->getPosition().y);
-                    }
-
-                }while(playerIsColliding(player));
-            }
-        }
-
-        if(playerSpeed.y != 0){
-            player->move(Vector2f(0, playerSpeed.y), elapsedTime);
-
-            //Check if the player isn't leaving the screen
-            if(player->getPosition().y +
- player->getHitbox().getGlobalBounds().height > windowSize.y)
-                player->setPosition(player->getPosition().x, windowSize.y -
- player->getHitbox().getGlobalBounds().height); else if(player->getPosition().y
- < skyHeight - player->getHitbox().getGlobalBounds().height/2)
-                player->setPosition(player->getPosition().x, skyHeight -
- player->getHitbox().getGlobalBounds().height/2);
-
-            if(bridge->detectHit(player)){
-                if(playerSpeed.y > 0)
-                    player->setPosition(player->getPosition().x,
- bridge->getSpriteBounds().top + bridge->getSpriteBounds().height -
- player->getHitbox().getGlobalBounds().height); else
-                    player->setPosition(player->getPosition().x,
- bridge->getSpriteBounds().top - player->getHitbox().getGlobalBounds().height +
- Entity::DEPTH_DIFF);
-            }
-
-
-
-            if(playerIsColliding(player)){
-                //Do/While in case the player collide several object at the same
- time do{ BreakableObject* tmp = getCollidingObject(player);
-                    if(tmp->getHitbox().getGlobalBounds().height <
- Entity::DEPTH_DIFF){ if(playerSpeed.y > 0){
-                            player->setPosition(player->getPosition().x,
- tmp->getPosition().y - player->getHitbox().getGlobalBounds().height);
-                        }
-                        else{
-                            player->setPosition(player->getPosition().x,
- tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height
- -player->getHitbox().getGlobalBounds().height + Entity::DEPTH_DIFF);
-                        }
-                    }
-                    else{
-                        if(playerSpeed.y > 0){
-                        player->setPosition(player->getPosition().x,
- tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height -
- player->getHitbox().getGlobalBounds().height - Entity::DEPTH_DIFF);
-                        }
-                        else{
-                            player->setPosition(player->getPosition().x,
- tmp->getPosition().y + tmp->getHitbox().getGlobalBounds().height -
- player->getHitbox().getGlobalBounds().height + Entity::DEPTH_DIFF);
-                        }
-                    }
-
-
-                }while(playerIsColliding(player));
-            }
-
-        }
-    }
- }
-*/
 
 // Move to Render class
 void Game::drawWithDepth(RenderWindow *app) {

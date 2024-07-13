@@ -27,10 +27,10 @@ ScreenState Menu::run(RenderWindow& app) {
     logoTex.loadFromFile("img/titlescreen.png");
     logoTex.setSmooth(true);
     Sprite logo(logoTex);
-		FloatRect logolb = logo.getLocalBounds();
+    FloatRect logolb = logo.getLocalBounds();
     logo.setOrigin(logolb.width/2, logolb.height/2);
     logo.setPosition(app.getSize().x/2, app.getSize().y/2 - 200);
-    logo.setScale(1.45, 1.45);
+    logo.setScale(1.45f, 1.45f);
 
     // ---------------- Buttons ----------------
     Font font;
@@ -39,7 +39,7 @@ ScreenState Menu::run(RenderWindow& app) {
     Text p2button(L"\u3075\u305F\u308A\u3067\u3042\u305D\u3076", font);
     Text exitButton(L"\u304A\u308F\u308B", font);
 
-    array<ActionPair, 3> actionPairs = {
+    vector<ActionPair> actionPairs = {
         ActionPair(&p1button, GAME_SCREEN),
         ActionPair(&p2button, GAME_OVER), // TODO : temporary, for tests
         ActionPair(&exitButton, EXIT_GAME)
