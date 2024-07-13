@@ -31,13 +31,14 @@ ScreenState Menu::run(RenderWindow& app) {
     Text p2button(L"\u3075\u305F\u308A\u3067\u3042\u305D\u3076", font);
     Text exitButton(L"\u304A\u308F\u308B", font);
 
-    array<pair<Text*, ScreenState>, 3> buttons = {
+    // array<pair<Text*, ScreenState>, 3> buttons = {
+    vector<pair<Text*, ScreenState>> buttons = {
         make_pair(&p1button, GAME_SCREEN),
         make_pair(&p2button, GAME_OVER), // TODO : temporary, for tests
         make_pair(&exitButton, EXIT_GAME)
     };
 
-    for (unsigned int i=0; i<buttons.size(); i++) {
+    for (unsigned int i=0; i<3; i++) {
         Text* t = buttons[i].first;
         t->setCharacterSize(this->TEXT_SIZE);
         t->setPosition(logo.getPosition());

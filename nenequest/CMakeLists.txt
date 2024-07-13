@@ -25,7 +25,6 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
 set(SFML_DIR "thirdparty/sfml/lib/cmake/SFML")
 
 find_package(SFML REQUIRED COMPONENTS graphics audio)
-find_package(SFML REQUIRED COMPONENTS graphics audio)
 target_link_libraries(${EXECUTABLE_NAME} sfml-graphics sfml-audio)
 install(FILES $<TARGET_RUNTIME_DLLS:NeneQuest> TYPE BIN)
 install(FILES "thirdparty/sfml/bin/openal32.dll" TYPE BIN)
