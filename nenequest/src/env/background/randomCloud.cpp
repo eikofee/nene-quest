@@ -22,7 +22,7 @@ RandomCloud::~RandomCloud() {
 
 void RandomCloud::generateBorder() {
     srand(time(NULL));
-    float currentRad = 0f;
+    float currentRad = 0.f;
     float radStep = 7.28f / this->BORDER_NUMBER;
     for (int i = 0; i < this->BORDER_NUMBER; i++) {
         sf::CircleShape *nc = new CircleShape(

@@ -31,10 +31,10 @@ class Entity : public sf::Drawable {
     bool collideWith(Entity *entity);
 
    protected:
-    float hitbox_sprite_xRatio = 1f;
-    float hitbox_sprite_yRatio = 1f;
-    float hitbox_zHitbox_xRatio = 1f;
-    float hitbox_zHitbox_yRatio = 1f;
+    float hitbox_sprite_xRatio = 1.f;
+    float hitbox_sprite_yRatio = 1.f;
+    float hitbox_zHitbox_xRatio = 1.f;
+    float hitbox_zHitbox_yRatio = 1.f;
 
     std::vector<sf::RectangleShape *> hitboxes;
     std::vector<sf::RectangleShape *> zHitboxes;

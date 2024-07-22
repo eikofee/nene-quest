@@ -55,16 +55,16 @@ class Player : public Entity {
 
 
    private:
-    static constexpr float PLAYER_SPEED = 500f;
-    static constexpr float INVULNERABILITY_DURATION = 1f;
+    static constexpr float PLAYER_SPEED = 500.f;
+    static constexpr float INVULNERABILITY_DURATION = 1.f;
 
 
     bool is_attacking = false;
     bool animation_state = false;
     bool is_shooting = false;
     float attackTime = 0.1f;
-    float currentAttackTime = 0f;
-    float currentInvulnerabilityTime = 0f;
+    float currentAttackTime = 0.f;
+    float currentInvulnerabilityTime = 0.f;
 
     // Weapon placement
     int weaponXOffset;
