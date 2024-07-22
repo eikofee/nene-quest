@@ -21,13 +21,10 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
 ## If you want to link SFML statically
 # set(SFML_STATIC_LIBRARIES TRUE)
 
-## In most cases better set in the CMake cache
-set(SFML_DIR "thirdparty/sfml/lib/cmake/SFML")
 
 find_package(SFML REQUIRED COMPONENTS graphics audio)
 target_link_libraries(${EXECUTABLE_NAME} sfml-graphics sfml-audio)
 install(FILES $<TARGET_RUNTIME_DLLS:NeneQuest> TYPE BIN)
-install(FILES "thirdparty/sfml/bin/openal32.dll" TYPE BIN)
 
 install(DIRECTORY bgm fonts img levels sfx DESTINATION bin)
 install(FILES config/config.ini DESTINATION bin)
