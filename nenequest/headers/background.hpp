@@ -26,8 +26,8 @@ class Background : public sf::Drawable, sf::Transformable {
 
     std::vector<RandomShape *> clouds;
     std::vector<RandomShape *> mountains;
-    float nextCloud = 0;
-    float nextMountain = 0;
+    float nextCloud = 0f;
+    float nextMountain = 0f;
     sf::Clock cloudClock;
     sf::Clock mountainClock;
 

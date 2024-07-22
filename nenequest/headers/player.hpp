@@ -55,16 +55,16 @@ class Player : public Entity {
 
 
    private:
-    static constexpr float PLAYER_SPEED = 500;
-    static constexpr float INVULNERABILITY_DURATION = 1;
+    static constexpr float PLAYER_SPEED = 500f;
+    static constexpr float INVULNERABILITY_DURATION = 1f;
 
 
     bool is_attacking = false;
     bool animation_state = false;
     bool is_shooting = false;
     float attackTime = 0.1f;
-    float currentAttackTime = 0;
-    float currentInvulnerabilityTime = 0;
+    float currentAttackTime = 0f;
+    float currentInvulnerabilityTime = 0f;
 
     // Weapon placement
     int weaponXOffset;
@@ -76,7 +76,7 @@ class Player : public Entity {
     std::vector<Arrow *> arrows;
     bool is_jumping = false;
     sf::Clock clock;
-    static constexpr float ANIMATION_DELAY = 0.1;
+    static constexpr float ANIMATION_DELAY = 0.1f;
     void update_animation();
     void manageMovements();
     sf::Vector2f fixMovements(sf::Vector2f movement);

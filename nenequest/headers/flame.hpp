@@ -16,8 +16,8 @@ class Flame : public Projectile {
     bool isDead();
 
    private:
-    float span_left = 0;
-    float lifespan = 0;
+    float span_left = 0f;
+    float lifespan = 0f;
     float fact;
     sf::Vector2f initial_location;
     bool is_dead = false;

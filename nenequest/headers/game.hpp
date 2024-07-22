@@ -58,7 +58,7 @@ class Game : public Screen {
     static const int SCROLLING_DAMAGE = 10;
 
     LifeBar life;
-    float player_invulnerability_timer = 0;
+    float player_invulnerability_timer = 0f;
 
     static bool debugMode;
     void manageMetaInputs(sf::Event e, sf::Keyboard::Key toggleDebug);
