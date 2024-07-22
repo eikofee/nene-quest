@@ -21,19 +21,14 @@ set_target_properties(${EXECUTABLE_NAME} PROPERTIES
 ## If you want to link SFML statically
 # set(SFML_STATIC_LIBRARIES TRUE)
 
-## In most cases better set in the CMake cache
-# set(SFML_DIR "<sfml root prefix>/lib/cmake/SFML")
 
-find_package(SFML 2.5 COMPONENTS graphics audio REQUIRED)
+find_package(SFML REQUIRED COMPONENTS graphics audio)
 target_link_libraries(${EXECUTABLE_NAME} sfml-graphics sfml-audio)
+install(FILES $<TARGET_RUNTIME_DLLS:NeneQuest> TYPE BIN)
 
-include(GNUInstallDirs)
-install(DIRECTORY bgm fonts img levels sfx
-  DESTINATION ${CMAKE_INSTALL_DATADIR}/${EXECUTABLE_NAME})
-install(FILES config/config.ini
-  DESTINATION ${CMAKE_INSTALL_SYSCONFDIR}/${EXECUTABLE_NAME})
-install(TARGETS ${EXECUTABLE_NAME}
-  DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(DIRECTORY bgm fonts img levels sfx DESTINATION bin)
+install(FILES config/config.ini DESTINATION bin)
+install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
 
 # Package Generator
 include(CPack)

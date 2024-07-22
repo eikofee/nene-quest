@@ -42,7 +42,7 @@ class World {
     static std::vector<Entity *> testCollidingEntitiesOnZAxis(
         Entity *entity, sf::Vector2f movement);
     static std::vector<Player *> getPlayers();
-    static Player* getPlayer(int id);
+    static Player* getPlayer(PlayerID id);
     static void scroll();
     static void managePlayersCollidingWithThings();
     static void managePlayerCollidingWithBonus(Player *player, Bonus *bonus);
@@ -52,9 +52,9 @@ class World {
     static void manageWeaponCollidingWithThings(Weapon *weapon);
 
    private:
-    static constexpr float SCROLL_SPEED = 0; // Used to be 30
+    static constexpr float SCROLL_SPEED = 0.f; // Used to be 30
     static constexpr float SCROLL_DAMAGE =
-        30;  // When the player is pressed between the wall and a object by the
+        30.f;  // When the player is pressed between the wall and a object by the
              // scrolling
     static GameMode gameMode;
     static std::vector<Entity *> entities;

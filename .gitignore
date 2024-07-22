@@ -461,3 +461,8 @@ MigrationBackup/
 # build folder
 */build/*
 # End of https://www.gitignore.io/api/c++,cmake,linux,windows,codeblocks,visualstudio,visualstudiocode
+
+nenequest/thirdparty/sfml/*
+build/
+install/
+.vscode/

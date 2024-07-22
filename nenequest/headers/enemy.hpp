@@ -21,8 +21,8 @@ class Enemy : public Entity {
 
    protected:
 
-    static constexpr float DRAGON_INVULNERABILITY_TIME = 1;
-    static constexpr float BOAR_INVULNERABILITY_TIME = 1;
+    static constexpr float DRAGON_INVULNERABILITY_TIME = 1.f;
+    static constexpr float BOAR_INVULNERABILITY_TIME = 1.f;
 
     sf::Clock clock;
     short int animation_state = 0;
@@ -34,7 +34,7 @@ class Enemy : public Entity {
 
    private:
    
-    float currentInvulnerabilityTime = 0;
+    float currentInvulnerabilityTime = 0.f;
     float getInvunerabilityDuration(EnemyType t);
 
 };

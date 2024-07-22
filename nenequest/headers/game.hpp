@@ -16,7 +16,6 @@
 #include "enemy.hpp"
 #include "flame.hpp"
 #include "itemWeapon.hpp"
-#include "levelParser.hpp"
 #include "lifebar.hpp"
 #include "player.hpp"
 #include "randomCloud.hpp"
@@ -24,24 +23,18 @@
 #include "screenState.hpp"
 #include "weaponType.hpp"
 
-class ConfigManager;
-class ConfigParser;
 class LevelManager;
 class Game : public Screen {
    public:
-    Game();
+    Game(int playerCount);
     virtual ScreenState run(sf::RenderWindow& app);
-    virtual void clearAll();
-    void addPlayerInstance(Player* player);
-    void addInstance(Entity* e);
+    void clearAll();
     static bool IsDebugMode();
 
    private:
-    // void checkCollision(float elapsedTime, sf::Vector2u windowSize);
-    // void scroll(float elapsedTime, sf::Vector2u windowSize);
+
+    int playerCount;
     bool playerIsColliding(Player *p);
-    // void playerMove(Player* player, float elapsedTime, sf::Vector2u
-    // windowSize, float skyHeight);
     void drawWithDepth(sf::RenderWindow *app);
     static bool cmp(Entity *a, Entity *d);
     void manageInputs(sf::Event e, PlayerID id, sf::Keyboard::Key up,
@@ -50,9 +43,6 @@ class Game : public Screen {
 
     // Final objetcs
     LevelManager *manager;
-    LevelParser *parser;
-    ConfigManager *configManager;
-    ConfigParser *configParser;
 
     BreakableObject *getCollidingObject(Player *p);
 
@@ -63,12 +53,12 @@ class Game : public Screen {
     std::vector<BreakableObject *> breakable_objects;
     BridgePit *bridge;
 
-    static constexpr float SCROLL_SPEED = -0.1;
+    static constexpr float SCROLL_SPEED = -0.1f;
     static constexpr float PLAYER_SPEED = 0.5;
     static const int SCROLLING_DAMAGE = 10;
 
     LifeBar life;
-    float player_invulnerability_timer = 0;
+    float player_invulnerability_timer = 0.f;
 
     static bool debugMode;
     void manageMetaInputs(sf::Event e, sf::Keyboard::Key toggleDebug);

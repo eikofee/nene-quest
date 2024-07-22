@@ -20,7 +20,7 @@ class ItemWeapon : public Bonus {
 
    protected:
    private:
-    static constexpr float COOLDOWN_BETWEEN_PICKUP = 1.5;
+    static constexpr float COOLDOWN_BETWEEN_PICKUP = 1.5f;
     WeaponType weapon_type;
     float unpickableTimer = COOLDOWN_BETWEEN_PICKUP;
 };

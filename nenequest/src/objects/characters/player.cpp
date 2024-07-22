@@ -31,10 +31,10 @@ int weaponXOffsetVariationP2 = 0;
 int weaponYOffsetVariationP2 = 3;
 
 // Z Hitbox sizes
-float z_offset_x = 0.16;
-float z_offset_y = 0.8;
-float z_width = 0.5;
-float z_height = 0.2;
+float z_offset_x = 0.16f;
+float z_offset_y = 0.8f;
+float z_width = 0.5f;
+float z_height = 0.2f;
 
 // Sprite animation tiles
 FloatRect fwalk1normal = FloatRect(0, 0, 0.5f, 0.333333f);

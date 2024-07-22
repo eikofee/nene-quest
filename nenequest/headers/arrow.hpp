@@ -18,10 +18,10 @@ class Arrow : public Projectile {
    private:
     bool is_dead = false;
     bool is_dying = false;
-    float lifespan = 0;
-    float gravity = 80;
-    float curveTime = 1;
-    float currentCurveTime = -4;
+    float lifespan = 0.f;
+    float gravity = 80.f;
+    float curveTime = 1.f;
+    float currentCurveTime = -4.f;
     float highDeadzoneStart = 0.33f;
     float highDeadzoneEnd = 0.66f;
 
