@@ -11,7 +11,7 @@
 class GameOver : public Screen {
   public:
     GameOver();
-    ~GameOver();
+    virtual void clearAll();
     virtual ScreenState run(sf::RenderWindow &app);
     void updateSprite(sf::Vector2f origin);
     void updateText();
