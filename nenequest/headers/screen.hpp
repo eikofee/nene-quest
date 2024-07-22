@@ -7,7 +7,10 @@
 class Screen {
   public:
     virtual ScreenState run(sf::RenderWindow &app) = 0;
+    virtual void clearAll() = 0;
+    ScreenState gotoScreen(ScreenState s) {
+      clearAll(); return s;
+    };
 };
 
 #endif
- 

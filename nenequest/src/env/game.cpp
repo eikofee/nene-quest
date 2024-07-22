@@ -18,6 +18,12 @@ Game::Game(int playerCount) {
     this->playerCount = playerCount;
 }
 
+void Game::clearAll() {
+    World::clearEntities();
+    World::clearPlayers();
+    World::clearLifebars();
+}
+
 ScreenState Game::run(RenderWindow& app) {
 
     Event event;
@@ -84,16 +90,17 @@ ScreenState Game::run(RenderWindow& app) {
         float elapsedTime = clock.restart().asMilliseconds();
 
         if(World::isGameOver()) {
-            cleanScreen();
-            return GAME_OVER_1;
+            if (World::isTwoPlayer())
+                return this->gotoScreen(GAME_OVER_2);
+            return this->gotoScreen(GAME_OVER_1);
         }    
 
         while (app.pollEvent(event)) {
-            if (event.type == Event::Closed) return EXIT_GAME;
+            if (event.type == Event::Closed)
+                return this->gotoScreen(EXIT_GAME);
             
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape){
-                cleanScreen();
-                return TITLE_SCREEN;
+                return this->gotoScreen(TITLE_SCREEN);
             }      
             
             manageInputs(event, PlayerID::PLAYER1, kbPlayerOneUp,
@@ -130,7 +137,7 @@ ScreenState Game::run(RenderWindow& app) {
         app.display();
     }
 
-    return EXIT_GAME;
+    return this->gotoScreen(EXIT_GAME);
 }
 
 // Temporary solution for input management
@@ -172,11 +179,6 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
     if (e.type == Event::KeyPressed) {
         if (e.key.code == toggleDebug) debugMode = !debugMode;
     }
-}
-
-void Game::cleanScreen() {
-  World::clearEntities();
-  World::clearPlayers();
 }
 
 // Move to Render class

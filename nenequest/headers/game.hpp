@@ -27,8 +27,8 @@ class LevelManager;
 class Game : public Screen {
    public:
     Game(int playerCount);
-    void cleanScreen();
     virtual ScreenState run(sf::RenderWindow& app);
+    void clearAll();
     static bool IsDebugMode();
 
    private:

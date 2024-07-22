@@ -1,5 +1,4 @@
 #include <SFML/Audio.hpp>
-
 #include "gameover.hpp"
 #include "gamemode.hpp"
 
@@ -32,7 +31,7 @@ void GameOver::updateText() {
     }
 }
 
-GameOver::~GameOver() {
+void GameOver::clearAll() {
     for (auto l : this->letters) delete l;
     for (auto p : this->playersDown) delete p;
     this->letters.clear();
@@ -100,10 +99,10 @@ ScreenState GameOver::run(RenderWindow &app) {
     // ---------------- Main Loop ----------------
     while (true) {
         while (app.pollEvent(event)) {
-            if (event.type == Event::Closed) return EXIT_GAME;
+            if (event.type == Event::Closed)
+                return this->gotoScreen(EXIT_GAME);
             if (event.type == Event::KeyPressed && event.key.code == Keyboard::Key::Escape) {
-                // this->cleanScreen();
-                return TITLE_SCREEN;
+                return this->gotoScreen(TITLE_SCREEN);
             }
         }
 
@@ -115,6 +114,5 @@ ScreenState GameOver::run(RenderWindow &app) {
         for (auto w : this->letters) app.draw(*w);
         app.display();
     }
-
-    return EXIT_GAME;
+    return this->gotoScreen(EXIT_GAME);
 }
