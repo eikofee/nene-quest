@@ -187,7 +187,15 @@ void World::render(sf::RenderWindow &app) {
 }
 
 std::vector<Player *> World::getPlayers() { return players; }
-Player* World::getPlayer(int id) { return players.at(id); }
+Player* World::getPlayer(PlayerID id) {
+    for (int i = 0; i < players.size(); ++i) {
+        if (players[i]->getId() == id) {
+            return players[i];
+        }
+    }
+
+    return NULL;
+}
 
 
 bool World::sortUsingFirstZHitbox(Entity *a, Entity *b) {

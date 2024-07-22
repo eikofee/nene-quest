@@ -42,7 +42,7 @@ class World {
     static std::vector<Entity *> testCollidingEntitiesOnZAxis(
         Entity *entity, sf::Vector2f movement);
     static std::vector<Player *> getPlayers();
-    static Player* getPlayer(int id);
+    static Player* getPlayer(PlayerID id);
     static void scroll();
     static void managePlayersCollidingWithThings();
     static void managePlayerCollidingWithBonus(Player *player, Bonus *bonus);
