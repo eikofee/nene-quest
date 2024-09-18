@@ -174,9 +174,6 @@ void Player::update_animation() {
         result = walk1normal;
     }
 
-    if (this->isJumping())
-        return;  // result = IntRectAddition(result, moddifierJump);
-
     if (is_attacking) result = IntRectAddition(result, moddifierAttack);
 
     sprite.setTextureRect(result);
@@ -194,10 +191,6 @@ void Player::move(Vector2f g_speed) {
     Entity::move(g_speed);
     this->getWeapon()->move(g_speed);
 }
-
-bool Player::isJumping() { return this->is_jumping; }
-
-void Player::toggleJump() { this->is_jumping = !this->is_jumping; }
 
 void Player::setPosition(float x, float y) {
     Entity::setPosition(x, y);

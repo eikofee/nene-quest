@@ -34,14 +34,12 @@ ScreenState Game::run(RenderWindow& app) {
     Keyboard::Key kbPlayerOneRight = Keyboard::Right;
     Keyboard::Key kbPlayerOneUp = Keyboard::Up;
     Keyboard::Key kbPlayerOneDown = Keyboard::Down;
-    Keyboard::Key kbPlayerOneAttack = Keyboard::M;
-    Keyboard::Key kbPlayerOneJump = Keyboard::L;
+    Keyboard::Key kbPlayerOneAttack = Keyboard::Space;
     Keyboard::Key kbPlayerTwoLeft = Keyboard::Q;
     Keyboard::Key kbPlayerTwoRight = Keyboard::D;
     Keyboard::Key kbPlayerTwoUp = Keyboard::Z;
     Keyboard::Key kbPlayerTwoDown = Keyboard::S;
     Keyboard::Key kbPlayerTwoAttack = Keyboard::E;
-    Keyboard::Key kbPlayerTwoJump = Keyboard::Space;
     Keyboard::Key kbDebugMode = Keyboard::T;
     Keyboard::Key kbPause = Keyboard::Return;
      
@@ -105,12 +103,12 @@ ScreenState Game::run(RenderWindow& app) {
             
             manageInputs(event, PlayerID::PLAYER1, kbPlayerOneUp,
                             kbPlayerOneDown, kbPlayerOneLeft, kbPlayerOneRight,
-                            kbPlayerOneJump);
+                            kbPlayerOneAttack);
 
             if (World::isTwoPlayer())
                 manageInputs(event, PlayerID::PLAYER2, kbPlayerTwoUp,
                             kbPlayerTwoDown, kbPlayerTwoLeft, kbPlayerTwoRight,
-                            kbPlayerTwoJump);
+                            kbPlayerTwoAttack);
 
             World::manageAttackingPlayers();
 

@@ -37,10 +37,6 @@ class Player : public Entity {
     virtual PlayerID getId();
     virtual void alterHealth(int value, bool relative);
 
-    // Jumping
-    bool isJumping();
-    void toggleJump();
-
     bool moving_up = false;
     bool moving_down = false;
     bool moving_left = false;
@@ -74,7 +70,6 @@ class Player : public Entity {
 
     sf::Vector2f speed = sf::Vector2f(-10, 0);
     std::vector<Arrow *> arrows;
-    bool is_jumping = false;
     sf::Clock clock;
     static constexpr float ANIMATION_DELAY = 0.1f;
     void update_animation();
