@@ -3,9 +3,12 @@
 
 #include <algorithm>
 
+#include "flame.hpp"
+
 using namespace std;
 
 GameMode World::gameMode;
+bool World::dragonDefeated = false;
 std::vector<std::unique_ptr<Entity>> World::entities;
 std::vector<std::unique_ptr<Entity>> World::spawned;
 std::vector<std::unique_ptr<Player>> World::players;
@@ -99,6 +102,7 @@ void World::addPlayer(std::unique_ptr<Player> player) {
 void World::clearEntities() {
     entities.clear();
     spawned.clear();
+    dragonDefeated = false;
 }
 
 void World::clearPlayers() {
@@ -119,6 +123,7 @@ void World::updateEntities() {
             continue;       // So a chest left behind drops nothing
         }
         if (e->isDead()) {
+            if (dynamic_cast<Dragon *>(e.get())) dragonDefeated = true;
             // Barrels may drop nothing, and other SOLID entities never drop
             auto object = dynamic_cast<BreakableObject *>(e.get());
             if (object) {
@@ -144,6 +149,8 @@ void World::setGameMode(GameMode x) {
     gameMode = x;
 }
 
+
+bool World::isVictory() { return dragonDefeated; }
 
 bool World::isGameOver() {
     return (players.size() == 0);
@@ -268,6 +275,7 @@ void World::manageWeaponCollidingWithThings(Player *player) {
 }
 
 void World::managePlayerCollidingWithEnemy(Player *player, Enemy *enemy) {
+    if (enemy->isDying()) return;  // Harmless during its death animation
     short ennemyDamage = enemy->getAttackDamage();
     player->isHit(ennemyDamage);
     lifebars.at(player->getId())->updateBar(player->getHealth());
@@ -299,4 +307,21 @@ void World::crushPlayersAgainstSolids() {
                 player->isHit(SCROLL_DAMAGE);
                 lifebars.at(player->getId())->updateBar(player->getHealth());
             }
+}
+
+// The dragon owns its flames, so they aren't in the entities
+void World::managePlayersTouchingFlames() {
+    for (auto &e : entities) {
+        auto dragon = dynamic_cast<Dragon *>(e.get());
+        // The dying dragon's flames are only for show
+        if (!dragon || dragon->isDying()) continue;
+        for (Projectile *flame : dragon->getFlames())
+            for (auto &player : players)
+                if (flame->getHitboxes().at(0)->getGlobalBounds().intersects(
+                        player->getHitboxes().at(0)->getGlobalBounds())) {
+                    player->isHit(Flame::FLAMES_DAMAGE);
+                    lifebars.at(player->getId())
+                        ->updateBar(player->getHealth());
+                }
+    }
 }

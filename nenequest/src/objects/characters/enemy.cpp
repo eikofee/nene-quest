@@ -4,8 +4,7 @@
 
 using namespace sf;
 
-// need to initialize hp and stuff
-Enemy::Enemy(int hp) : Entity() { this->hp = hp; }
+Enemy::Enemy(int hp) : Entity() { health = hp; }
 
 Enemy::~Enemy() {
     // dtor

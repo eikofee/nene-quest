@@ -15,6 +15,7 @@
 #include "gamemode.hpp"
 #include "lifebar.hpp"
 #include "breakableObject.hpp"
+#include "dragon.hpp"
 
 class World {
    public:
@@ -28,6 +29,7 @@ class World {
     static bool isTwoPlayer();
     static void setGameMode(GameMode gameMode);
     static bool isGameOver();
+    static bool isVictory();  // The dragon is dead
     static void clearEntities();
     static void clearPlayers();
     static void clearLifebars();
@@ -50,6 +52,7 @@ class World {
     static void managePlayersCollidingWithThings();
     static void managePlayerCollidingWithBonus(Player *player, Bonus *bonus);
     static void managePlayerCollidingWithEnemy(Player *player, Enemy *enemy);
+    static void managePlayersTouchingFlames();
     // Management player's attacking 
     static void manageAttackingPlayers();
     static void manageWeaponCollidingWithThings(Player *player);
@@ -61,6 +64,7 @@ class World {
         30.f;  // When the player is pressed between the wall and a object by the
              // scrolling
     static GameMode gameMode;
+    static bool dragonDefeated;
     static std::vector<std::unique_ptr<Entity>> entities;
     static std::vector<std::unique_ptr<Entity>> spawned;  // Not added yet
     static std::vector<std::unique_ptr<Player>> players;

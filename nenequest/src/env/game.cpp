@@ -64,6 +64,8 @@ ScreenState Game::run(RenderWindow& app) {
 
         float elapsedTime = clock.restart().asSeconds();
 
+        if (World::isVictory()) return this->gotoScreen(VICTORY);
+
         if(World::isGameOver()) {
             if (World::isTwoPlayer())
                 return this->gotoScreen(GAME_OVER_2);
@@ -97,6 +99,7 @@ ScreenState Game::run(RenderWindow& app) {
         World::updatePlayers();
         World::crushPlayersAgainstSolids();
         World::managePlayersCollidingWithThings();
+        World::managePlayersTouchingFlames();
         World::manageAttackingPlayers();
 
         background.setSpeed(World::getScrollSpeed());

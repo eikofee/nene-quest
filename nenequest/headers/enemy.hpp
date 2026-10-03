@@ -30,7 +30,6 @@ class Enemy : public Entity {
     EnemyType enemy_type;
     static int const DRAGON_HP = 20;
     static int const BOAR_HP = 3;
-    int hp;
 
    private:
    

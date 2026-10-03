@@ -54,6 +54,7 @@ Dragon::Dragon(Vector2f position) : Enemy(DRAGON_HP) {
 
 
 void Dragon::update(float elapsedTime) {
+    Enemy::update(elapsedTime);  // Counts down the invulnerability
     if (!this->isDying()) {
         // Move dragon back and forth
         movement_timer += elapsedTime;
@@ -64,7 +65,13 @@ void Dragon::update(float elapsedTime) {
 
         this->move(computeMove(elapsedTime));
 
-        // Breathe fire
+        // Breathe fire for a while, then rest for a while
+        breath_timer += elapsedTime;
+        if (breath_timer > (fire_breathing ? FIRE_DURATION : CALM_DURATION)) {
+            breathFire();
+            breath_timer = 0;
+        }
+
         flame_timer += elapsedTime;
         if (fire_breathing) {
             if (flame_timer > DELAY_BETWEEN_FLAMES) {
@@ -166,9 +173,18 @@ void Dragon::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     }
 
     target.draw(sprite, states);
+    for (auto &flame : flames) target.draw(*flame, states);
 }
 
 bool Dragon::isBreatingFire() { return fire_breathing; }
+
+bool Dragon::isDying() {
+    return health <= 0 && dying_timer < DEAD_ANIMATION_DURATION;
+}
+
+bool Dragon::isDead() {
+    return dead || (health <= 0 && dying_timer >= DEAD_ANIMATION_DURATION);
+}
 
 vector<Projectile *> Dragon::getFlames() {
     vector<Projectile *> result;

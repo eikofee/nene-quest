@@ -4,6 +4,7 @@
 #include "menu.hpp"
 #include "screen.hpp"
 #include "screenState.hpp"
+#include "victory.hpp"
 
 #define WINDOW_X 1920
 #define WINDOW_Y 1080
@@ -32,6 +33,10 @@ int main() {
             
             case GAME_OVER_2:
                 selectedScreen = GameOver().run(app);
+                break;
+
+            case VICTORY:
+                selectedScreen = Victory().run(app);
                 break;
 
             default:

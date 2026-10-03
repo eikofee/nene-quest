@@ -7,7 +7,7 @@
 
 class Flame : public Projectile {
    public:
-    static int const FLAMES_DAMAGE = 1;
+    static int const FLAMES_DAMAGE = 10;  // Out of the player's 100 HP
     Flame();
     Flame(sf::Vector2f position, float f, float g_depth,
           bool straightLine = false);

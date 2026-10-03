@@ -24,11 +24,14 @@ Flame::Flame(Vector2f position, float f, float g_depth, bool straightLine) {
     else
         sprite.scale(0.7, 0.7);
 
-    updateAutoHitboxSize();
+    // Centered and scaled like the sprite
     sf::RectangleShape *hitbox = new sf::RectangleShape();
-    hitbox->setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
+    hitbox->setFillColor(Color(255, 0, 0, 128));
     hitboxes.push_back(hitbox);
-    updateAutoHitboxPosition();
+    updateAutoHitboxSize();
+    hitbox->setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
+    hitbox->setPosition(position);
+    hitbox->setScale(sprite.getScale());
 
     zHitboxes.push_back(hitbox);
 
@@ -68,9 +71,12 @@ void Flame::update(float elapsedTime) {
                               abs(this->getPosition().x - initial_location.x) *
                                   tan(fact * 3.1415 / 180));
 
-        if (sprite.getScale().x < 1)
+        if (sprite.getScale().x < 1) {
+            hitboxes.at(0)->setScale(sprite.getScale().x + growth,
+                                     sprite.getScale().y + growth);
             sprite.setScale(sprite.getScale().x + growth,
                             sprite.getScale().y + growth);
+        }
 
         if (lifespan > LINE_DURATION) dead = true;
     }

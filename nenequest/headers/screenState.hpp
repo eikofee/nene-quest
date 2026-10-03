@@ -7,6 +7,7 @@ enum ScreenState {
     GAME_SCREEN_2,
     GAME_OVER_1,
     GAME_OVER_2,
+    VICTORY,
     EXIT_GAME
 };
 

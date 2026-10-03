@@ -58,6 +58,7 @@ void Boar::progressAnimation() {
 }
 
 void Boar::update(float elapsedTime) {
+    Enemy::update(elapsedTime);  // Counts down the invulnerability
     // Move the boar if it isn't stunned
     if (!is_stunned) {
         this->move(speed * elapsedTime);
