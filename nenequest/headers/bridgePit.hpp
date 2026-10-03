@@ -12,7 +12,6 @@ class BridgePit : public Entity {
     virtual void draw(
         sf::RenderTarget &target,
         sf::RenderStates states = sf::RenderStates::Default) const;
-    sf::FloatRect getSpriteBounds();
     virtual EntityType getEntityType();
 
    protected:

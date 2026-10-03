@@ -10,19 +10,9 @@ std::vector<LifeBar *> World::lifebars;
 
 float World::elapsedTime;
 
-void World::initialize() {}
-
 std::vector<Entity *> World::getEntities() { return entities; }
 
-std::vector<Entity *> World::getNearEntities(sf::Vector2f position,
-                                             float radius) {
-    std::vector<Entity *> result;
-    for (auto e : entities)
-        if (e->distanceToPosition(position) < radius) result.push_back(e);
-
-    return result;
-}
-
+// Unused for now, but projectiles (arrows, flames) will need it to hit things
 std::vector<Entity *> World::getCollidingEntities(Entity *entity) {
     std::vector<Entity *> result;
     for (auto e : entities)
@@ -55,28 +45,6 @@ std::vector<Entity *> World::getCollidingEntitiesOnZAxis(Entity *entity) {
                         collide = true;
                     }
         }
-
-    return result;
-}
-
-std::vector<Entity *> World::testCollidingEntities(Entity *entity,
-                                                   sf::Vector2f movement) {
-    std::vector<Entity *> result;
-    for (auto sh : entity->getHitboxes()) {
-        sf::RectangleShape testHitbox = sf::RectangleShape(*sh);
-        testHitbox.move(movement);
-        for (auto e : entities)
-            if (e != entity) {
-                bool collide = false;
-                for (auto h : e->getHitboxes())
-                    if (h->getGlobalBounds().intersects(
-                            testHitbox.getGlobalBounds()) &&
-                        !collide) {
-                        result.push_back(e);
-                        collide = true;
-                    }
-            }
-    }
 
     return result;
 }
@@ -186,7 +154,6 @@ void World::render(sf::RenderWindow &app) {
     for (auto e : lifebars) { app.draw(*e); }
 }
 
-std::vector<Player *> World::getPlayers() { return players; }
 Player* World::getPlayer(PlayerID id) {
     for (int i = 0; i < players.size(); ++i) {
         if (players[i]->getId() == id) {
@@ -269,9 +236,6 @@ void World::manageWeaponCollidingWithThings(Weapon *weapon) {
             case PLAYER:
             case SFX:
             case SOLID:
-                cout << "\n==== Hit a solid ====\n";
-                cout << "Hit : " << typeid(e).name() << endl;
-                cout << "Weapon damage : " << weapon->getDamage() << endl;
                 e->alterHealth(- weapon->getDamage(), true);
             case BONUS:
                 break;  // do nothing?

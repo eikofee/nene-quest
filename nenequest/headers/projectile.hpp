@@ -8,7 +8,6 @@ class Projectile : public Entity {
     Projectile();
     virtual ~Projectile();
     virtual float getDepth();
-    virtual float getDrawDepth();
 
    protected:
     float depth;

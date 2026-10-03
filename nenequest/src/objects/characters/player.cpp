@@ -5,18 +5,6 @@
 
 #include "world.hpp"
 
-/**
-    TODO (not updated) :
-    - Placer l'arme correctement
-    - Animation de l'attaque (rotation du sprite du Weapon)
-    - Empecher de sortir de la fenere / allez trop haut-bas => Fait dans
-game.cpp <= and fixed back here
-    - Detection avec les ennemis => Fait dans game.cpp
-    - Frame immortalite lorsqu'on perd de la vie => Fait dans game.cpp mais
-c'est mieux ici donc fait le +(animation clignotante dans l'ideal)
-    - Saut (immortalite temporaire) => Fait dans game.cpp <= need to be here
-**/
-
 using namespace sf;
 using namespace std;
 
@@ -48,8 +36,6 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
 
     this->weapon = w;
     if (!secondPlayer) {
-        // this->life =
-            // new LifeBar(PLAYER_HP, Vector2f(300, 100), PlayerID::PLAYER1);
         this->id = PlayerID::PLAYER1;
         this->texture.loadFromFile("img/player1.png");
         this->weaponXOffset = weaponXOffsetP1;
@@ -57,8 +43,6 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
         this->weaponXOffsetVariation = weaponXOffsetVariationP1;
         this->weaponYOffsetVariation = weaponYOffsetVariationP1;
     } else {
-        // this->life =
-        //     new LifeBar(PLAYER_HP, Vector2f(800, 100), PlayerID::PLAYER2);
         this->id = PlayerID::PLAYER2;
         this->texture.loadFromFile("img/player2.png");
         this->weaponXOffset = weaponXOffsetP2;
@@ -147,7 +131,6 @@ PlayerID Player::getId() {
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(*this->weapon, states);
-//    target.draw(*this->life, states);
     Entity::draw(target, states);
     for (Entity *var : arrows) {
         target.draw(*var, states);
@@ -240,11 +223,6 @@ void Player::manageMovements() {
         if (entity->getEntityType() == SOLID) moveAllowed = false;
     if (moveAllowed) this->move(fy);
 
-    /*if (World::testCollidingEntitiesOnZAxis(this, fx).size() == 0)
-            this->move(fx);
-    if (World::testCollidingEntitiesOnZAxis(this, fy).size() == 0)
-            this->move(fy);*/
-
     this->fixPosition();
 }
 
@@ -254,27 +232,20 @@ sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
                                movement.y * World::getElapsedTime());
     if (this->hitboxes.at(0)->getGlobalBounds().left + result.x < 0)
         result.x = 0;
-    // result.x = -this->hitbox.getGlobalBounds().left;
 
     if (this->hitboxes.at(0)->getGlobalBounds().left +
             this->hitboxes.at(0)->getGlobalBounds().width + result.x >
         1920 /*Gameroom size (right)*/)
         result.x = 0;
-    // result.x = 1920 - this->hitbox.getGlobalBounds().left -
-    // this->hitbox.getGlobalBounds().width;
 
-    // TODO
     if (this->hitboxes.at(0)->getGlobalBounds().top + result.y <
         200 /*Gameroom size (top)*/)
         result.y = 0;
-    // result.y = 500 - this->hitbox.getGlobalBounds().top;
 
     if (this->hitboxes.at(0)->getGlobalBounds().top +
             this->hitboxes.at(0)->getGlobalBounds().height + result.y >
         1080 /*Gameroom size (bottom)*/)
         result.y = 0;
-    // result.y = 1080 - this->hitbox.getGlobalBounds().top -
-    // this->hitbox.getGlobalBounds().height;
 
     return result;
 }
@@ -305,10 +276,6 @@ void Player::cleanArrows(float elapsedTime) {
         }
     }
 }
-
-void Player::setLastDroppedItem(ItemWeapon *item) { last_dropped_item = item; }
-
-ItemWeapon *Player::getLastDroppedItem() { return last_dropped_item; }
 
 EntityType Player::getEntityType() { return PLAYER; }
 vector<Arrow *> Player::getArrows() { return arrows; }

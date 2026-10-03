@@ -30,7 +30,6 @@ class LifeBar : public sf::Drawable, sf::Transformable {
         return this->background.getPosition();
     }
     void updateBar(int value);
-    void setValue(short int value);
 };
 
 #endif

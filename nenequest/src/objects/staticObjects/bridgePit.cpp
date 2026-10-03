@@ -33,6 +33,4 @@ void BridgePit::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(sprite, states);
 }
 
-FloatRect BridgePit::getSpriteBounds() { return sprite.getGlobalBounds(); }
-
 EntityType BridgePit::getEntityType() { return SOLID; }

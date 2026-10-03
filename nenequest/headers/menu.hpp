@@ -10,7 +10,6 @@ class Menu : public Screen {
     Menu();
     virtual ScreenState run(sf::RenderWindow &app);
     void clearAll();
-    bool isSelected(sf::Text*, int);
    private:
     static const int TEXT_SIZE = 90;
 };

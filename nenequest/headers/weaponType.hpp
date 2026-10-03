@@ -13,8 +13,6 @@ sf::Vector2f getWeaponOffset(WeaponType w);
 
 std::string getWeaponPath(WeaponType w);
 
-int getWeaponDamage(WeaponType w);
-
 WeaponType parse(std::string s);
 
 #endif

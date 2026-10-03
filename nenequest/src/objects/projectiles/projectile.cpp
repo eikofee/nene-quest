@@ -10,4 +10,3 @@ Projectile::~Projectile() {
 
 float Projectile::getDepth() { return depth; }
 
-float Projectile::getDrawDepth() { return depth + Entity::DEPTH_DIFF; }

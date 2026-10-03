@@ -42,8 +42,6 @@ class Player : public Entity {
     bool moving_left = false;
     bool moving_right = false;
 
-    void setLastDroppedItem(ItemWeapon *item);
-    ItemWeapon *getLastDroppedItem();
     bool isShooting();
     void setShootingState(bool state);
 
@@ -78,7 +76,6 @@ class Player : public Entity {
     void fixPosition();
 
     void cleanArrows(float elapsedTime);
-    ItemWeapon *last_dropped_item = NULL;
     PlayerID id;
     Weapon *weapon;
 };
