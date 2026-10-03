@@ -12,32 +12,31 @@ Arrow::Arrow(Vector2f position, float g_depth) {
     initial_location = position;
     lifespan = 0;
 
-    texture.loadFromFile("img/weapon_arrow.png");
-    sprite.setTexture(texture);
-    sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 1.5);
+    texture = &getTexture("img/weapon_arrow.png");
+    sprite.setTexture(*texture);
+    sprite.setOrigin(texture->getSize().x / 2, texture->getSize().y / 1.5);
     sprite.setPosition(position);
 
     sf::RectangleShape *hitbox = new sf::RectangleShape();
     hitbox->setFillColor(sf::Color(255, 0, 0, 128));
     hitbox->setPosition(position);
     hitbox->setSize(
-        Vector2f(texture.getSize().x / 5, texture.getSize().y / 1.8));
-    hitbox->setOrigin(0, texture.getSize().y / 2);
+        Vector2f(texture->getSize().x / 5, texture->getSize().y / 1.8));
+    hitbox->setOrigin(0, texture->getSize().y / 2);
     this->hitboxes.push_back(hitbox);
 
     sf::RectangleShape *zh = new sf::RectangleShape();
     zh->setFillColor(sf::Color(0, 0, 255, 128));
-    zh->setSize(Vector2f(texture.getSize().x / 5, texture.getSize().y / 1.8));
+    zh->setSize(Vector2f(texture->getSize().x / 5, texture->getSize().y / 1.8));
     zh->setPosition(position);
-    zh->setOrigin(0, texture.getSize().y / 2);
+    zh->setOrigin(0, texture->getSize().y / 2);
     this->zHitboxes.push_back(zh);
 
     updateAutoHitboxPosition();
 
     speed = Vector2f(800, -200);
 
-    damage_texture.loadFromFile("img/icon_damage.png");
-    damage_sprite.setTexture(damage_texture);
+    damage_sprite.setTexture(getTexture("img/icon_damage.png"));
     damage_sprite.setOrigin(-30, 90);
     damage_sprite.setScale(0.7, 0.7);
 

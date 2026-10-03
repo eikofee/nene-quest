@@ -38,23 +38,23 @@ Player::Player(unique_ptr<Weapon> w, Vector2f position, bool secondPlayer) {
     this->weapon = std::move(w);
     if (!secondPlayer) {
         this->id = PlayerID::PLAYER1;
-        this->texture.loadFromFile("img/player1.png");
+        this->texture = &getTexture("img/player1.png");
         this->weaponXOffset = weaponXOffsetP1;
         this->weaponYOffset = weaponYOffsetP1;
         this->weaponXOffsetVariation = weaponXOffsetVariationP1;
         this->weaponYOffsetVariation = weaponYOffsetVariationP1;
     } else {
         this->id = PlayerID::PLAYER2;
-        this->texture.loadFromFile("img/player2.png");
+        this->texture = &getTexture("img/player2.png");
         this->weaponXOffset = weaponXOffsetP2;
         this->weaponYOffset = weaponYOffsetP2;
         this->weaponXOffsetVariation = weaponXOffsetVariationP2;
         this->weaponYOffsetVariation = weaponYOffsetVariationP2;
     }
 
-    this->sprite.setTexture(this->texture);
-    this->sprite.setTextureRect(IntRect(0, 0, this->texture.getSize().x / 2,
-                                        this->texture.getSize().y / 3));
+    this->sprite.setTexture(*this->texture);
+    this->sprite.setTextureRect(IntRect(0, 0, this->texture->getSize().x / 2,
+                                        this->texture->getSize().y / 3));
 
     // Hitboxes + debug coloring
     sf::RectangleShape *h = new sf::RectangleShape();
@@ -87,8 +87,8 @@ Player::Player(unique_ptr<Weapon> w, Vector2f position, bool secondPlayer) {
     vector<FloatRect> fanimationRects = {fwalk1normal, fwalk2normal,
                                          fmoddifierAttack};
     vector<IntRect> animationRects;
-    int sizeX = texture.getSize().x;
-    int sizeY = texture.getSize().y;
+    int sizeX = texture->getSize().x;
+    int sizeY = texture->getSize().y;
     for (FloatRect rect : fanimationRects) {
         IntRect r;
         r.left = rect.left * sizeX;

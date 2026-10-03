@@ -24,7 +24,6 @@ class Arrow : public Projectile {
     float highDeadzoneStart = 0.33f;
     float highDeadzoneEnd = 0.66f;
 
-    sf::Texture damage_texture;
     sf::Sprite damage_sprite;
     sf::Vector2f initial_location;
 };

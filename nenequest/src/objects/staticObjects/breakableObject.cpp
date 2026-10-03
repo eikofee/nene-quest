@@ -10,7 +10,7 @@ BreakableObject::BreakableObject(ObjectType o, Vector2f position) {
 
     getObjectTexture(o);
 
-    sprite.setTexture(texture);
+    sprite.setTexture(*texture);
 
     sf::RectangleShape *hitbox = new sf::RectangleShape();
     hitbox->setFillColor(sf::Color(255, 0, 0, 128));
@@ -35,9 +35,9 @@ BreakableObject::~BreakableObject() {
 
 void BreakableObject::getObjectTexture(ObjectType o) {
     if (o == Chest)
-        texture.loadFromFile("img/obj_chest.png");
+        texture = &getTexture("img/obj_chest.png");
     else if (o == Barrel)
-        texture.loadFromFile("img/obj_barrel.png");
+        texture = &getTexture("img/obj_barrel.png");
 }
 
 std::unique_ptr<Bonus> BreakableObject::getDrops() {

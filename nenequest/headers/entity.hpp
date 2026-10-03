@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "textures.hpp"
+
 enum EntityType { NONE, ENEMY, BONUS, PLAYER, SFX, SOLID };
 
 class Entity : public sf::Drawable {
@@ -42,7 +44,7 @@ class Entity : public sf::Drawable {
     std::vector<sf::RectangleShape *> hitboxes;
     std::vector<sf::RectangleShape *> zHitboxes;
     sf::Sprite sprite;
-    sf::Texture texture;
+    const sf::Texture *texture = nullptr;  // Shared, see getTexture()
     void updateAutoHitboxSize();
     void updateAutoHitboxPosition();
     void updateAutoSpritePosition();

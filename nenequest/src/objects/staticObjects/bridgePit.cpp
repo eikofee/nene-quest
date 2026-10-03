@@ -3,8 +3,8 @@
 using namespace sf;
 
 BridgePit::BridgePit(float x, float groundHeight, unsigned int windowHeight) {
-    texture.loadFromFile("img/background_bridge.png");
-    sprite.setTexture(texture);
+    texture = &getTexture("img/background_bridge.png");
+    sprite.setTexture(*texture);
 
     float y = groundHeight - sprite.getLocalBounds().height;
     sprite.setPosition(x,

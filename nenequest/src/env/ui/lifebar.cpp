@@ -24,16 +24,15 @@ LifeBar::LifeBar(Vector2f position, PlayerID id) {
 
     switch (id) {
         case PlayerID::PLAYER1:
-            this->knight_head_tex.loadFromFile("img/icon_p1.png");
+            this->knight_head.setTexture(getTexture("img/icon_p1.png"));
             break;
         case PlayerID::PLAYER2:
-            this->knight_head_tex.loadFromFile("img/icon_p2.png");
+            this->knight_head.setTexture(getTexture("img/icon_p2.png"));
             break;
         default:
             break;
     }
 
-    this->knight_head.setTexture(this->knight_head_tex);
     this->knight_head.setOrigin(this->background.getSize().x / 2 + 50,
                                 this->background.getSize().y + 30);
     this->knight_head.setPosition(position);

@@ -1,6 +1,7 @@
 #include <SFML/Audio.hpp>
 #include "gameover.hpp"
 #include "gamemode.hpp"
+#include "textures.hpp"
 
 using namespace std;
 using namespace sf;
@@ -50,12 +51,11 @@ ScreenState GameOver::run(RenderWindow &app) {
 
     // Place letters
     for (decltype(this->texs)::size_type i = 0; i < this->texs.size(); i++) {
-        Texture *letterTex = new Texture();
-        letterTex->loadFromFile(this->GAMEOVER_PATH + this->texs.at(i) +
-                                this->GAMEOVER_EXT);
-        this->lettersSize = sf::Vector2f(letterTex->getSize());
-        Sprite *s = new Sprite(*letterTex);
-        s->setOrigin(letterTex->getSize().x / 2, letterTex->getSize().y / 2);
+        string path = this->GAMEOVER_PATH + this->texs.at(i) + this->GAMEOVER_EXT;
+        const Texture &letterTex = getTexture(path);
+        this->lettersSize = sf::Vector2f(letterTex.getSize());
+        Sprite *s = new Sprite(letterTex);
+        s->setOrigin(letterTex.getSize().x / 2, letterTex.getSize().y / 2);
         this->letters.insert(this->letters.begin() + i, s);
     }
 

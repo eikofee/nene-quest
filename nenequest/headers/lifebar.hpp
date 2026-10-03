@@ -4,13 +4,13 @@
 #include <SFML/Graphics.hpp>
 
 #include "playerID.hpp"
+#include "textures.hpp"
 
 class LifeBar : public sf::Drawable, sf::Transformable {
    private:
     sf::RectangleShape background;
     sf::RectangleShape bar;
     sf::Sprite knight_head;
-    sf::Texture knight_head_tex;
 
    public:
     static const int LIFEBAR_WIDTH = 350;

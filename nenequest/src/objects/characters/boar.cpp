@@ -12,10 +12,10 @@ Boar::Boar(Vector2f position) : Enemy(BOAR_HP) {
     attack_damage = BOAR_DAMAGE;
     enemy_type = Enemy_Boar;
 
-    texture.loadFromFile("img/enemy_boar_anim.png");
-    sprite.setTexture(texture);
+    texture = &getTexture("img/enemy_boar_anim.png");
+    sprite.setTexture(*texture);
     sprite.setTextureRect(
-        IntRect(0, 0, texture.getSize().x, texture.getSize().y / 2));
+        IntRect(0, 0, texture->getSize().x, texture->getSize().y / 2));
 
     sf::RectangleShape *hitbox = new sf::RectangleShape();
     hitbox->setPosition(position);
@@ -47,13 +47,13 @@ Boar::~Boar() {
 void Boar::progressAnimation() {
     if (animation_state == 0) {
         animation_state = 1;
-        sprite.setTextureRect(IntRect(0, texture.getSize().y / 2,
-                                      texture.getSize().x,
-                                      texture.getSize().y));
+        sprite.setTextureRect(IntRect(0, texture->getSize().y / 2,
+                                      texture->getSize().x,
+                                      texture->getSize().y));
     } else {
         animation_state = 0;
         sprite.setTextureRect(
-            IntRect(0, 0, texture.getSize().x, texture.getSize().y / 2));
+            IntRect(0, 0, texture->getSize().x, texture->getSize().y / 2));
     }
 }
 

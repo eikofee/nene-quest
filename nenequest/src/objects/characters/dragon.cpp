@@ -18,11 +18,11 @@ Dragon::Dragon(Vector2f position) : Enemy(DRAGON_HP) {
 
     flame_timer = 0;
 
-    texture.loadFromFile("img/enemy_dragon.png");
-    sprite.setTexture(texture);
-    sprite.setTextureRect(IntRect(0, texture.getSize().y / 2,
-                                  texture.getSize().x / 2,
-                                  texture.getSize().y / 2));
+    texture = &getTexture("img/enemy_dragon.png");
+    sprite.setTexture(*texture);
+    sprite.setTextureRect(IntRect(0, texture->getSize().y / 2,
+                                  texture->getSize().x / 2,
+                                  texture->getSize().y / 2));
     sprite.setPosition(position);
 
     sf::RectangleShape *hitbox = new sf::RectangleShape();
@@ -131,25 +131,25 @@ void Dragon::progressAnimation() {
     if (fire_breathing) {
         if (animation_state == 0) {
             animation_state = 1;
-            sprite.setTextureRect(IntRect(texture.getSize().x / 2, 0,
-                                          texture.getSize().x,
-                                          texture.getSize().y / 2));
+            sprite.setTextureRect(IntRect(texture->getSize().x / 2, 0,
+                                          texture->getSize().x,
+                                          texture->getSize().y / 2));
         } else {
             animation_state = 0;
-            sprite.setTextureRect(IntRect(0, 0, texture.getSize().x / 2,
-                                          texture.getSize().y / 2));
+            sprite.setTextureRect(IntRect(0, 0, texture->getSize().x / 2,
+                                          texture->getSize().y / 2));
         }
     } else {
         if (animation_state == 0) {
             animation_state = 1;
             sprite.setTextureRect(
-                IntRect(texture.getSize().x / 2, texture.getSize().y / 2,
-                        texture.getSize().x, texture.getSize().y));
+                IntRect(texture->getSize().x / 2, texture->getSize().y / 2,
+                        texture->getSize().x, texture->getSize().y));
         } else {
             animation_state = 0;
-            sprite.setTextureRect(IntRect(0, texture.getSize().y / 2,
-                                          texture.getSize().x / 2,
-                                          texture.getSize().y));
+            sprite.setTextureRect(IntRect(0, texture->getSize().y / 2,
+                                          texture->getSize().x / 2,
+                                          texture->getSize().y));
         }
     }
 }

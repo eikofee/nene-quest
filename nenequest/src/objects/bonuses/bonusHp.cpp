@@ -9,8 +9,8 @@ BonusHp::BonusHp(BonusHpType bonusType, Vector2f position) {
     switch (bonusType) {
         case BONUS_ONIGIRI:
             bonus_type = BONUS_HP;
-            texture.loadFromFile("img/item_onigiri.png");
-            sprite.setTexture(texture);
+            texture = &getTexture("img/item_onigiri.png");
+            sprite.setTexture(*texture);
             hitbox->setPosition(position);
             hitbox->setSize(Vector2f(sprite.getLocalBounds().width * 0.55,
                                      sprite.getLocalBounds().height * 0.5));

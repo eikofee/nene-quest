@@ -15,9 +15,9 @@ Flame::Flame(Vector2f position, float f, float g_depth, bool straightLine) {
     initial_location = position;
     fact = f;
 
-    texture.loadFromFile("img/icon_fire.png");
-    sprite.setTexture(texture);
-    sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+    texture = &getTexture("img/icon_fire.png");
+    sprite.setTexture(*texture);
+    sprite.setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
     sprite.setPosition(position);
     if (!straightLine)
         sprite.scale(0.5, 0.5);
@@ -26,7 +26,7 @@ Flame::Flame(Vector2f position, float f, float g_depth, bool straightLine) {
 
     updateAutoHitboxSize();
     sf::RectangleShape *hitbox = new sf::RectangleShape();
-    hitbox->setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+    hitbox->setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
     hitboxes.push_back(hitbox);
     updateAutoHitboxPosition();
 
