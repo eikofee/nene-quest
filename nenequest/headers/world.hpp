@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include <vector>
 
 #include "bonus.hpp"
@@ -17,15 +18,13 @@
 
 class World {
    public:
-    static void initialize();
-    static void clearAll();
     static std::vector<Entity *> getEntities();
-    static std::vector<Entity *> getNearEntities(sf::Vector2f position,
-                                                 float radius);
     static std::vector<Entity *> getCollidingEntities(Entity *entity);
     static std::vector<Entity *> getCollidingEntitiesOnZAxis(Entity *entity);
-    static void addEntity(Entity *entity);
-    static void addPlayer(Player *player);
+    // Added at the end of the next updateEntities(), so it's safe to call
+    // while looping over the entities
+    static void addEntity(std::unique_ptr<Entity> entity);
+    static void addPlayer(std::unique_ptr<Player> player);
     static bool isTwoPlayer();
     static void setGameMode(GameMode gameMode);
     static bool isGameOver();
@@ -34,14 +33,11 @@ class World {
     static void clearLifebars();
     static void updateEntities();
     static void updatePlayers();
-    static void setElapsedTime(float time);
+    static void setElapsedTime(float time);  // Seconds
     static float getElapsedTime();
     static void render(sf::RenderWindow &app);
-    static std::vector<Entity *> testCollidingEntities(Entity *entity,
-                                                       sf::Vector2f movement);
     static std::vector<Entity *> testCollidingEntitiesOnZAxis(
         Entity *entity, sf::Vector2f movement);
-    static std::vector<Player *> getPlayers();
     static Player* getPlayer(PlayerID id);
     static void scroll();
     static void managePlayersCollidingWithThings();
@@ -49,17 +45,18 @@ class World {
     static void managePlayerCollidingWithEnemy(Player *player, Enemy *enemy);
     // Management player's attacking 
     static void manageAttackingPlayers();
-    static void manageWeaponCollidingWithThings(Weapon *weapon);
+    static void manageWeaponCollidingWithThings(Player *player);
 
    private:
-    static constexpr float SCROLL_SPEED = 0.f; // Used to be 30
+    static constexpr float SCROLL_SPEED = 0.f;  // Pixels/second, used to be 30
     static constexpr float SCROLL_DAMAGE =
         30.f;  // When the player is pressed between the wall and a object by the
              // scrolling
     static GameMode gameMode;
-    static std::vector<Entity *> entities;
-    static std::vector<Player *> players;
-    static std::vector<LifeBar *> lifebars;
+    static std::vector<std::unique_ptr<Entity>> entities;
+    static std::vector<std::unique_ptr<Entity>> spawned;  // Not added yet
+    static std::vector<std::unique_ptr<Player>> players;
+    static std::vector<std::unique_ptr<LifeBar>> lifebars;
     static float elapsedTime;
     static bool sortUsingFirstZHitbox(Entity *a, Entity *b);
 };

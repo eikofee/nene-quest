@@ -7,8 +7,7 @@ class Projectile : public Entity {
    public:
     Projectile();
     virtual ~Projectile();
-    virtual float getDepth();
-    virtual float getDrawDepth();
+    float getDepth() override;
 
    protected:
     float depth;

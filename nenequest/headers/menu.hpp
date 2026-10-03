@@ -8,9 +8,8 @@
 class Menu : public Screen {
    public:
     Menu();
-    virtual ScreenState run(sf::RenderWindow &app);
-    void clearAll();
-    bool isSelected(sf::Text*, int);
+    ScreenState run(sf::RenderWindow &app) override;
+    void clearAll() override;
    private:
     static const int TEXT_SIZE = 90;
 };

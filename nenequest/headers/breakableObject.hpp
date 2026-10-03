@@ -2,6 +2,7 @@
 #define BREAKABLEOBJECT_H
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 #include "entity.hpp"
 
@@ -13,8 +14,8 @@ class BreakableObject : public Entity {
    public:
     BreakableObject(ObjectType o, sf::Vector2f position);
     virtual ~BreakableObject();
-    Bonus *getDrops();
-    virtual EntityType getEntityType();
+    std::unique_ptr<Bonus> getDrops();
+    EntityType getEntityType() override;
 
    protected:
    private:

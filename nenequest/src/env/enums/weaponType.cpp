@@ -45,21 +45,7 @@ std::string getWeaponPath(WeaponType w) {
     }
 }
 
-int getWeaponDamage(WeaponType w) {
-    switch (w) {
-        case Bow:
-            return 1;
-        case Axe:
-            return 3;
-        case Sword:
-            return 1;
-        case GreatSword:
-            return 2;
-        default:
-            return 0;
-    }
-}
-
+// Unused for now, meant for reading weapons from a level file
 WeaponType parse(std::string s) {
     if (s == "Bow") return Bow;
     if (s == "Axe") return Axe;

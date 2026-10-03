@@ -8,8 +8,8 @@ ItemWeapon::ItemWeapon(WeaponType type, Vector2f position) {
     weapon_type = type;
     bonus_type = BONUS_WEAPON;
 
-    texture.loadFromFile(getWeaponPath(type));
-    sprite.setTexture(texture);
+    texture = &getTexture(getWeaponPath(type));
+    sprite.setTexture(*texture);
 
     sprite.setPosition(position);
 
@@ -38,8 +38,8 @@ WeaponType ItemWeapon::getWeaponType() { return weapon_type; }
 void ItemWeapon::setWeaponType(WeaponType type) {
     weapon_type = type;
 
-    texture.loadFromFile(getWeaponPath(type));
-    this->sprite = Sprite(texture);
+    texture = &getTexture(getWeaponPath(type));
+    this->sprite = Sprite(*texture);
     sprite.setPosition(this->getPosition());
 
     updateAutoHitboxSize();

@@ -1,0 +1,17 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+# Only Windows: Linux is covered by building locally with Nix
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      # No SFML installed, so CMake downloads and builds it
+      - name: Configure
+        run: cmake -S nenequest -B build
+      - name: Build
+        run: cmake --build build --config Release -j

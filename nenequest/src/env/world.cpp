@@ -1,39 +1,36 @@
 #include "world.hpp"
 #include <string.h>
 
+#include <algorithm>
+
 using namespace std;
 
 GameMode World::gameMode;
-std::vector<Entity *> World::entities;
-std::vector<Player *> World::players;
-std::vector<LifeBar *> World::lifebars;
+std::vector<std::unique_ptr<Entity>> World::entities;
+std::vector<std::unique_ptr<Entity>> World::spawned;
+std::vector<std::unique_ptr<Player>> World::players;
+std::vector<std::unique_ptr<LifeBar>> World::lifebars;
 
 float World::elapsedTime;
 
-void World::initialize() {}
-
-std::vector<Entity *> World::getEntities() { return entities; }
-
-std::vector<Entity *> World::getNearEntities(sf::Vector2f position,
-                                             float radius) {
+std::vector<Entity *> World::getEntities() {
     std::vector<Entity *> result;
-    for (auto e : entities)
-        if (e->distanceToPosition(position) < radius) result.push_back(e);
-
+    for (auto &e : entities) result.push_back(e.get());
     return result;
 }
 
+// Unused for now, but projectiles (arrows, flames) will need it to hit things
 std::vector<Entity *> World::getCollidingEntities(Entity *entity) {
     std::vector<Entity *> result;
-    for (auto e : entities)
-        if (e != entity) {
+    for (auto &e : entities)
+        if (e.get() != entity && !e->isDead()) {
             bool collide = false;
             for (auto h : e->getHitboxes())
                 for (auto sh : entity->getHitboxes())
                     if (h->getGlobalBounds().intersects(
                             sh->getGlobalBounds()) &&
                         !collide) {
-                        result.push_back(e);
+                        result.push_back(e.get());
                         collide = true;
                     }
         }
@@ -43,40 +40,18 @@ std::vector<Entity *> World::getCollidingEntities(Entity *entity) {
 
 std::vector<Entity *> World::getCollidingEntitiesOnZAxis(Entity *entity) {
     std::vector<Entity *> result;
-    for (auto e : entities)
-        if (e != entity) {
+    for (auto &e : entities)
+        if (e.get() != entity && !e->isDead()) {
             bool collide = false;
             for (auto h : e->getZHitboxes())
                 for (auto sh : entity->getZHitboxes())
                     if (h->getGlobalBounds().intersects(
                             sh->getGlobalBounds()) &&
                         !collide) {
-                        result.push_back(e);
+                        result.push_back(e.get());
                         collide = true;
                     }
         }
-
-    return result;
-}
-
-std::vector<Entity *> World::testCollidingEntities(Entity *entity,
-                                                   sf::Vector2f movement) {
-    std::vector<Entity *> result;
-    for (auto sh : entity->getHitboxes()) {
-        sf::RectangleShape testHitbox = sf::RectangleShape(*sh);
-        testHitbox.move(movement);
-        for (auto e : entities)
-            if (e != entity) {
-                bool collide = false;
-                for (auto h : e->getHitboxes())
-                    if (h->getGlobalBounds().intersects(
-                            testHitbox.getGlobalBounds()) &&
-                        !collide) {
-                        result.push_back(e);
-                        collide = true;
-                    }
-            }
-    }
 
     return result;
 }
@@ -87,14 +62,14 @@ std::vector<Entity *> World::testCollidingEntitiesOnZAxis(
     for (auto sh : entity->getZHitboxes()) {
         sf::RectangleShape testHitbox = sf::RectangleShape(*sh);
         testHitbox.move(movement);
-        for (auto e : entities)
-            if (e != entity) {
+        for (auto &e : entities)
+            if (e.get() != entity && !e->isDead()) {
                 bool collide = false;
                 for (auto h : e->getZHitboxes())
                     if (h->getGlobalBounds().intersects(
                             testHitbox.getGlobalBounds()) &&
                         !collide) {
-                        result.push_back(e);
+                        result.push_back(e.get());
                         collide = true;
                     }
             }
@@ -103,53 +78,54 @@ std::vector<Entity *> World::testCollidingEntitiesOnZAxis(
     return result;
 }
 
-void World::setElapsedTime(float time) { elapsedTime = time / 1000; }
+void World::setElapsedTime(float time) { elapsedTime = time; }
 
-void World::addEntity(Entity *entity) {
-    entities.push_back(entity);
+void World::addEntity(std::unique_ptr<Entity> entity) {
+    spawned.push_back(std::move(entity));
 }
 
-void World::addPlayer(Player *player) {
-    players.push_back(player);
+void World::addPlayer(std::unique_ptr<Player> player) {
+    players.push_back(std::move(player));
     if (players.size() == 1)
-        lifebars.push_back(new LifeBar(Vector2f(300, 100), PlayerID::PLAYER1));
+        lifebars.push_back(
+            make_unique<LifeBar>(Vector2f(300, 100), PlayerID::PLAYER1));
     else
-        lifebars.push_back(new LifeBar(Vector2f(800, 100), PlayerID::PLAYER2));
+        lifebars.push_back(
+            make_unique<LifeBar>(Vector2f(800, 100), PlayerID::PLAYER2));
 }
 
 void World::clearEntities() {
-    for (auto e : entities) {
-        delete e;
-    }
     entities.clear();
+    spawned.clear();
 }
 
 void World::clearPlayers() {
-    for (auto e : players) {
-        delete e;
-    }
     players.clear();
 }
 
 void World::clearLifebars() {
-    for(auto e : lifebars)
-        delete e;
     lifebars.clear();
 }
 
 void World::updateEntities() {
-    vector<Entity *> added;
-    for (unsigned int i = 0; i < entities.size(); i++) {
-        entities.at(i)->update(elapsedTime);
-        if (entities.at(i)->isDead()) {
-            if(entities.at(i)->getEntityType() == SOLID) {
-                added.push_back(((BreakableObject *) entities.at(i))->getDrops());
+    for (auto &e : entities) {
+        e->update(elapsedTime);
+        if (e->isDead()) {
+            // Barrels may drop nothing, and other SOLID entities never drop
+            auto object = dynamic_cast<BreakableObject *>(e.get());
+            if (object) {
+                std::unique_ptr<Bonus> drop = object->getDrops();
+                if (drop) addEntity(std::move(drop));
             }
-            delete (entities.at(i));
-            entities.erase(entities.begin() + i);
         }
     }
-    entities.insert(entities.end(), added.begin(), added.end());
+    entities.erase(remove_if(entities.begin(), entities.end(),
+                             [](auto &e) { return e->isDead(); }),
+                   entities.end());
+
+    // Only now, so nothing is added to entities while looping over it
+    for (auto &e : spawned) entities.push_back(std::move(e));
+    spawned.clear();
 }
 
 bool World::isTwoPlayer() {
@@ -166,31 +142,30 @@ bool World::isGameOver() {
 }
 
 void World::updatePlayers() {
-    for (unsigned int i = 0; i < players.size(); i++) {
-        players.at(i)->update(elapsedTime);
-        if (players.at(i)->isDead()) {
-            delete (players.at(i));
-            players.erase(players.begin() + i);
-        }
-    }
+    for (auto &p : players) p->update(elapsedTime);
+    players.erase(remove_if(players.begin(), players.end(),
+                            [](auto &p) { return p->isDead(); }),
+                  players.end());
 }
 
 float World::getElapsedTime() { return elapsedTime; }
 
 void World::render(sf::RenderWindow &app) {
-    std::sort(entities.begin(), entities.end(), sortUsingFirstZHitbox);
-    std::sort(players.begin(), players.end(), sortUsingFirstZHitbox);
+    auto byDepth = [](auto &a, auto &b) {
+        return sortUsingFirstZHitbox(a.get(), b.get());
+    };
+    std::sort(entities.begin(), entities.end(), byDepth);
+    std::sort(players.begin(), players.end(), byDepth);
 
-    for (auto e : entities) app.draw(*e);
-    for (auto e : players) app.draw(*e);
-    for (auto e : lifebars) { app.draw(*e); }
+    for (auto &e : entities) app.draw(*e);
+    for (auto &e : players) app.draw(*e);
+    for (auto &e : lifebars) { app.draw(*e); }
 }
 
-std::vector<Player *> World::getPlayers() { return players; }
 Player* World::getPlayer(PlayerID id) {
-    for (int i = 0; i < players.size(); ++i) {
-        if (players[i]->getId() == id) {
-            return players[i];
+    for (auto &p : players) {
+        if (p->getId() == id) {
+            return p.get();
         }
     }
 
@@ -210,14 +185,16 @@ bool World::sortUsingFirstZHitbox(Entity *a, Entity *b) {
 }
 
 void World::managePlayersCollidingWithThings() {
-    for (auto player : players)
-        for (Entity *ent : World::getCollidingEntitiesOnZAxis(player)) {
+    for (auto &player : players)
+        for (Entity *ent : World::getCollidingEntitiesOnZAxis(player.get())) {
             switch (ent->getEntityType()) {
                 case EntityType::BONUS:
-                    World::managePlayerCollidingWithBonus(player, (Bonus *)ent);
+                    World::managePlayerCollidingWithBonus(player.get(),
+                                                          (Bonus *)ent);
                     break;
                 case EntityType::ENEMY:
-                    World::managePlayerCollidingWithEnemy(player, (Enemy *)ent);
+                    World::managePlayerCollidingWithEnemy(player.get(),
+                                                          (Enemy *)ent);
                     break;
                 case EntityType::NONE:
                 case EntityType::PLAYER:
@@ -234,14 +211,14 @@ void World::managePlayerCollidingWithBonus(Player *player, Bonus *bonus) {
             { short valueHealed = ((BonusHp *)bonus)->getHealedAmount();
             player->alterHealth(valueHealed, true);
             lifebars.at(player->getId())->updateBar(player->getHealth());
-            bonus->alterHealth(-1, false);
+            bonus->markDead();
             break;
             }
         case BONUS_WEAPON:
             if (((ItemWeapon *)bonus)->isPickable()) {
                 WeaponType playerWeapon = player->getWeapon()->getWeaponType();
-                player->equip(
-                    new Weapon(((ItemWeapon *)bonus)->getWeaponType()));
+                player->equip(make_unique<Weapon>(
+                    ((ItemWeapon *)bonus)->getWeaponType()));
                 ((ItemWeapon *)bonus)->setWeaponType(playerWeapon);
                 ((ItemWeapon *)bonus)->isJustDropped();
             }
@@ -250,28 +227,27 @@ void World::managePlayerCollidingWithBonus(Player *player, Bonus *bonus) {
 }
 
 void World::manageAttackingPlayers() {
-    for (auto player : players) {
-        if (player->isAttacking()) {
-            Weapon *w = player->getWeapon();
-            manageWeaponCollidingWithThings(w);
-        }
+    for (auto &player : players) {
+        if (player->isAttacking())
+            manageWeaponCollidingWithThings(player.get());
     }
 }
 
-void World::manageWeaponCollidingWithThings(Weapon *weapon) {
+void World::manageWeaponCollidingWithThings(Player *player) {
+    Weapon *weapon = player->getWeapon();
     vector<Entity *> collided = getCollidingEntitiesOnZAxis(weapon);
     for(auto e : collided) {
+        // Checked every frame, but an attack hits each thing only once
+        if (!player->hitOnce(e)) continue;
         switch (e->getEntityType()) {
             case ENEMY:
                 e->alterHealth(- weapon->getDamage(), true);
                 ((Enemy *)e)->stun();
+                break;
             case NONE:
             case PLAYER:
             case SFX:
             case SOLID:
-                cout << "\n==== Hit a solid ====\n";
-                cout << "Hit : " << typeid(e).name() << endl;
-                cout << "Weapon damage : " << weapon->getDamage() << endl;
                 e->alterHealth(- weapon->getDamage(), true);
             case BONUS:
                 break;  // do nothing?
@@ -288,26 +264,26 @@ void World::managePlayerCollidingWithEnemy(Player *player, Enemy *enemy) {
 
 void World::scroll() {
     // Move all entities
-    for (Entity *entity : entities) {
+    for (auto &entity : entities) {
         if (entity->getEntityType() != PLAYER) {
             entity->move(Vector2f(-SCROLL_SPEED * World::getElapsedTime(), 0));
             if (entity->getZHitboxes().at(0)->getGlobalBounds().left + // TODO : This condition is false.
                     entity->getZHitboxes().at(0)->getGlobalBounds().width <
-                0) { 
-                    entity->alterHealth(-1, false); // so that entity is killed on the next-frame
+                0) {
+                    entity->markDead();  // Removed on the next frame
                 }
 
             // Check if a player is pushed
             else if (entity->getEntityType() == SOLID) {
-                for (Player *player : players)
-                    while (player->collideWith(entity)) {
+                for (auto &player : players)
+                    while (player->collideWith(entity.get())) {
                         if (player->getHitboxes()
                                 .at(0)
                                 ->getGlobalBounds()
                                 .left > 0)
                             player->move(sf::Vector2f(-1, 0));
                         else {
-                            entity->alterHealth(-1, false);
+                            entity->markDead();
                             player->isHit(SCROLL_DAMAGE);
                             break;
                         }

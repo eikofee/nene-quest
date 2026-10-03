@@ -12,29 +12,31 @@ class Background : public sf::Drawable, sf::Transformable {
     sf::RectangleShape ground;
     sf::Vector2u v;
 
-    static const int CLOUD_SPAWN_INTERVAL = 5;
-    static const int CLOUD_SPAWN_INTERVAL_RANDOM = 2;
-    static const int MOUNTAIN_SPAWN_INTERVAL = 2;
-    static const int MOUNTAIN_SPAWN_INTERVAL_RANDOM = 1;
+    // Spawn intervals are in pixels scrolled
+    static const int CLOUD_SPAWN_INTERVAL = 500;
+    static const int CLOUD_SPAWN_INTERVAL_RANDOM = 200;
+    static const int MOUNTAIN_SPAWN_INTERVAL = 200;
+    static const int MOUNTAIN_SPAWN_INTERVAL_RANDOM = 100;
     static const int CLOUD_SPAWN_Y_TOP = 0;
     static const int CLOUD_SPAWN_Y_BOTTOM = 200;
     static const int MOUNTAIN_VAR_Y_OFFSET = 30;
 
     float cloudSpeedModifier = 1.0f;
     float mountainSpeedModifier = 1.5f;
-    int scrollSpeed = 0;
+    static constexpr float DRIFT_SPEED = 60.f;  // Pixels/second, even when not scrolling
+    float scrollSpeed = 0.f;                    // Pixels/second
 
     std::vector<RandomShape *> clouds;
     std::vector<RandomShape *> mountains;
     float nextCloud = 0.f;
     float nextMountain = 0.f;
-    sf::Clock cloudClock;
-    sf::Clock mountainClock;
+    float cloudDistance = 0.f;     // Pixels scrolled since the last cloud
+    float mountainDistance = 0.f;  // Pixels scrolled since the last mountain
 
    public:
     Background(sf::Vector2u v);
 
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
         target.draw(this->sky);
         for (auto rc : this->clouds) target.draw(*rc);
 
@@ -49,10 +51,10 @@ class Background : public sf::Drawable, sf::Transformable {
     }
     float getSkyHeight();
 
-    void update();
+    void update(float elapsedTime);  // Seconds
     void createClouds();
     void createMountains();
-    void setSpeed(int speed);
+    void setSpeed(float speed);
 };
 
 #endif

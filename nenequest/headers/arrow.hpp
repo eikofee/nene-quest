@@ -8,15 +8,14 @@ class Arrow : public Projectile {
     static int const ARROW_DAMAGE = 1;
     Arrow(sf::Vector2f position, float g_depth);
     virtual ~Arrow();
-    void update(float elapsedTime);
-    bool isDead();
+    void update(float elapsedTime) override;
     void kill();
     void draw(sf::RenderTarget &target,
-              sf::RenderStates states = sf::RenderStates::Default);
+              sf::RenderStates states = sf::RenderStates::Default) const override;
 
    protected:
    private:
-    bool is_dead = false;
+    static constexpr float DYING_DURATION = 0.15f;  // Seconds
     bool is_dying = false;
     float lifespan = 0.f;
     float gravity = 80.f;
@@ -25,7 +24,6 @@ class Arrow : public Projectile {
     float highDeadzoneStart = 0.33f;
     float highDeadzoneEnd = 0.66f;
 
-    sf::Texture damage_texture;
     sf::Sprite damage_sprite;
     sf::Vector2f initial_location;
 };

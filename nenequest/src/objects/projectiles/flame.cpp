@@ -15,9 +15,9 @@ Flame::Flame(Vector2f position, float f, float g_depth, bool straightLine) {
     initial_location = position;
     fact = f;
 
-    texture.loadFromFile("img/icon_fire.png");
-    sprite.setTexture(texture);
-    sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+    texture = &getTexture("img/icon_fire.png");
+    sprite.setTexture(*texture);
+    sprite.setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
     sprite.setPosition(position);
     if (!straightLine)
         sprite.scale(0.5, 0.5);
@@ -26,55 +26,55 @@ Flame::Flame(Vector2f position, float f, float g_depth, bool straightLine) {
 
     updateAutoHitboxSize();
     sf::RectangleShape *hitbox = new sf::RectangleShape();
-    hitbox->setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+    hitbox->setOrigin(texture->getSize().x / 2, texture->getSize().y / 2);
     hitboxes.push_back(hitbox);
     updateAutoHitboxPosition();
 
     zHitboxes.push_back(hitbox);
 
-    speed = Vector2f(-2.7, 1);
+    speed = Vector2f(CURVE_SPEED, 0);
 }
 
 void Flame::update(float elapsedTime) {
     lifespan += elapsedTime;
+    float growth = GROWTH_SPEED * elapsedTime;
     if (!straight_line) {
         // Make the flame follow a curve
         this->setPosition(
-            this->getPosition().x + elapsedTime * speed.x / 6.5,
-            initial_location.y + fact * 1.4 * sin(lifespan / (600)));
+            this->getPosition().x + elapsedTime * speed.x,
+            initial_location.y + fact * 1.4 * sin(lifespan / CURVE_PERIOD));
 
         // Make the flame smaller when it goes up (when it's derivative (cos) is
         // < 0 and bigger when it goes down
-        if (cos(lifespan / (600)) > 0 && sprite.getScale().x <= 1) {
-            hitboxes.at(0)->setScale(sprite.getScale().x + 0.01,
-                                     sprite.getScale().y + 0.01);
-            sprite.setScale(sprite.getScale().x + 0.01,
-                            sprite.getScale().y + 0.01);
+        if (cos(lifespan / CURVE_PERIOD) > 0 && sprite.getScale().x <= 1) {
+            hitboxes.at(0)->setScale(sprite.getScale().x + growth,
+                                     sprite.getScale().y + growth);
+            sprite.setScale(sprite.getScale().x + growth,
+                            sprite.getScale().y + growth);
         } else {
             span_left += elapsedTime;
-            hitboxes.at(0)->setScale(sprite.getScale().x - 0.01,
-                                     sprite.getScale().y - 0.01);
-            sprite.setScale(sprite.getScale().x - 0.01,
-                            sprite.getScale().y - 0.01);
+            hitboxes.at(0)->setScale(sprite.getScale().x - growth,
+                                     sprite.getScale().y - growth);
+            sprite.setScale(sprite.getScale().x - growth,
+                            sprite.getScale().y - growth);
         }
         // Begin a timer when the flame begin to go up to make it disappear
-        if (span_left > 400) is_dead = true;
+        if (span_left > CURVE_FADE_DURATION) dead = true;
     } else {
-        float sp = -0.8 * (1000 - lifespan) / 1000;
-        this->setPosition(this->getPosition().x + elapsedTime * sp / 6.5,
+        // Slows down until it stops at the end of its life
+        float sp = LINE_SPEED * (LINE_DURATION - lifespan) / LINE_DURATION;
+        this->setPosition(this->getPosition().x + elapsedTime * sp,
                           initial_location.y -
                               abs(this->getPosition().x - initial_location.x) *
                                   tan(fact * 3.1415 / 180));
 
         if (sprite.getScale().x < 1)
-            sprite.setScale(sprite.getScale().x + 0.01,
-                            sprite.getScale().y + 0.01);
+            sprite.setScale(sprite.getScale().x + growth,
+                            sprite.getScale().y + growth);
 
-        if (lifespan > 1000) is_dead = true;
+        if (lifespan > LINE_DURATION) dead = true;
     }
 }
-
-bool Flame::isDead() { return is_dead; }
 
 Flame::~Flame() {
     // dtor

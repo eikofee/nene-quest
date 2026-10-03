@@ -20,7 +20,7 @@ class RandomMountain : public RandomShape {
    public:
     RandomMountain();
     ~RandomMountain();
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
         target.draw(*(this->body));
     }
 
@@ -30,9 +30,9 @@ class RandomMountain : public RandomShape {
 
     virtual void setPosition(sf::Vector2f v) { this->body->setPosition(v); }
 
-    void update();
-    bool isAlive();
-    void translate(float x, float y);
+    void update() override;
+    bool isAlive() override;
+    void translate(float x, float y) override;
 };
 
 #endif
