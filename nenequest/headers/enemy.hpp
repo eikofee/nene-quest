@@ -12,12 +12,12 @@ class Enemy : public Entity {
     Enemy(int hp);
     virtual ~Enemy();
     short int getAttackDamage();
-    void update(float elapsedTime);
+    void update(float elapsedTime) override;
     EnemyType getEnemyType();
     virtual bool isDying();  // Called for dying animation (blinking or dragon's death)
-    virtual EntityType getEntityType();
+    EntityType getEntityType() override;
     virtual void stun();
-    virtual void alterHealth(int value, bool relative);
+    void alterHealth(int value, bool relative) override;
 
    protected:
 

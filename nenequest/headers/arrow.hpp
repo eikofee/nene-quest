@@ -8,11 +8,11 @@ class Arrow : public Projectile {
     static int const ARROW_DAMAGE = 1;
     Arrow(sf::Vector2f position, float g_depth);
     virtual ~Arrow();
-    void update(float elapsedTime);
-    bool isDead();
+    void update(float elapsedTime) override;
+    bool isDead() override;
     void kill();
     void draw(sf::RenderTarget &target,
-              sf::RenderStates states = sf::RenderStates::Default);
+              sf::RenderStates states = sf::RenderStates::Default) const override;
 
    protected:
    private:

@@ -24,8 +24,8 @@
 class Game : public Screen {
    public:
     Game(int playerCount);
-    virtual ScreenState run(sf::RenderWindow& app);
-    void clearAll();
+    ScreenState run(sf::RenderWindow& app) override;
+    void clearAll() override;
     static bool IsDebugMode();
 
    private:

@@ -9,10 +9,10 @@ class Entity : public sf::Drawable {
    public:
     static int const DEPTH_DIFF =
         130;  // Maximal depth difference so that 2 entities can interact
-    virtual void draw(
+    void draw(
         sf::RenderTarget &target,
-        sf::RenderStates states = sf::RenderStates::Default) const;
-    virtual void setPosition(int x, int y);
+        sf::RenderStates states = sf::RenderStates::Default) const override;
+    virtual void setPosition(float x, float y);
     virtual sf::Vector2f getPosition();
     virtual void move(sf::Vector2f v);  // Moves at px per sec
     std::vector<sf::RectangleShape *> getHitboxes();

@@ -11,8 +11,8 @@ class Dragon : public Enemy {
     Dragon(sf::Vector2f position = sf::Vector2f(0, 0));
     ~Dragon();
     void draw(sf::RenderTarget &target,
-              sf::RenderStates states = sf::RenderStates::Default) const;
-    void update(float elapsedTime);
+              sf::RenderStates states = sf::RenderStates::Default) const override;
+    void update(float elapsedTime) override;
     void breathFire();
     bool isBreatingFire();
     std::vector<Projectile *> getFlames();

@@ -9,8 +9,8 @@ class Boar : public Enemy {
    public:
     Boar(sf::Vector2f position = sf::Vector2f(0, 0));
     virtual ~Boar();
-    void update(float elapsedTime);
-    void stun();
+    void update(float elapsedTime) override;
+    void stun() override;
 
    protected:
    private:

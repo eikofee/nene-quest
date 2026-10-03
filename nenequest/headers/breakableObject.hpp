@@ -14,7 +14,7 @@ class BreakableObject : public Entity {
     BreakableObject(ObjectType o, sf::Vector2f position);
     virtual ~BreakableObject();
     Bonus *getDrops();
-    virtual EntityType getEntityType();
+    EntityType getEntityType() override;
 
    protected:
    private:

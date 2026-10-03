@@ -21,21 +21,21 @@ class Player : public Entity {
     void attack();
     void fireArrow();
     void equip(Weapon *w);
-    void update(float elapsedTime);
+    void update(float elapsedTime) override;
     bool isAttacking();
 
     // Life management
     void isHit(int damage);
 
     // override
-    virtual void draw(
+    void draw(
         sf::RenderTarget &target,
-        sf::RenderStates states = sf::RenderStates::Default) const;
-    void move(sf::Vector2f g_speed);
-    virtual void setPosition(float x, float y);
-    virtual EntityType getEntityType();
+        sf::RenderStates states = sf::RenderStates::Default) const override;
+    void move(sf::Vector2f g_speed) override;
+    void setPosition(float x, float y) override;
+    EntityType getEntityType() override;
     virtual PlayerID getId();
-    virtual void alterHealth(int value, bool relative);
+    void alterHealth(int value, bool relative) override;
 
     bool moving_up = false;
     bool moving_down = false;

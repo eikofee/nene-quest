@@ -19,7 +19,7 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(sprite, states);
 }
 
-void Entity::setPosition(int x, int y) {
+void Entity::setPosition(float x, float y) {
     sprite.setPosition(x, y);
     for (auto h : hitboxes) h->setPosition(x, y);
 }

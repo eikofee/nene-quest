@@ -14,7 +14,7 @@ class ItemWeapon : public Bonus {
     virtual ~ItemWeapon();
     WeaponType getWeaponType();
     void setWeaponType(WeaponType type);
-    virtual void update(float elapsedTime);
+    void update(float elapsedTime) override;
     bool isPickable();
     void isJustDropped();
 

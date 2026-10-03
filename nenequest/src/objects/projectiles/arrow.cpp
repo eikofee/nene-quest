@@ -90,8 +90,8 @@ void Arrow::kill() {
     is_dying = true;
 }
 
-void Arrow::draw(sf::RenderTarget &target, sf::RenderStates states) {
-    target.draw(sprite, states);
+void Arrow::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    Entity::draw(target, states);
 
     if (is_dying) target.draw(damage_sprite, states);
 }

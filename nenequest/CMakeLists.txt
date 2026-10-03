@@ -33,7 +33,7 @@ if(MSVC)
   target_compile_options(NeneQuest PRIVATE /W4)
   target_compile_definitions(NeneQuest PRIVATE _USE_MATH_DEFINES) # M_PI
 else()
-  target_compile_options(NeneQuest PRIVATE -Wall -Wextra
+  target_compile_options(NeneQuest PRIVATE -Wall -Wextra -Wsuggest-override
     $<$<CONFIG:Debug>:-fsanitize=undefined>)
   target_link_options(NeneQuest PRIVATE $<$<CONFIG:Debug>:-fsanitize=undefined>)
 endif()

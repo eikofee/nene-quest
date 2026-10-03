@@ -12,7 +12,7 @@ class Bonus : public Entity {
     Bonus();
     virtual ~Bonus();
     BonusType getBonusType();
-    virtual EntityType getEntityType();
+    EntityType getEntityType() override;
 
    protected:
     BonusType bonus_type;

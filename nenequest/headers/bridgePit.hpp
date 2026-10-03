@@ -9,10 +9,10 @@ class BridgePit : public Entity {
    public:
     BridgePit(float x, float groundHeight, unsigned int windowHeight);
     virtual ~BridgePit();
-    virtual void draw(
+    void draw(
         sf::RenderTarget &target,
-        sf::RenderStates states = sf::RenderStates::Default) const;
-    virtual EntityType getEntityType();
+        sf::RenderStates states = sf::RenderStates::Default) const override;
+    EntityType getEntityType() override;
 
    protected:
    private:

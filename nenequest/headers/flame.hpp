@@ -12,8 +12,8 @@ class Flame : public Projectile {
     Flame(sf::Vector2f position, float f, float g_depth,
           bool straightLine = false);
     virtual ~Flame();
-    void update(float elapsedTime);
-    bool isDead();
+    void update(float elapsedTime) override;
+    bool isDead() override;
 
    private:
     float span_left = 0.f;
