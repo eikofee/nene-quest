@@ -39,7 +39,14 @@ class World {
     static std::vector<Entity *> testCollidingEntitiesOnZAxis(
         Entity *entity, sf::Vector2f movement);
     static Player* getPlayer(PlayerID id);
-    static void scroll();
+    // The camera shows the part of the level on screen and moves right at
+    // the scroll speed. Entities never move because of scrolling
+    static void resetCamera(sf::Vector2f screenSize);
+    static void moveCamera();
+    static sf::FloatRect getCameraBounds();
+    static void setScrollSpeed(float speed);  // Pixels/second
+    static float getScrollSpeed();
+    static void crushPlayersAgainstSolids();
     static void managePlayersCollidingWithThings();
     static void managePlayerCollidingWithBonus(Player *player, Bonus *bonus);
     static void managePlayerCollidingWithEnemy(Player *player, Enemy *enemy);
@@ -48,7 +55,8 @@ class World {
     static void manageWeaponCollidingWithThings(Player *player);
 
    private:
-    static constexpr float SCROLL_SPEED = 0.f;  // Pixels/second, used to be 30
+    // How far behind the camera an entity goes before it's removed
+    static constexpr float FORGET_DISTANCE = 500.f;
     static constexpr float SCROLL_DAMAGE =
         30.f;  // When the player is pressed between the wall and a object by the
              // scrolling
@@ -58,6 +66,8 @@ class World {
     static std::vector<std::unique_ptr<Player>> players;
     static std::vector<std::unique_ptr<LifeBar>> lifebars;
     static float elapsedTime;
+    static sf::View camera;
+    static float scrollSpeed;
     static bool sortUsingFirstZHitbox(Entity *a, Entity *b);
 };
 

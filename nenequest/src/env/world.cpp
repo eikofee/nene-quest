@@ -12,6 +12,8 @@ std::vector<std::unique_ptr<Player>> World::players;
 std::vector<std::unique_ptr<LifeBar>> World::lifebars;
 
 float World::elapsedTime;
+sf::View World::camera;
+float World::scrollSpeed = 0.f;
 
 std::vector<Entity *> World::getEntities() {
     std::vector<Entity *> result;
@@ -108,8 +110,14 @@ void World::clearLifebars() {
 }
 
 void World::updateEntities() {
+    float forgetX = getCameraBounds().left - FORGET_DISTANCE;
     for (auto &e : entities) {
         e->update(elapsedTime);
+        sf::FloatRect bounds = e->getZHitboxes().at(0)->getGlobalBounds();
+        if (bounds.left + bounds.width < forgetX) {
+            e->markDead();  // Far behind the camera, it won't be seen again
+            continue;       // So a chest left behind drops nothing
+        }
         if (e->isDead()) {
             // Barrels may drop nothing, and other SOLID entities never drop
             auto object = dynamic_cast<BreakableObject *>(e.get());
@@ -157,8 +165,11 @@ void World::render(sf::RenderWindow &app) {
     std::sort(entities.begin(), entities.end(), byDepth);
     std::sort(players.begin(), players.end(), byDepth);
 
+    app.setView(camera);
     for (auto &e : entities) app.draw(*e);
     for (auto &e : players) app.draw(*e);
+    // The lifebars stay in place on the screen
+    app.setView(app.getDefaultView());
     for (auto &e : lifebars) { app.draw(*e); }
 }
 
@@ -262,33 +273,30 @@ void World::managePlayerCollidingWithEnemy(Player *player, Enemy *enemy) {
     lifebars.at(player->getId())->updateBar(player->getHealth());
 }
 
-void World::scroll() {
-    // Move all entities
-    for (auto &entity : entities) {
-        if (entity->getEntityType() != PLAYER) {
-            entity->move(Vector2f(-SCROLL_SPEED * World::getElapsedTime(), 0));
-            if (entity->getZHitboxes().at(0)->getGlobalBounds().left + // TODO : This condition is false.
-                    entity->getZHitboxes().at(0)->getGlobalBounds().width <
-                0) {
-                    entity->markDead();  // Removed on the next frame
-                }
+void World::resetCamera(sf::Vector2f screenSize) {
+    camera = sf::View(sf::FloatRect(0, 0, screenSize.x, screenSize.y));
+    scrollSpeed = 0.f;
+}
 
-            // Check if a player is pushed
-            else if (entity->getEntityType() == SOLID) {
-                for (auto &player : players)
-                    while (player->collideWith(entity.get())) {
-                        if (player->getHitboxes()
-                                .at(0)
-                                ->getGlobalBounds()
-                                .left > 0)
-                            player->move(sf::Vector2f(-1, 0));
-                        else {
-                            entity->markDead();
-                            player->isHit(SCROLL_DAMAGE);
-                            break;
-                        }
-                    }
+void World::moveCamera() { camera.move(scrollSpeed * elapsedTime, 0); }
+
+sf::FloatRect World::getCameraBounds() {
+    sf::Vector2f size = camera.getSize();
+    return sf::FloatRect(camera.getCenter() - size / 2.f, size);
+}
+
+void World::setScrollSpeed(float speed) { scrollSpeed = speed; }
+
+float World::getScrollSpeed() { return scrollSpeed; }
+
+// The camera pushes players forward, and players can't walk into solids, so
+// a player overlapping a solid has been pressed against it by the camera
+void World::crushPlayersAgainstSolids() {
+    for (auto &player : players)
+        for (Entity *e : getCollidingEntitiesOnZAxis(player.get()))
+            if (e->getEntityType() == SOLID) {
+                e->markDead();
+                player->isHit(SCROLL_DAMAGE);
+                lifebars.at(player->getId())->updateBar(player->getHealth());
             }
-        }
-    }
 }

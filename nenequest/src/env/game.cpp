@@ -39,6 +39,8 @@ ScreenState Game::run(RenderWindow& app) {
     Keyboard::Key kbPlayerTwoAttack = Keyboard::E;
     Keyboard::Key kbDebugMode = Keyboard::T;
 
+    World::resetCamera(Vector2f(app.getSize()));
+
     if (this->playerCount == 1) {
         World::setGameMode(ONE_PLAYER);
         World::addPlayer(make_unique<Player>(make_unique<Weapon>(Axe),
@@ -57,7 +59,8 @@ ScreenState Game::run(RenderWindow& app) {
     World::addEntity(make_unique<BonusHp>(BONUS_ONIGIRI, Vector2f(900, 900)));
     World::addEntity(make_unique<ItemWeapon>(Sword, Vector2f(800, 600)));
     World::addEntity(make_unique<BreakableObject>(Chest, Vector2f(520, 430)));
-    // Uncomment to test the boss:
+    World::setScrollSpeed(120);
+    // Uncomment to test the boss (and set the scroll speed to 0 above):
     // World::addEntity(make_unique<Dragon>(Vector2f(1000, 400)));
 
     Clock clock;
@@ -93,12 +96,14 @@ ScreenState Game::run(RenderWindow& app) {
         }
 
         World::setElapsedTime(elapsedTime);
+        World::moveCamera();
         World::updateEntities();
         World::updatePlayers();
-        World::scroll();
+        World::crushPlayersAgainstSolids();
         World::managePlayersCollidingWithThings();
         World::manageAttackingPlayers();
 
+        background.setSpeed(World::getScrollSpeed());
         background.update(elapsedTime);
         app.clear(Color::White);
         app.draw(background);

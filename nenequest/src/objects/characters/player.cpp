@@ -234,16 +234,18 @@ void Player::manageMovements() {
     this->fixPosition();
 }
 
-// TODO : remove hardcoded value for cute ones
+// Players can't walk off screen
+// TODO : remove the hardcoded top and bottom for cute ones
 sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
+    sf::FloatRect camera = World::getCameraBounds();
     Vector2f result = Vector2f(movement.x * World::getElapsedTime(),
                                movement.y * World::getElapsedTime());
-    if (this->hitboxes.at(0)->getGlobalBounds().left + result.x < 0)
+    if (this->hitboxes.at(0)->getGlobalBounds().left + result.x < camera.left)
         result.x = 0;
 
     if (this->hitboxes.at(0)->getGlobalBounds().left +
             this->hitboxes.at(0)->getGlobalBounds().width + result.x >
-        1920 /*Gameroom size (right)*/)
+        camera.left + camera.width)
         result.x = 0;
 
     if (this->hitboxes.at(0)->getGlobalBounds().top + result.y <
@@ -258,14 +260,17 @@ sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
     return result;
 }
 
-// TODO : remove hardcoded value for cute ones
+// Pushes the player back on screen, e.g. when the camera has moved forward
+// TODO : remove the hardcoded top and bottom for cute ones
 void Player::fixPosition() {
     sf::FloatRect bounds = this->hitboxes.at(0)->getGlobalBounds();
+    sf::FloatRect camera = World::getCameraBounds();
+    float right = camera.left + camera.width;
     sf::Vector2f v = Vector2f(0, 0);
-    if (bounds.left < 0) v.x = -bounds.left;
+    if (bounds.left < camera.left) v.x = camera.left - bounds.left;
 
-    if (bounds.left + bounds.width > 1920)
-        v.x = (1920 - bounds.left - bounds.width);
+    if (bounds.left + bounds.width > right)
+        v.x = (right - bounds.left - bounds.width);
 
     if (bounds.top < 200) v.y = -1 * (bounds.top - 200);
 
