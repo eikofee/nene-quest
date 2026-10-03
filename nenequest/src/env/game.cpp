@@ -92,8 +92,6 @@ ScreenState Game::run(RenderWindow& app) {
                             kbPlayerTwoDown, kbPlayerTwoLeft, kbPlayerTwoRight,
                             kbPlayerTwoAttack);
 
-            World::manageAttackingPlayers();
-
             manageMetaInputs(event, kbDebugMode);
         }
 
@@ -102,6 +100,7 @@ ScreenState Game::run(RenderWindow& app) {
         World::updatePlayers();
         World::scroll();
         World::managePlayersCollidingWithThings();
+        World::manageAttackingPlayers();
 
         background.update();
         app.clear(Color::White);

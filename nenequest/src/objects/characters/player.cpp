@@ -112,11 +112,19 @@ void Player::attack() {
 
     this->is_attacking = true;
     currentAttackTime = attackTime;
+    hit_during_attack.clear();
     update_animation();
 }
 
 bool Player::isAttacking() {
     return is_attacking;
+}
+
+bool Player::hitOnce(Entity *entity) {
+    for (Entity *e : hit_during_attack)
+        if (e == entity) return false;
+    hit_during_attack.push_back(entity);
+    return true;
 }
 
 void Player::equip(Weapon *w) {

@@ -42,7 +42,7 @@ class World {
     static void managePlayerCollidingWithEnemy(Player *player, Enemy *enemy);
     // Management player's attacking 
     static void manageAttackingPlayers();
-    static void manageWeaponCollidingWithThings(Weapon *weapon);
+    static void manageWeaponCollidingWithThings(Player *player);
 
    private:
     static constexpr float SCROLL_SPEED = 0.f; // Used to be 30

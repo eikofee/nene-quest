@@ -23,6 +23,8 @@ class Player : public Entity {
     void equip(Weapon *w);
     void update(float elapsedTime) override;
     bool isAttacking();
+    // True the first time an entity is hit during the current attack
+    bool hitOnce(Entity *entity);
 
     // Life management
     void isHit(int damage);
@@ -58,6 +60,7 @@ class Player : public Entity {
     bool is_shooting = false;
     float attackTime = 0.1f;
     float currentAttackTime = 0.f;
+    std::vector<Entity *> hit_during_attack;
     float currentInvulnerabilityTime = 0.f;
 
     // Weapon placement

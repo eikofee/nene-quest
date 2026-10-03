@@ -226,16 +226,16 @@ void World::managePlayerCollidingWithBonus(Player *player, Bonus *bonus) {
 
 void World::manageAttackingPlayers() {
     for (auto player : players) {
-        if (player->isAttacking()) {
-            Weapon *w = player->getWeapon();
-            manageWeaponCollidingWithThings(w);
-        }
+        if (player->isAttacking()) manageWeaponCollidingWithThings(player);
     }
 }
 
-void World::manageWeaponCollidingWithThings(Weapon *weapon) {
+void World::manageWeaponCollidingWithThings(Player *player) {
+    Weapon *weapon = player->getWeapon();
     vector<Entity *> collided = getCollidingEntitiesOnZAxis(weapon);
     for(auto e : collided) {
+        // Checked every frame, but an attack hits each thing only once
+        if (!player->hitOnce(e)) continue;
         switch (e->getEntityType()) {
             case ENEMY:
                 e->alterHealth(- weapon->getDamage(), true);
