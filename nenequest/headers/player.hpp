@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <memory>
 
 #include "arrow.hpp"
 #include "entity.hpp"
@@ -12,38 +13,38 @@
 
 class Player : public Entity {
    public:
-    Player(Weapon *weapon, sf::Vector2f position, bool secondPlayer = false);
-    ~Player();
+    Player(std::unique_ptr<Weapon> weapon, sf::Vector2f position,
+           bool secondPlayer = false);
 
     // Weapon
     Weapon *getWeapon();
     std::vector<Arrow *> getArrows();
     void attack();
     void fireArrow();
-    void equip(Weapon *w);
-    void update(float elapsedTime);
+    void equip(std::unique_ptr<Weapon> w);
+    void update(float elapsedTime) override;
     bool isAttacking();
+    // True the first time an entity is hit during the current attack
+    bool hitOnce(Entity *entity);
 
     // Life management
     void isHit(int damage);
 
     // override
-    virtual void draw(
+    void draw(
         sf::RenderTarget &target,
-        sf::RenderStates states = sf::RenderStates::Default) const;
-    void move(sf::Vector2f g_speed);
-    virtual void setPosition(float x, float y);
-    virtual EntityType getEntityType();
+        sf::RenderStates states = sf::RenderStates::Default) const override;
+    void move(sf::Vector2f g_speed) override;
+    void setPosition(float x, float y) override;
+    EntityType getEntityType() override;
     virtual PlayerID getId();
-    virtual void alterHealth(int value, bool relative);
+    void alterHealth(int value, bool relative) override;
 
     bool moving_up = false;
     bool moving_down = false;
     bool moving_left = false;
     bool moving_right = false;
 
-    void setLastDroppedItem(ItemWeapon *item);
-    ItemWeapon *getLastDroppedItem();
     bool isShooting();
     void setShootingState(bool state);
 
@@ -60,6 +61,7 @@ class Player : public Entity {
     bool is_shooting = false;
     float attackTime = 0.1f;
     float currentAttackTime = 0.f;
+    std::vector<Entity *> hit_during_attack;
     float currentInvulnerabilityTime = 0.f;
 
     // Weapon placement
@@ -69,7 +71,7 @@ class Player : public Entity {
     int weaponYOffsetVariation;
 
     sf::Vector2f speed = sf::Vector2f(-10, 0);
-    std::vector<Arrow *> arrows;
+    std::vector<std::unique_ptr<Arrow>> arrows;
     sf::Clock clock;
     static constexpr float ANIMATION_DELAY = 0.1f;
     void update_animation();
@@ -78,9 +80,8 @@ class Player : public Entity {
     void fixPosition();
 
     void cleanArrows(float elapsedTime);
-    ItemWeapon *last_dropped_item = NULL;
     PlayerID id;
-    Weapon *weapon;
+    std::unique_ptr<Weapon> weapon;
 };
 
 #endif

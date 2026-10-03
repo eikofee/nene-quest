@@ -1,9 +1,10 @@
 #include "game.hpp"
 
+#include <SFML/Audio.hpp>
 #include <stdlib.h>
 #include <time.h>
-#include <iostream>
 
+#include "level.hpp"
 #include "world.hpp"
 
 using namespace std;
@@ -12,8 +13,6 @@ using namespace sf;
 bool Game::debugMode;
 
 Game::Game(int playerCount) {
-    // Final game objects (should only include Game, Players, LevelManagers and
-    // other UI events)
     debugMode = true;
     this->playerCount = playerCount;
 }
@@ -41,51 +40,39 @@ ScreenState Game::run(RenderWindow& app) {
     Keyboard::Key kbPlayerTwoDown = Keyboard::S;
     Keyboard::Key kbPlayerTwoAttack = Keyboard::E;
     Keyboard::Key kbDebugMode = Keyboard::T;
-    Keyboard::Key kbPause = Keyboard::Return;
-     
-    // Load Level
-     // Testing objects////////////
-   /* bridge = new BridgePit(300, app.getSize().y - background.getSkyHeight(),
-                           app.getSize().y);
-    World::addEntity(bridge); */
+
+    World::resetCamera(Vector2f(app.getSize()));
+
     if (this->playerCount == 1) {
         World::setGameMode(ONE_PLAYER);
-        Player *player = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
-        World::addPlayer(player);
+        World::addPlayer(make_unique<Player>(make_unique<Weapon>(Axe),
+                                             sf::Vector2f(50, 520)));
     } else if (this->playerCount == 2) {
-        // don't remember if we did something for p1 and p2 to have different skins & weapons
         World::setGameMode(TWO_PLAYERS);
-        Player *player1 = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
-        World::addPlayer(player1);
-        Player *player2 = new Player(new Weapon(Sword), sf::Vector2f(50, 560), true);
-        World::addPlayer(player2);
+        World::addPlayer(make_unique<Player>(make_unique<Weapon>(Axe),
+                                             sf::Vector2f(50, 520)));
+        World::addPlayer(make_unique<Player>(make_unique<Weapon>(Sword),
+                                             sf::Vector2f(50, 560), true));
     }
-    
-    Boar *boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y / 2));
-    World::addEntity(boar1);
-    // Dragon *dragon = new Dragon(Vector2f(1000, 400));
-    // World::addEntity(dragon);
-    BonusHp *onigiri = new BonusHp(BONUS_ONIGIRI, Vector2f(900, 900));
-    ItemWeapon *sword = new ItemWeapon(Sword, Vector2f(800, 600));
-    World::addEntity(onigiri);
-    World::addEntity(sword);
-    // World::addEntity(new ItemWeapon(Axe, Vector2f(300, 630)));
-    BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 430)); 
-    World::addEntity(barrel);
-    // World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
 
-    // // Arrow arrow = Arrow(Vector2f(100, 700), 700);
-    // World::addEntity(new BreakableObject(Barrel, Vector2f(700, 430)));
-    /////////////////////////////
+    Level level(level0);
+    // To test the boss right away, use this level instead:
+    // Level level({{0, "scroll", 900}, {0, "dragon", 400}, {900, "scroll", 0}});
 
-    for (auto e : World::getEntities())
-        cout << typeid(*e).name() << endl;
+    // Streamed from the file, and stopped when leaving this screen
+    Music music;
+    if (music.openFromFile("bgm/bgm.ogg")) {
+        music.setLoop(true);
+        music.play();
+    }
 
     Clock clock;
     // ---------------- Main Loop ----------------
     while (true) {
 
-        float elapsedTime = clock.restart().asMilliseconds();
+        float elapsedTime = clock.restart().asSeconds();
+
+        if (World::isVictory()) return this->gotoScreen(VICTORY);
 
         if(World::isGameOver()) {
             if (World::isTwoPlayer())
@@ -110,28 +97,24 @@ ScreenState Game::run(RenderWindow& app) {
                             kbPlayerTwoDown, kbPlayerTwoLeft, kbPlayerTwoRight,
                             kbPlayerTwoAttack);
 
-            World::manageAttackingPlayers();
-
             manageMetaInputs(event, kbDebugMode);
         }
 
         World::setElapsedTime(elapsedTime);
+        World::moveCamera();
+        level.update();
         World::updateEntities();
         World::updatePlayers();
-        World::scroll();
+        World::crushPlayersAgainstSolids();
         World::managePlayersCollidingWithThings();
+        World::managePlayersTouchingFlames();
+        World::manageAttackingPlayers();
 
-        // scroll(elapsedTime, app.getSize());
-
-        background.update();
-        // arrow.update(elapsedTime);
-        // checkCollision(elapsedTime, app.getSize());
+        background.setSpeed(World::getScrollSpeed());
+        background.update(elapsedTime);
         app.clear(Color::White);
         app.draw(background);
-        // app.draw(*bridge);
         World::render(app);
-        // drawWithDepth(&app);
-        // app.draw(arrow);
         app.display();
     }
 
@@ -142,9 +125,8 @@ ScreenState Game::run(RenderWindow& app) {
 void Game::manageInputs(sf::Event e, PlayerID id, Keyboard::Key up,
                         Keyboard::Key down, Keyboard::Key left,
                         Keyboard::Key right, Keyboard::Key attack) {
-   // this->players = World::getPlayers(); // Moved before the main loop of the game
-   // std::cout << "ManageInputs, size of players = " << this->players.size() << "\n";
-   Player* player = World::getPlayer(id);
+    Player* player = World::getPlayer(id);
+    if (!player) return;  // This player is dead
     if (e.type == Event::KeyPressed) {
         if (e.key.code == up)
             player->moving_up = true;
@@ -154,11 +136,8 @@ void Game::manageInputs(sf::Event e, PlayerID id, Keyboard::Key up,
             player->moving_right = true;
         else if (e.key.code == left)
             player->moving_left = true;
-        else if (e.key.code == attack) {
+        else if (e.key.code == attack)
             player->attack();
-            /*if (!this->players.at(id)->isShooting())
-                    this->players.at(id)->fireArrow();*/
-        }
     } else if (e.type == Event::KeyReleased) {
         if (e.key.code == up)
             player->moving_up = false;
@@ -177,16 +156,6 @@ void Game::manageMetaInputs(sf::Event e, Keyboard::Key toggleDebug) {
     if (e.type == Event::KeyPressed) {
         if (e.key.code == toggleDebug) debugMode = !debugMode;
     }
-}
-
-// Move to Render class
-void Game::drawWithDepth(RenderWindow *app) {
-    for (auto e : World::getEntities()) app->draw(*e);
-}
-
-bool Game::cmp(Entity *a, Entity *d) {
-    if (a->getDrawDepth() >= d->getDrawDepth()) return false;
-    return true;
 }
 
 bool Game::IsDebugMode() { return debugMode; }

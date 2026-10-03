@@ -6,8 +6,8 @@ using namespace sf;
 Weapon::Weapon(WeaponType t) {
     this->type = t;
 
-    texture.loadFromFile(getWeaponPath(t));
-    sprite.setTexture(texture);
+    texture = &getTexture(getWeaponPath(t));
+    sprite.setTexture(*texture);
     sf::RectangleShape *h = new sf::RectangleShape();
     h->setFillColor(sf::Color(255, 255, 0, 128));
     hitboxes.push_back(h);
@@ -17,8 +17,8 @@ Weapon::Weapon(WeaponType t) {
 
     sprite.setOrigin(getWeaponOrigin(t));
     if (t == WeaponType::Bow) {
-        this->sprite.setTextureRect(IntRect(0, 0, this->texture.getSize().x,
-                                            this->texture.getSize().y / 2));
+        this->sprite.setTextureRect(IntRect(0, 0, this->texture->getSize().x,
+                                            this->texture->getSize().y / 2));
         spriteHeight /= 2;
     }
 
@@ -68,7 +68,7 @@ void Weapon::Animate(float lerp) {
                        lerp * sf::Vector2f(-5, 10));
 }
 
-void Weapon::setPosition(int x, int y) {
+void Weapon::setPosition(float x, float y) {
     sprite.setPosition(sf::Vector2f(x, y) + getWeaponOffset(type));
     hitboxes.at(0)->setPosition(sprite.getPosition());
     zHitboxes.at(0)->setPosition(sprite.getPosition() -

@@ -3,8 +3,8 @@
 using namespace sf;
 
 BridgePit::BridgePit(float x, float groundHeight, unsigned int windowHeight) {
-    texture.loadFromFile("img/background_bridge.png");
-    sprite.setTexture(texture);
+    texture = &getTexture("img/background_bridge.png");
+    sprite.setTexture(*texture);
 
     float y = groundHeight - sprite.getLocalBounds().height;
     sprite.setPosition(x,
@@ -32,7 +32,5 @@ void BridgePit::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     for (auto var : zHitboxes) target.draw(*var, states);
     target.draw(sprite, states);
 }
-
-FloatRect BridgePit::getSpriteBounds() { return sprite.getGlobalBounds(); }
 
 EntityType BridgePit::getEntityType() { return SOLID; }

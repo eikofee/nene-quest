@@ -10,7 +10,7 @@ BreakableObject::BreakableObject(ObjectType o, Vector2f position) {
 
     getObjectTexture(o);
 
-    sprite.setTexture(texture);
+    sprite.setTexture(*texture);
 
     sf::RectangleShape *hitbox = new sf::RectangleShape();
     hitbox->setFillColor(sf::Color(255, 0, 0, 128));
@@ -35,13 +35,13 @@ BreakableObject::~BreakableObject() {
 
 void BreakableObject::getObjectTexture(ObjectType o) {
     if (o == Chest)
-        texture.loadFromFile("img/obj_chest.png");
+        texture = &getTexture("img/obj_chest.png");
     else if (o == Barrel)
-        texture.loadFromFile("img/obj_barrel.png");
+        texture = &getTexture("img/obj_barrel.png");
 }
 
-Bonus *BreakableObject::getDrops() {
-    Bonus *bonus = nullptr;
+std::unique_ptr<Bonus> BreakableObject::getDrops() {
+    std::unique_ptr<Bonus> bonus;
     Vector2f position_bonus(sprite.getLocalBounds().width,
                                      sprite.getLocalBounds().height);
     
@@ -51,21 +51,21 @@ Bonus *BreakableObject::getDrops() {
 
     switch (rand() % 2) {
         case BONUS_HP:
-            bonus = new BonusHp(BONUS_ONIGIRI, position_bonus);
+            bonus = std::make_unique<BonusHp>(BONUS_ONIGIRI, position_bonus);
             break;
         case BONUS_WEAPON:
             switch (rand() % 4) {
                 case ITEM_AXE:
-                    bonus = new ItemWeapon(Axe, position_bonus);
+                    bonus = std::make_unique<ItemWeapon>(Axe, position_bonus);
                     break;
                 case ITEM_SWORD:
-                    bonus = new ItemWeapon(Sword, position_bonus);
+                    bonus = std::make_unique<ItemWeapon>(Sword, position_bonus);
                     break;
                 case ITEM_GREATSWORD:
-                    bonus = new ItemWeapon(GreatSword, position_bonus);
+                    bonus = std::make_unique<ItemWeapon>(GreatSword, position_bonus);
                     break;
                 case ITEM_BOW:
-                    bonus = new ItemWeapon(Bow, position_bonus);
+                    bonus = std::make_unique<ItemWeapon>(Bow, position_bonus);
                     break;
             }
     }
@@ -74,7 +74,7 @@ Bonus *BreakableObject::getDrops() {
         return bonus;
     else if (object_type == Barrel && rand() % 10 < BARREL_DROP_CHANCE)
         return bonus;
-    return NULL;
+    return nullptr;
 }
 
 EntityType BreakableObject::getEntityType() { return SOLID; }

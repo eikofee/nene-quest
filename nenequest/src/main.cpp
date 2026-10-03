@@ -4,6 +4,7 @@
 #include "menu.hpp"
 #include "screen.hpp"
 #include "screenState.hpp"
+#include "victory.hpp"
 
 #define WINDOW_X 1920
 #define WINDOW_Y 1080
@@ -19,24 +20,28 @@ int main() {
     while (selectedScreen != EXIT_GAME) {
         switch (selectedScreen) {
             case GAME_SCREEN_1:
-                selectedScreen = (new Game(1))->run(app);
+                selectedScreen = Game(1).run(app);
                 break;
             
             case GAME_SCREEN_2:
-                selectedScreen = (new Game(2))->run(app);
+                selectedScreen = Game(2).run(app);
                 break;
 
             case GAME_OVER_1:
-                selectedScreen = (new GameOver())->run(app);
+                selectedScreen = GameOver().run(app);
                 break;
             
             case GAME_OVER_2:
-                selectedScreen = (new GameOver())->run(app);
+                selectedScreen = GameOver().run(app);
+                break;
+
+            case VICTORY:
+                selectedScreen = Victory().run(app);
                 break;
 
             default:
             case TITLE_SCREEN:
-                selectedScreen = (new Menu())->run(app);
+                selectedScreen = Menu().run(app);
                 break;
         }
     }

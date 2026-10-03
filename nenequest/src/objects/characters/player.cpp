@@ -1,21 +1,10 @@
 #include "player.hpp"
 
 #include <SFML/Graphics.hpp>
+#include <algorithm>
 #include <iostream>
 
 #include "world.hpp"
-
-/**
-    TODO (not updated) :
-    - Placer l'arme correctement
-    - Animation de l'attaque (rotation du sprite du Weapon)
-    - Empecher de sortir de la fenere / allez trop haut-bas => Fait dans
-game.cpp <= and fixed back here
-    - Detection avec les ennemis => Fait dans game.cpp
-    - Frame immortalite lorsqu'on perd de la vie => Fait dans game.cpp mais
-c'est mieux ici donc fait le +(animation clignotante dans l'ideal)
-    - Saut (immortalite temporaire) => Fait dans game.cpp <= need to be here
-**/
 
 using namespace sf;
 using namespace std;
@@ -44,32 +33,28 @@ IntRect walk1normal;
 IntRect walk2normal;
 IntRect moddifierAttack;
 
-Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
+Player::Player(unique_ptr<Weapon> w, Vector2f position, bool secondPlayer) {
 
-    this->weapon = w;
+    this->weapon = std::move(w);
     if (!secondPlayer) {
-        // this->life =
-            // new LifeBar(PLAYER_HP, Vector2f(300, 100), PlayerID::PLAYER1);
         this->id = PlayerID::PLAYER1;
-        this->texture.loadFromFile("img/player1.png");
+        this->texture = &getTexture("img/player1.png");
         this->weaponXOffset = weaponXOffsetP1;
         this->weaponYOffset = weaponYOffsetP1;
         this->weaponXOffsetVariation = weaponXOffsetVariationP1;
         this->weaponYOffsetVariation = weaponYOffsetVariationP1;
     } else {
-        // this->life =
-        //     new LifeBar(PLAYER_HP, Vector2f(800, 100), PlayerID::PLAYER2);
         this->id = PlayerID::PLAYER2;
-        this->texture.loadFromFile("img/player2.png");
+        this->texture = &getTexture("img/player2.png");
         this->weaponXOffset = weaponXOffsetP2;
         this->weaponYOffset = weaponYOffsetP2;
         this->weaponXOffsetVariation = weaponXOffsetVariationP2;
         this->weaponYOffsetVariation = weaponYOffsetVariationP2;
     }
 
-    this->sprite.setTexture(this->texture);
-    this->sprite.setTextureRect(IntRect(0, 0, this->texture.getSize().x / 2,
-                                        this->texture.getSize().y / 3));
+    this->sprite.setTexture(*this->texture);
+    this->sprite.setTextureRect(IntRect(0, 0, this->texture->getSize().x / 2,
+                                        this->texture->getSize().y / 3));
 
     // Hitboxes + debug coloring
     sf::RectangleShape *h = new sf::RectangleShape();
@@ -102,8 +87,8 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
     vector<FloatRect> fanimationRects = {fwalk1normal, fwalk2normal,
                                          fmoddifierAttack};
     vector<IntRect> animationRects;
-    int sizeX = texture.getSize().x;
-    int sizeY = texture.getSize().y;
+    int sizeX = texture->getSize().x;
+    int sizeY = texture->getSize().y;
     for (FloatRect rect : fanimationRects) {
         IntRect r;
         r.left = rect.left * sizeX;
@@ -119,15 +104,14 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
     this->alterHealth(PLAYER_MAX_HP, false);
 }
 
-Player::~Player() { delete this->weapon; }
-
-Weapon *Player::getWeapon() { return this->weapon; }
+Weapon *Player::getWeapon() { return this->weapon.get(); }
 
 void Player::attack() {
     if (is_attacking) return;
 
     this->is_attacking = true;
     currentAttackTime = attackTime;
+    hit_during_attack.clear();
     update_animation();
 }
 
@@ -135,8 +119,15 @@ bool Player::isAttacking() {
     return is_attacking;
 }
 
-void Player::equip(Weapon *w) {
-    this->weapon = w;
+bool Player::hitOnce(Entity *entity) {
+    for (Entity *e : hit_during_attack)
+        if (e == entity) return false;
+    hit_during_attack.push_back(entity);
+    return true;
+}
+
+void Player::equip(unique_ptr<Weapon> w) {
+    this->weapon = std::move(w);
     this->weapon->setPosition(this->getPosition().x + this->weaponXOffset,
                               this->getPosition().y + this->weaponYOffset);
 }
@@ -147,9 +138,8 @@ PlayerID Player::getId() {
 
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(*this->weapon, states);
-//    target.draw(*this->life, states);
     Entity::draw(target, states);
-    for (Entity *var : arrows) {
+    for (auto &var : arrows) {
         target.draw(*var, states);
     }
 }
@@ -199,9 +189,10 @@ void Player::setPosition(float x, float y) {
 }
 
 void Player::fireArrow() {
-    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + weaponXOffset,
-                                        this->getPosition().y + weaponYOffset),
-                               this->getDepth()));
+    arrows.push_back(make_unique<Arrow>(
+        Vector2f(this->getPosition().x + weaponXOffset,
+                 this->getPosition().y + weaponYOffset),
+        this->getDepth()));
     setShootingState(true);
 }
 
@@ -240,53 +231,46 @@ void Player::manageMovements() {
         if (entity->getEntityType() == SOLID) moveAllowed = false;
     if (moveAllowed) this->move(fy);
 
-    /*if (World::testCollidingEntitiesOnZAxis(this, fx).size() == 0)
-            this->move(fx);
-    if (World::testCollidingEntitiesOnZAxis(this, fy).size() == 0)
-            this->move(fy);*/
-
     this->fixPosition();
 }
 
-// TODO : remove hardcoded value for cute ones
+// Players can't walk off screen
+// TODO : remove the hardcoded top and bottom for cute ones
 sf::Vector2f Player::fixMovements(sf::Vector2f movement) {
+    sf::FloatRect camera = World::getCameraBounds();
     Vector2f result = Vector2f(movement.x * World::getElapsedTime(),
                                movement.y * World::getElapsedTime());
-    if (this->hitboxes.at(0)->getGlobalBounds().left + result.x < 0)
+    if (this->hitboxes.at(0)->getGlobalBounds().left + result.x < camera.left)
         result.x = 0;
-    // result.x = -this->hitbox.getGlobalBounds().left;
 
     if (this->hitboxes.at(0)->getGlobalBounds().left +
             this->hitboxes.at(0)->getGlobalBounds().width + result.x >
-        1920 /*Gameroom size (right)*/)
+        camera.left + camera.width)
         result.x = 0;
-    // result.x = 1920 - this->hitbox.getGlobalBounds().left -
-    // this->hitbox.getGlobalBounds().width;
 
-    // TODO
     if (this->hitboxes.at(0)->getGlobalBounds().top + result.y <
         200 /*Gameroom size (top)*/)
         result.y = 0;
-    // result.y = 500 - this->hitbox.getGlobalBounds().top;
 
     if (this->hitboxes.at(0)->getGlobalBounds().top +
             this->hitboxes.at(0)->getGlobalBounds().height + result.y >
         1080 /*Gameroom size (bottom)*/)
         result.y = 0;
-    // result.y = 1080 - this->hitbox.getGlobalBounds().top -
-    // this->hitbox.getGlobalBounds().height;
 
     return result;
 }
 
-// TODO : remove hardcoded value for cute ones
+// Pushes the player back on screen, e.g. when the camera has moved forward
+// TODO : remove the hardcoded top and bottom for cute ones
 void Player::fixPosition() {
     sf::FloatRect bounds = this->hitboxes.at(0)->getGlobalBounds();
+    sf::FloatRect camera = World::getCameraBounds();
+    float right = camera.left + camera.width;
     sf::Vector2f v = Vector2f(0, 0);
-    if (bounds.left < 0) v.x = -bounds.left;
+    if (bounds.left < camera.left) v.x = camera.left - bounds.left;
 
-    if (bounds.left + bounds.width > 1920)
-        v.x = (1920 - bounds.left - bounds.width);
+    if (bounds.left + bounds.width > right)
+        v.x = (right - bounds.left - bounds.width);
 
     if (bounds.top < 200) v.y = -1 * (bounds.top - 200);
 
@@ -297,21 +281,18 @@ void Player::fixPosition() {
 }
 
 void Player::cleanArrows(float elapsedTime) {
-    for (unsigned int i = 0; i < this->arrows.size(); i++) {
-        this->arrows.at(i)->update(elapsedTime);
-        if (this->arrows.at(i)->isDead()) {
-            delete (this->arrows.at(i));
-            this->arrows.erase(this->arrows.begin() + i);
-        }
-    }
+    for (auto &arrow : arrows) arrow->update(elapsedTime);
+    arrows.erase(remove_if(arrows.begin(), arrows.end(),
+                           [](auto &arrow) { return arrow->isDead(); }),
+                 arrows.end());
 }
 
-void Player::setLastDroppedItem(ItemWeapon *item) { last_dropped_item = item; }
-
-ItemWeapon *Player::getLastDroppedItem() { return last_dropped_item; }
-
 EntityType Player::getEntityType() { return PLAYER; }
-vector<Arrow *> Player::getArrows() { return arrows; }
+vector<Arrow *> Player::getArrows() {
+    vector<Arrow *> result;
+    for (auto &arrow : arrows) result.push_back(arrow.get());
+    return result;
+}
 
 bool Player::isShooting() { return is_shooting; }
 

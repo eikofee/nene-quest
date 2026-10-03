@@ -4,20 +4,20 @@
 #include <SFML/Graphics.hpp>
 
 #include "playerID.hpp"
+#include "textures.hpp"
 
 class LifeBar : public sf::Drawable, sf::Transformable {
    private:
     sf::RectangleShape background;
     sf::RectangleShape bar;
     sf::Sprite knight_head;
-    sf::Texture knight_head_tex;
 
    public:
     static const int LIFEBAR_WIDTH = 350;
     static const int LIFEBAR_HEIGHT = 35;
     LifeBar();
     LifeBar(sf::Vector2f position, PlayerID id);
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
         target.draw(this->background);
         target.draw(this->bar);
         target.draw(this->knight_head);
@@ -30,7 +30,6 @@ class LifeBar : public sf::Drawable, sf::Transformable {
         return this->background.getPosition();
     }
     void updateBar(int value);
-    void setValue(short int value);
 };
 
 #endif

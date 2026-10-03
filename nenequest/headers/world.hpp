@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include <vector>
 
 #include "bonus.hpp"
@@ -14,53 +15,63 @@
 #include "gamemode.hpp"
 #include "lifebar.hpp"
 #include "breakableObject.hpp"
+#include "dragon.hpp"
 
 class World {
    public:
-    static void initialize();
-    static void clearAll();
     static std::vector<Entity *> getEntities();
-    static std::vector<Entity *> getNearEntities(sf::Vector2f position,
-                                                 float radius);
     static std::vector<Entity *> getCollidingEntities(Entity *entity);
     static std::vector<Entity *> getCollidingEntitiesOnZAxis(Entity *entity);
-    static void addEntity(Entity *entity);
-    static void addPlayer(Player *player);
+    // Added at the end of the next updateEntities(), so it's safe to call
+    // while looping over the entities
+    static void addEntity(std::unique_ptr<Entity> entity);
+    static void addPlayer(std::unique_ptr<Player> player);
     static bool isTwoPlayer();
     static void setGameMode(GameMode gameMode);
     static bool isGameOver();
+    static bool isVictory();  // The dragon is dead
     static void clearEntities();
     static void clearPlayers();
     static void clearLifebars();
     static void updateEntities();
     static void updatePlayers();
-    static void setElapsedTime(float time);
+    static void setElapsedTime(float time);  // Seconds
     static float getElapsedTime();
     static void render(sf::RenderWindow &app);
-    static std::vector<Entity *> testCollidingEntities(Entity *entity,
-                                                       sf::Vector2f movement);
     static std::vector<Entity *> testCollidingEntitiesOnZAxis(
         Entity *entity, sf::Vector2f movement);
-    static std::vector<Player *> getPlayers();
     static Player* getPlayer(PlayerID id);
-    static void scroll();
+    // The camera shows the part of the level on screen and moves right at
+    // the scroll speed. Entities never move because of scrolling
+    static void resetCamera(sf::Vector2f screenSize);
+    static void moveCamera();
+    static sf::FloatRect getCameraBounds();
+    static void setScrollSpeed(float speed);  // Pixels/second
+    static float getScrollSpeed();
+    static void crushPlayersAgainstSolids();
     static void managePlayersCollidingWithThings();
     static void managePlayerCollidingWithBonus(Player *player, Bonus *bonus);
     static void managePlayerCollidingWithEnemy(Player *player, Enemy *enemy);
+    static void managePlayersTouchingFlames();
     // Management player's attacking 
     static void manageAttackingPlayers();
-    static void manageWeaponCollidingWithThings(Weapon *weapon);
+    static void manageWeaponCollidingWithThings(Player *player);
 
    private:
-    static constexpr float SCROLL_SPEED = 0.f; // Used to be 30
+    // How far behind the camera an entity goes before it's removed
+    static constexpr float FORGET_DISTANCE = 500.f;
     static constexpr float SCROLL_DAMAGE =
         30.f;  // When the player is pressed between the wall and a object by the
              // scrolling
     static GameMode gameMode;
-    static std::vector<Entity *> entities;
-    static std::vector<Player *> players;
-    static std::vector<LifeBar *> lifebars;
+    static bool dragonDefeated;
+    static std::vector<std::unique_ptr<Entity>> entities;
+    static std::vector<std::unique_ptr<Entity>> spawned;  // Not added yet
+    static std::vector<std::unique_ptr<Player>> players;
+    static std::vector<std::unique_ptr<LifeBar>> lifebars;
     static float elapsedTime;
+    static sf::View camera;
+    static float scrollSpeed;
     static bool sortUsingFirstZHitbox(Entity *a, Entity *b);
 };
 

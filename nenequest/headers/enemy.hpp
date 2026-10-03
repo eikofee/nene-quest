@@ -12,12 +12,12 @@ class Enemy : public Entity {
     Enemy(int hp);
     virtual ~Enemy();
     short int getAttackDamage();
-    void update(float elapsedTime);
+    void update(float elapsedTime) override;
     EnemyType getEnemyType();
     virtual bool isDying();  // Called for dying animation (blinking or dragon's death)
-    virtual EntityType getEntityType();
+    EntityType getEntityType() override;
     virtual void stun();
-    virtual void alterHealth(int value, bool relative);
+    void alterHealth(int value, bool relative) override;
 
    protected:
 
@@ -30,7 +30,6 @@ class Enemy : public Entity {
     EnemyType enemy_type;
     static int const DRAGON_HP = 20;
     static int const BOAR_HP = 3;
-    int hp;
 
    private:
    
