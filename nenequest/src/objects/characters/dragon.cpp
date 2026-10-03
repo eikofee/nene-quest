@@ -124,11 +124,13 @@ void Dragon::update(float elapsedTime) {
     }
 
     // Delete old flames
-    for (unsigned int i = 0; i < flames.size(); i++) {
+    for (unsigned int i = 0; i < flames.size();) {
         flames.at(i)->update(elapsedTime);
         if (flames.at(i)->isDead()) {
             delete (flames.at(i));
             flames.erase(flames.begin() + i);
+        } else {
+            i++;
         }
     }
 }

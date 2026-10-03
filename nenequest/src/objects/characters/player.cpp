@@ -268,11 +268,13 @@ void Player::fixPosition() {
 }
 
 void Player::cleanArrows(float elapsedTime) {
-    for (unsigned int i = 0; i < this->arrows.size(); i++) {
+    for (unsigned int i = 0; i < this->arrows.size();) {
         this->arrows.at(i)->update(elapsedTime);
         if (this->arrows.at(i)->isDead()) {
             delete (this->arrows.at(i));
             this->arrows.erase(this->arrows.begin() + i);
+        } else {
+            i++;
         }
     }
 }

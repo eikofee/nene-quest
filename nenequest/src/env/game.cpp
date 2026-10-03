@@ -118,6 +118,7 @@ void Game::manageInputs(sf::Event e, PlayerID id, Keyboard::Key up,
                         Keyboard::Key down, Keyboard::Key left,
                         Keyboard::Key right, Keyboard::Key attack) {
     Player* player = World::getPlayer(id);
+    if (!player) return;  // This player is dead
     if (e.type == Event::KeyPressed) {
         if (e.key.code == up)
             player->moving_up = true;

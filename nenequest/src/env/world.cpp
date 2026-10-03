@@ -107,14 +107,20 @@ void World::clearLifebars() {
 
 void World::updateEntities() {
     vector<Entity *> added;
-    for (unsigned int i = 0; i < entities.size(); i++) {
+    // No i++ after an erase, otherwise the next entity is skipped
+    for (unsigned int i = 0; i < entities.size();) {
         entities.at(i)->update(elapsedTime);
         if (entities.at(i)->isDead()) {
-            if(entities.at(i)->getEntityType() == SOLID) {
-                added.push_back(((BreakableObject *) entities.at(i))->getDrops());
+            // Barrels may drop nothing, and other SOLID entities never drop
+            auto object = dynamic_cast<BreakableObject *>(entities.at(i));
+            if (object) {
+                Bonus *drop = object->getDrops();
+                if (drop) added.push_back(drop);
             }
             delete (entities.at(i));
             entities.erase(entities.begin() + i);
+        } else {
+            i++;
         }
     }
     entities.insert(entities.end(), added.begin(), added.end());
@@ -134,11 +140,13 @@ bool World::isGameOver() {
 }
 
 void World::updatePlayers() {
-    for (unsigned int i = 0; i < players.size(); i++) {
+    for (unsigned int i = 0; i < players.size();) {
         players.at(i)->update(elapsedTime);
         if (players.at(i)->isDead()) {
             delete (players.at(i));
             players.erase(players.begin() + i);
+        } else {
+            i++;
         }
     }
 }
@@ -232,6 +240,7 @@ void World::manageWeaponCollidingWithThings(Weapon *weapon) {
             case ENEMY:
                 e->alterHealth(- weapon->getDamage(), true);
                 ((Enemy *)e)->stun();
+                break;
             case NONE:
             case PLAYER:
             case SFX:
