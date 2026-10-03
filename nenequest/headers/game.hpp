@@ -23,7 +23,6 @@
 #include "screenState.hpp"
 #include "weaponType.hpp"
 
-class LevelManager;
 class Game : public Screen {
    public:
     Game(int playerCount);
@@ -40,9 +39,6 @@ class Game : public Screen {
     void manageInputs(sf::Event e, PlayerID id, sf::Keyboard::Key up,
                       sf::Keyboard::Key down, sf::Keyboard::Key left,
                       sf::Keyboard::Key right, sf::Keyboard::Key attack);
-
-    // Final objetcs
-    LevelManager *manager;
 
     BreakableObject *getCollidingObject(Player *p);
 
