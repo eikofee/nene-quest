@@ -34,7 +34,6 @@ Arrow::Arrow(Vector2f position, float g_depth) {
 
     updateAutoHitboxPosition();
 
-    // speed = Vector2f(0.8,-0.8);
     speed = Vector2f(800, -200);
 
     damage_texture.loadFromFile("img/icon_damage.png");
@@ -54,20 +53,11 @@ void Arrow::update(float elapsedTime) {
         lifespan += elapsedTime;
 
         // Make the arrow follow a curve
-        /* this->setPosition(initial_location.x +
-         lifespan*speed.x,initial_location.y + lifespan*speed.y +
-         gravity*lifespan/2); sprite.setRotation(atan((speed.y +
-         gravity*lifespan)/speed.x)*180/3.1415);
-         hitboxes.at(0)->setRotation(sprite.getRotation());
-         if(this->getPosition().y > initial_location.y)
-             is_dead = true;
-     */
-
         this->setPosition(
             initial_location.x + speed.x * lifespan,
             initial_location.y +
                 speed.y * (sin((lifespan / curveTime) *
-                               M_PI) /*+ sin(curveCappedValue * M_PI)*/));
+                               M_PI)));
         zHitboxes.at(0)->setPosition(getPosition().x, initial_location.y);
         sprite.setRotation(
             -30 +
@@ -100,9 +90,8 @@ void Arrow::kill() {
     is_dying = true;
 }
 
-void Arrow::draw(sf::RenderTarget &target, sf::RenderStates states) {
-    // target.draw(hitbox, states);
-    target.draw(sprite, states);
+void Arrow::draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    Entity::draw(target, states);
 
     if (is_dying) target.draw(damage_sprite, states);
 }

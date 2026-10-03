@@ -19,13 +19,12 @@ void Entity::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(sprite, states);
 }
 
-void Entity::setPosition(int x, int y) {
+void Entity::setPosition(float x, float y) {
     sprite.setPosition(x, y);
     for (auto h : hitboxes) h->setPosition(x, y);
 }
 
 Vector2f Entity::getPosition() {
-    // return hitbox.getPosition();
     return hitboxes.at(0)->getPosition();  // Mixed feelings about this
 }
 
@@ -39,11 +38,6 @@ void Entity::updateAutoHitboxSize() {
                                      sprite.getLocalBounds().height));
 }
 
-Vector2f Entity::getSpriteSize() {
-    return Vector2f(sprite.getGlobalBounds().width,
-                    sprite.getGlobalBounds().height);
-}
-
 void Entity::updateAutoSpritePosition() {
     sprite.setPosition(hitboxes.at(0)->getGlobalBounds().left,
                        hitboxes.at(0)->getGlobalBounds().top);
@@ -53,8 +47,6 @@ float Entity::getDepth() {
     return hitboxes.at(0)->getGlobalBounds().top +
            hitboxes.at(0)->getGlobalBounds().height;  // Same about this line
 }
-
-float Entity::getDrawDepth() { return this->getDepth(); }
 
 void Entity::move(sf::Vector2f v) {
     // maybe we can do it directly here instead of each of the entities
@@ -73,11 +65,6 @@ bool Entity::isDead() {
     return health <= 0;
 }
 
-float Entity::distanceToPosition(sf::Vector2f position) {
-    return sqrtf(powf(this->getPosition().x - position.x, 2) +
-                 powf(this->getPosition().y - position.y, 2));
-}
-
 bool Entity::isIgnoringDepthOnRendering() { return ignoreDepthOnRendering; }
 
 int Entity::getHealth() { 
@@ -92,9 +79,6 @@ void Entity::alterHealth(int value, bool relative) {
 }
 
 
-void Entity::handleDeath() {
-    // if (health <= 0) { do something }
-}
 
 bool Entity::collideWith(Entity *entity) {
     for (auto h : this->getZHitboxes())

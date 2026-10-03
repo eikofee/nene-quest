@@ -46,9 +46,6 @@ void RandomCloud::generateBorder() {
 }
 
 void RandomCloud::update() {
-    /*if (this->clock.getElapsedTime().asSeconds() >= this->LIFETIME)
-            this->alive = false;*/
-
     if (this->cloudBody->getPosition().x <
         (0 - this->MAX_WIDTH - this->BORDER_SIZE_MAX))
         this->alive = false;

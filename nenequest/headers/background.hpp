@@ -34,7 +34,7 @@ class Background : public sf::Drawable, sf::Transformable {
    public:
     Background(sf::Vector2u v);
 
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
         target.draw(this->sky);
         for (auto rc : this->clouds) target.draw(*rc);
 

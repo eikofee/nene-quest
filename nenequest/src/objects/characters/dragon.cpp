@@ -39,21 +39,12 @@ Dragon::Dragon(Vector2f position) : Enemy(DRAGON_HP) {
     zhitbox->setFillColor(Color(0, 0, 255, 128));
     zHitboxes.push_back(zhitbox);
 
-    /*zHitboxes.push_back(new RectangleShape(Vector2f(530,120)));
-    zHitboxes.at(0)->setOrigin(-270, -410);
-    zHitboxes.at(0)->setFillColor(Color(0,0,255,128));
+    // Finer hitboxes following the dragon's shape (size, then origin),
+    // unused for now:
+    //   body  530x120 at (-270, -410)
+    //   neck  220x290 at (-270, -120)
+    //   head  310x180 at (-50, -30)
 
-zHitboxes.push_back(new RectangleShape(Vector2f(220,290)));
-    zHitboxes.at(1)->setOrigin(-270, -120);
-zHitboxes.at(1)->setFillColor(Color(0,0,255,128));
-
-
-zHitboxes.push_back(new RectangleShape(Vector2f(310,180)));
-    zHitboxes.at(2)->setOrigin(-50, -30);
-zHitboxes.at(2)->setFillColor(Color(0,0,255,128));*/
-
-    // sprite.setOrigin(sprite.getGlobalBounds().width*0.27,sprite.getGlobalBounds().height*0.5
-    // );
     updateAutoSpritePosition();
 
     speed = Vector2f(DRAGON_SPEED, 0);
@@ -133,11 +124,13 @@ void Dragon::update(float elapsedTime) {
     }
 
     // Delete old flames
-    for (unsigned int i = 0; i < flames.size(); i++) {
+    for (unsigned int i = 0; i < flames.size();) {
         flames.at(i)->update(elapsedTime);
         if (flames.at(i)->isDead()) {
             delete (flames.at(i));
             flames.erase(flames.begin() + i);
+        } else {
+            i++;
         }
     }
 }
@@ -187,39 +180,7 @@ bool Dragon::isBreatingFire() { return fire_breathing; }
 
 vector<Projectile *> Dragon::getFlames() { return flames; }
 
-// void Dragon::setPosition(int x, int y){
-//    sprite.setPosition(x,y);
-//    for(unsigned int i =0;i < hitboxes.size();i++)
-//        hitboxes.at(i).setPosition(x,y);
-//}
-//
 sf::Vector2f Dragon::computeMove(float elapsedTime) {
     sf::Vector2f r = Vector2f(speed.x * elapsedTime, speed.y * elapsedTime);
-    // for(unsigned int i =0;i < hitboxes.size();i++)
-    //    hitboxes.at(i).move(speed.x*elapsedTime, speed.y*elapsedTime);
-
     return r;
 }
-//
-// void Dragon::move(sf::Vector2f g_speed, float elapsedTime){
-//    sprite.move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
-//    for(unsigned int i =0;i < hitboxes.size();i++)
-//        hitboxes.at(i).move(g_speed.x*elapsedTime, g_speed.y*elapsedTime);
-//
-//}
-//
-// bool Dragon::detectHit(Entity* entity){
-//
-//    if(this->getDepth() + Entity::DEPTH_DIFF > entity->getDepth() &&
-//    this->getDepth() - Entity::DEPTH_DIFF < entity->getDepth())
-//        for(unsigned int i =0;i < hitboxes.size();i++)
-//            if(entity->getHitbox().getGlobalBounds().intersects(hitboxes.at(i).getGlobalBounds()))
-//                return true;
-//    return false;
-//}
-//
-// float Dragon::getDepth(){
-//    return hitboxes.at(0).getGlobalBounds().top +
-//    hitboxes.at(0).getGlobalBounds().height +70;
-//}
-

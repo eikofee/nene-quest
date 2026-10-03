@@ -45,6 +45,3 @@ void LifeBar::updateBar(int value) {
     this->bar.setSize(Vector2f(newLength, this->LIFEBAR_HEIGHT));
 }
 
-void LifeBar::setValue(short int value) {
-    if (value >= 0 && value <= (Player::PLAYER_MAX_HP)) updateBar(value);
-}

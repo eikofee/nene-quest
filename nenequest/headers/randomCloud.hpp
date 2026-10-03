@@ -25,7 +25,7 @@ class RandomCloud : public RandomShape {
    public:
     RandomCloud();
     ~RandomCloud();
-    virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const {
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override {
         target.draw(*(this->cloudBody));
         for (sf::CircleShape *var : this->cloudBorder) {
             target.draw(*var);
@@ -44,9 +44,9 @@ class RandomCloud : public RandomShape {
     }
 
     void generateBorder();
-    void update();
-    bool isAlive();
-    void translate(float x, float y);
+    void update() override;
+    bool isAlive() override;
+    void translate(float x, float y) override;
 };
 
 #endif

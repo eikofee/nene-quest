@@ -466,3 +466,6 @@ nenequest/thirdparty/sfml/*
 build/
 install/
 .vscode/
+# Nix build output
+result
+result-*

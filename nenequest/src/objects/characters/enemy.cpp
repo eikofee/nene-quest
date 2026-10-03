@@ -15,7 +15,6 @@ short int Enemy::getAttackDamage() { return attack_damage; }
 
 void Enemy::update(float elapsedTime) {
     this->currentInvulnerabilityTime -= elapsedTime;
-    // this->move(elapsedTime);
 }
 
 EnemyType Enemy::getEnemyType() { return enemy_type; }

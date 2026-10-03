@@ -68,7 +68,7 @@ void Weapon::Animate(float lerp) {
                        lerp * sf::Vector2f(-5, 10));
 }
 
-void Weapon::setPosition(int x, int y) {
+void Weapon::setPosition(float x, float y) {
     sprite.setPosition(sf::Vector2f(x, y) + getWeaponOffset(type));
     hitboxes.at(0)->setPosition(sprite.getPosition());
     zHitboxes.at(0)->setPosition(sprite.getPosition() -
