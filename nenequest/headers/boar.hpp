@@ -15,12 +15,12 @@ class Boar : public Enemy {
    protected:
    private:
     static const int BOAR_DAMAGE = 1;
-    static const int STUN_DURATION = 1000;         // Milliseconds
+    static constexpr float STUN_DURATION = 1.f;     // Seconds
     static constexpr float ANIMATION_DELAY = 0.1f;  // Seconds
-    static constexpr float BOAR_SPEED = 0.f;        // Pixels/millisecond
+    static constexpr float BOAR_SPEED = 300.f;      // Pixels/second
 
     bool is_stunned = false;
-    int stun_timer = 0;
+    float stun_timer = 0.f;
     void progressAnimation();
 };
 

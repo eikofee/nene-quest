@@ -30,7 +30,7 @@ class World {
     static void clearLifebars();
     static void updateEntities();
     static void updatePlayers();
-    static void setElapsedTime(float time);
+    static void setElapsedTime(float time);  // Seconds
     static float getElapsedTime();
     static void render(sf::RenderWindow &app);
     static std::vector<Entity *> testCollidingEntitiesOnZAxis(
@@ -45,7 +45,7 @@ class World {
     static void manageWeaponCollidingWithThings(Player *player);
 
    private:
-    static constexpr float SCROLL_SPEED = 0.f; // Used to be 30
+    static constexpr float SCROLL_SPEED = 0.f;  // Pixels/second, used to be 30
     static constexpr float SCROLL_DAMAGE =
         30.f;  // When the player is pressed between the wall and a object by the
              // scrolling

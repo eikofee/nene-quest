@@ -71,7 +71,7 @@ std::vector<Entity *> World::testCollidingEntitiesOnZAxis(
     return result;
 }
 
-void World::setElapsedTime(float time) { elapsedTime = time / 1000; }
+void World::setElapsedTime(float time) { elapsedTime = time; }
 
 void World::addEntity(Entity *entity) {
     entities.push_back(entity);

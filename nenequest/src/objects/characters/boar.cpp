@@ -60,7 +60,7 @@ void Boar::progressAnimation() {
 void Boar::update(float elapsedTime) {
     // Move the boar if it isn't stunned
     if (!is_stunned) {
-        this->move(speed);
+        this->move(speed * elapsedTime);
         if (clock.getElapsedTime().asSeconds() > ANIMATION_DELAY) {
             progressAnimation();
             clock.restart();

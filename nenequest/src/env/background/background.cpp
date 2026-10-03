@@ -25,17 +25,18 @@ Background::Background(Vector2u v) {
     this->ground.setPosition(0, this->sky.getSize().y);
 }
 
-void Background::update() {
+void Background::update(float elapsedTime) {
     auto del = [](RandomShape *r) {
         bool b = !r->isAlive();
         if (b) delete r;
         return b;
     };
-    auto upd = [&del, this](std::vector<RandomShape *> &shapes,
+    auto upd = [&del, elapsedTime, this](std::vector<RandomShape *> &shapes,
                             float speedModifier) {
         auto rm = std::remove_if(shapes.begin(), shapes.end(), del);
         for (auto it = shapes.begin(); it != rm; ++it) {
-            (*it)->translate(-(scrollSpeed + 1) * speedModifier, 0);
+            (*it)->translate(
+                -(scrollSpeed + DRIFT_SPEED) * speedModifier * elapsedTime, 0);
             (*it)->update();
         }
         shapes.erase(rm, shapes.end());
@@ -43,13 +44,14 @@ void Background::update() {
     upd(this->clouds, this->cloudSpeedModifier);
     upd(this->mountains, this->mountainSpeedModifier);
 
+    this->cloudDistance += scrollSpeed * elapsedTime;
+    this->mountainDistance += scrollSpeed * elapsedTime;
     this->createClouds();
     this->createMountains();
 }
 
 void Background::createClouds() {
-    float t = this->cloudClock.getElapsedTime().asSeconds();
-    if (t * scrollSpeed >= this->nextCloud) {
+    if (this->cloudDistance >= this->nextCloud) {
         RandomCloud *nc = new RandomCloud();
         nc->setPosition(
             v.x + 250 /*cloud width*/,
@@ -60,13 +62,12 @@ void Background::createClouds() {
         this->nextCloud = rand() % (this->CLOUD_SPAWN_INTERVAL_RANDOM * 2) -
                           this->CLOUD_SPAWN_INTERVAL_RANDOM +
                           this->CLOUD_SPAWN_INTERVAL;
-        this->cloudClock.restart();
+        this->cloudDistance = 0;
     }
 }
 
 void Background::createMountains() {
-    float t = this->mountainClock.getElapsedTime().asSeconds();
-    if (t * scrollSpeed >= this->nextMountain) {
+    if (this->mountainDistance >= this->nextMountain) {
         RandomMountain *nm = new RandomMountain();
         nm->setPosition(v.x + 250 /*cloud width*/,
                         this->sky.getSize().y + MOUNTAIN_VAR_Y_OFFSET);
@@ -76,10 +77,10 @@ void Background::createMountains() {
             rand() % (this->MOUNTAIN_SPAWN_INTERVAL_RANDOM * 2) -
             this->MOUNTAIN_SPAWN_INTERVAL_RANDOM +
             this->MOUNTAIN_SPAWN_INTERVAL;
-        this->mountainClock.restart();
+        this->mountainDistance = 0;
     }
 }
 
-void Background::setSpeed(int speed) { this->scrollSpeed = speed; }
+void Background::setSpeed(float speed) { this->scrollSpeed = speed; }
 
 float Background::getSkyHeight() { return this->sky.getLocalBounds().height; }

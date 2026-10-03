@@ -20,11 +20,14 @@ class Dragon : public Enemy {
    protected:
    private:
     static int const DRAGON_DAMAGE = 50;
-    static int const MOVEMENT_DURATION = 1000;     // Milliseconds
-    static int const DELAY_BETWEEN_FLAMES = 100;   // Milliseconds
-    static float constexpr ANIMATION_DELAY = 0.5f;  // Seconds
-    static float constexpr DRAGON_SPEED = 0.1f;     // Pixels/milliseconds
-    static float constexpr DEAD_ANIMATION_DURATION = 6000.f;  // Milliseconds
+    static float constexpr MOVEMENT_DURATION = 1.f;          // Seconds
+    static float constexpr DELAY_BETWEEN_FLAMES = 0.1f;      // Seconds
+    static float constexpr ANIMATION_DELAY = 0.5f;           // Seconds
+    static float constexpr DRAGON_SPEED = 100.f;             // Pixels/second
+    static float constexpr DEAD_ANIMATION_DURATION = 6.f;    // Seconds
+    static float constexpr DEAD_SHAKE_SPEED = 180.f;         // Pixels/second
+    static float constexpr DEAD_SHAKE_DURATION = 0.04f;      // Seconds
+    static float constexpr DEAD_DELAY_BETWEEN_FLAMES = 0.6f; // Seconds
 
     std::vector<Projectile *> flames;
     sf::Vector2f computeMove(float elapsedTime);
@@ -34,6 +37,7 @@ class Dragon : public Enemy {
     void progressAnimation();
     float flame_timer = 0.f;
     float dying_timer = 0.f;
+    bool dying_started = false;
 };
 
 #endif  // DRAGON_H

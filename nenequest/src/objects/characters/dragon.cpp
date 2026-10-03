@@ -85,29 +85,29 @@ void Dragon::update(float elapsedTime) {
     else {
         fire_breathing = true;
         // Delete the hitbox at the start of the dying animation
-        if (dying_timer == 0) {
+        if (!dying_started) {
             for (unsigned int i = 1; i < hitboxes.size(); i++)
                 hitboxes.at(i)->setSize(Vector2f(0, 0));
             sprite.setOrigin(350, 400);
             sprite.move(350, 400);
-            dying_timer = 1;
+            dying_started = true;
             movement_timer = 0;
-            speed = Vector2f(3, 3);
-            flame_timer = 1000;
+            speed = Vector2f(DEAD_SHAKE_SPEED, DEAD_SHAKE_SPEED);
+            flame_timer = DEAD_DELAY_BETWEEN_FLAMES;  // First flame right away
         } else if (dying_timer < DEAD_ANIMATION_DURATION) {
             dying_timer += elapsedTime;
             if (sprite.getRotation() < 90)
                 sprite.setRotation(90 * dying_timer / DEAD_ANIMATION_DURATION *
                                    6);
             else {
-                sprite.move(speed.x, speed.y);
+                sprite.move(computeMove(elapsedTime));
                 movement_timer += elapsedTime;
-                if (movement_timer > 40) {
+                if (movement_timer > DEAD_SHAKE_DURATION) {
                     speed.x = -speed.x;
                     movement_timer = 0;
                 }
                 flame_timer += elapsedTime;
-                if (flame_timer > 600) {
+                if (flame_timer > DEAD_DELAY_BETWEEN_FLAMES) {
                     flames.push_back(
                         new Flame(Vector2f(sprite.getPosition().x + 270,
                                            sprite.getPosition().y - 150),

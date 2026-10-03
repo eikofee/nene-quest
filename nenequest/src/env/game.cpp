@@ -67,7 +67,7 @@ ScreenState Game::run(RenderWindow& app) {
     // ---------------- Main Loop ----------------
     while (true) {
 
-        float elapsedTime = clock.restart().asMilliseconds();
+        float elapsedTime = clock.restart().asSeconds();
 
         if(World::isGameOver()) {
             if (World::isTwoPlayer())
@@ -102,7 +102,7 @@ ScreenState Game::run(RenderWindow& app) {
         World::managePlayersCollidingWithThings();
         World::manageAttackingPlayers();
 
-        background.update();
+        background.update(elapsedTime);
         app.clear(Color::White);
         app.draw(background);
         World::render(app);
