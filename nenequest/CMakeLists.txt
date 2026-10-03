@@ -1,34 +1,47 @@
-cmake_minimum_required(VERSION 3.8)
-project(NeneQuest)
+cmake_minimum_required(VERSION 3.21)
+project(NeneQuest LANGUAGES CXX)
 
-# Headers location
-include_directories(headers)
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
+endif()
 
-# Prepare executable
-set(EXECUTABLE_NAME "NeneQuest")
+# Generate compile_commands.json for clangd
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Sources locations
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-add_executable(${EXECUTABLE_NAME} ${SOURCES})
+## SFML: use an installed SFML 2.6 if there is one, otherwise download it
+find_package(SFML 2.6 COMPONENTS graphics audio QUIET)
+if(NOT SFML_FOUND)
+  message(STATUS "SFML 2.6 not found, downloading it")
+  include(FetchContent)
+  set(SFML_BUILD_NETWORK OFF CACHE BOOL "" FORCE)
+  FetchContent_Declare(SFML
+    GIT_REPOSITORY https://github.com/SFML/SFML.git
+    GIT_TAG 2.6.2
+    GIT_SHALLOW ON)
+  FetchContent_MakeAvailable(SFML)
+endif()
 
-target_compile_options(${EXECUTABLE_NAME} PRIVATE -Wall)
-set_target_properties(${EXECUTABLE_NAME} PROPERTIES
-  CXX_STANDARD 11
-  CXX_STANDARD_REQUIRED YES
-  CXX_EXTENSIONS NO
-)
+## Executable
+# CONFIGURE_DEPENDS makes new .cpp files get picked up without re-running cmake
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
+add_executable(NeneQuest ${SOURCES})
+target_include_directories(NeneQuest PRIVATE headers)
+target_compile_features(NeneQuest PRIVATE cxx_std_17)
+target_link_libraries(NeneQuest PRIVATE sfml-graphics sfml-audio)
 
-## If you want to link SFML statically
-# set(SFML_STATIC_LIBRARIES TRUE)
+if(MSVC)
+  target_compile_options(NeneQuest PRIVATE /W4)
+  target_compile_definitions(NeneQuest PRIVATE _USE_MATH_DEFINES) # M_PI
+else()
+  target_compile_options(NeneQuest PRIVATE -Wall -Wextra
+    $<$<CONFIG:Debug>:-fsanitize=undefined>)
+  target_link_options(NeneQuest PRIVATE $<$<CONFIG:Debug>:-fsanitize=undefined>)
+endif()
 
-
-find_package(SFML REQUIRED COMPONENTS graphics audio)
-target_link_libraries(${EXECUTABLE_NAME} sfml-graphics sfml-audio)
-install(FILES $<TARGET_RUNTIME_DLLS:NeneQuest> TYPE BIN)
-
-install(DIRECTORY bgm fonts img levels sfx DESTINATION bin)
-install(FILES config/config.ini DESTINATION bin)
-install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
-
-# Package Generator
-include(CPack)
+# On Windows, copy the SFML DLLs next to the executable so it runs from build/
+if(WIN32)
+  add_custom_command(TARGET NeneQuest POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      $<TARGET_RUNTIME_DLLS:NeneQuest> $<TARGET_FILE_DIR:NeneQuest>
+    COMMAND_EXPAND_LISTS)
+endif()
