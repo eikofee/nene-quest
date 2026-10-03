@@ -2,6 +2,8 @@
 
 #include <time.h>
 
+#include <algorithm>
+
 #include "flame.hpp"
 #include "game.hpp"
 
@@ -50,11 +52,6 @@ Dragon::Dragon(Vector2f position) : Enemy(DRAGON_HP) {
     speed = Vector2f(DRAGON_SPEED, 0);
 }
 
-Dragon::~Dragon() {
-    for (unsigned int i = 0; i < flames.size(); i++) {
-        delete (flames.at(i));
-    }
-}
 
 void Dragon::update(float elapsedTime) {
     if (!this->isDying()) {
@@ -71,7 +68,7 @@ void Dragon::update(float elapsedTime) {
         flame_timer += elapsedTime;
         if (fire_breathing) {
             if (flame_timer > DELAY_BETWEEN_FLAMES) {
-                flames.push_back(new Flame(
+                flames.push_back(make_unique<Flame>(
                     Vector2f(
                         sprite.getPosition().x - sprite.getOrigin().x + 100,
                         sprite.getPosition().y - sprite.getOrigin().y + 100 +
@@ -109,7 +106,7 @@ void Dragon::update(float elapsedTime) {
                 flame_timer += elapsedTime;
                 if (flame_timer > DEAD_DELAY_BETWEEN_FLAMES) {
                     flames.push_back(
-                        new Flame(Vector2f(sprite.getPosition().x + 270,
+                        make_unique<Flame>(Vector2f(sprite.getPosition().x + 270,
                                            sprite.getPosition().y - 150),
                                   70, this->getDepth(), true));
                     flame_timer = 0;
@@ -124,15 +121,10 @@ void Dragon::update(float elapsedTime) {
     }
 
     // Delete old flames
-    for (unsigned int i = 0; i < flames.size();) {
-        flames.at(i)->update(elapsedTime);
-        if (flames.at(i)->isDead()) {
-            delete (flames.at(i));
-            flames.erase(flames.begin() + i);
-        } else {
-            i++;
-        }
-    }
+    for (auto &flame : flames) flame->update(elapsedTime);
+    flames.erase(remove_if(flames.begin(), flames.end(),
+                           [](auto &flame) { return flame->isDead(); }),
+                 flames.end());
 }
 
 void Dragon::progressAnimation() {
@@ -178,7 +170,11 @@ void Dragon::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
 bool Dragon::isBreatingFire() { return fire_breathing; }
 
-vector<Projectile *> Dragon::getFlames() { return flames; }
+vector<Projectile *> Dragon::getFlames() {
+    vector<Projectile *> result;
+    for (auto &flame : flames) result.push_back(flame.get());
+    return result;
+}
 
 sf::Vector2f Dragon::computeMove(float elapsedTime) {
     sf::Vector2f r = Vector2f(speed.x * elapsedTime, speed.y * elapsedTime);

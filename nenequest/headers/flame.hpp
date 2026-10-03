@@ -13,7 +13,6 @@ class Flame : public Projectile {
           bool straightLine = false);
     virtual ~Flame();
     void update(float elapsedTime) override;
-    bool isDead() override;
 
    private:
     // Curved flames, breathed by the living dragon
@@ -29,7 +28,6 @@ class Flame : public Projectile {
     float lifespan = 0.f;
     float fact;
     sf::Vector2f initial_location;
-    bool is_dead = false;
     bool straight_line;
 };
 

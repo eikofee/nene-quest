@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <memory>
 
 #include "arrow.hpp"
 #include "entity.hpp"
@@ -12,15 +13,15 @@
 
 class Player : public Entity {
    public:
-    Player(Weapon *weapon, sf::Vector2f position, bool secondPlayer = false);
-    ~Player();
+    Player(std::unique_ptr<Weapon> weapon, sf::Vector2f position,
+           bool secondPlayer = false);
 
     // Weapon
     Weapon *getWeapon();
     std::vector<Arrow *> getArrows();
     void attack();
     void fireArrow();
-    void equip(Weapon *w);
+    void equip(std::unique_ptr<Weapon> w);
     void update(float elapsedTime) override;
     bool isAttacking();
     // True the first time an entity is hit during the current attack
@@ -70,7 +71,7 @@ class Player : public Entity {
     int weaponYOffsetVariation;
 
     sf::Vector2f speed = sf::Vector2f(-10, 0);
-    std::vector<Arrow *> arrows;
+    std::vector<std::unique_ptr<Arrow>> arrows;
     sf::Clock clock;
     static constexpr float ANIMATION_DELAY = 0.1f;
     void update_animation();
@@ -80,7 +81,7 @@ class Player : public Entity {
 
     void cleanArrows(float elapsedTime);
     PlayerID id;
-    Weapon *weapon;
+    std::unique_ptr<Weapon> weapon;
 };
 
 #endif

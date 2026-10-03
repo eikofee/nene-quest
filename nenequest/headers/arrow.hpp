@@ -9,14 +9,13 @@ class Arrow : public Projectile {
     Arrow(sf::Vector2f position, float g_depth);
     virtual ~Arrow();
     void update(float elapsedTime) override;
-    bool isDead() override;
     void kill();
     void draw(sf::RenderTarget &target,
               sf::RenderStates states = sf::RenderStates::Default) const override;
 
    protected:
    private:
-    bool is_dead = false;
+    static constexpr float DYING_DURATION = 0.15f;  // Seconds
     bool is_dying = false;
     float lifespan = 0.f;
     float gravity = 80.f;

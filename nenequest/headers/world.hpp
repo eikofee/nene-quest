@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <SFML/Graphics.hpp>
+#include <memory>
 #include <vector>
 
 #include "bonus.hpp"
@@ -20,8 +21,10 @@ class World {
     static std::vector<Entity *> getEntities();
     static std::vector<Entity *> getCollidingEntities(Entity *entity);
     static std::vector<Entity *> getCollidingEntitiesOnZAxis(Entity *entity);
-    static void addEntity(Entity *entity);
-    static void addPlayer(Player *player);
+    // Added at the end of the next updateEntities(), so it's safe to call
+    // while looping over the entities
+    static void addEntity(std::unique_ptr<Entity> entity);
+    static void addPlayer(std::unique_ptr<Player> player);
     static bool isTwoPlayer();
     static void setGameMode(GameMode gameMode);
     static bool isGameOver();
@@ -50,9 +53,10 @@ class World {
         30.f;  // When the player is pressed between the wall and a object by the
              // scrolling
     static GameMode gameMode;
-    static std::vector<Entity *> entities;
-    static std::vector<Player *> players;
-    static std::vector<LifeBar *> lifebars;
+    static std::vector<std::unique_ptr<Entity>> entities;
+    static std::vector<std::unique_ptr<Entity>> spawned;  // Not added yet
+    static std::vector<std::unique_ptr<Player>> players;
+    static std::vector<std::unique_ptr<LifeBar>> lifebars;
     static float elapsedTime;
     static bool sortUsingFirstZHitbox(Entity *a, Entity *b);
 };

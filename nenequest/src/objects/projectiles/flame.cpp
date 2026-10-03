@@ -59,7 +59,7 @@ void Flame::update(float elapsedTime) {
                             sprite.getScale().y - growth);
         }
         // Begin a timer when the flame begin to go up to make it disappear
-        if (span_left > CURVE_FADE_DURATION) is_dead = true;
+        if (span_left > CURVE_FADE_DURATION) dead = true;
     } else {
         // Slows down until it stops at the end of its life
         float sp = LINE_SPEED * (LINE_DURATION - lifespan) / LINE_DURATION;
@@ -72,11 +72,9 @@ void Flame::update(float elapsedTime) {
             sprite.setScale(sprite.getScale().x + growth,
                             sprite.getScale().y + growth);
 
-        if (lifespan > LINE_DURATION) is_dead = true;
+        if (lifespan > LINE_DURATION) dead = true;
     }
 }
-
-bool Flame::isDead() { return is_dead; }
 
 Flame::~Flame() {
     // dtor

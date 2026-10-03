@@ -2,9 +2,19 @@
 
 #include <math.h>
 
+#include <algorithm>
+
 #include "game.hpp"
 
 using namespace sf;
+
+Entity::~Entity() {
+    for (auto h : hitboxes) delete h;
+    for (auto zh : zHitboxes)
+        // Some entities (flames) use the same shape for both
+        if (std::find(hitboxes.begin(), hitboxes.end(), zh) == hitboxes.end())
+            delete zh;
+}
 
 std::vector<sf::RectangleShape *> Entity::getHitboxes() { return hitboxes; }
 
@@ -61,9 +71,11 @@ void Entity::update(float elapsedTime) {
     // do nothing
 }
 
-bool Entity::isDead() { 
-    return health <= 0;
+bool Entity::isDead() {
+    return dead || health <= 0;
 }
+
+void Entity::markDead() { dead = true; }
 
 bool Entity::isIgnoringDepthOnRendering() { return ignoreDepthOnRendering; }
 

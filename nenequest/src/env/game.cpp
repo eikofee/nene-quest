@@ -41,27 +41,24 @@ ScreenState Game::run(RenderWindow& app) {
 
     if (this->playerCount == 1) {
         World::setGameMode(ONE_PLAYER);
-        Player *player = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
-        World::addPlayer(player);
+        World::addPlayer(make_unique<Player>(make_unique<Weapon>(Axe),
+                                             sf::Vector2f(50, 520)));
     } else if (this->playerCount == 2) {
         World::setGameMode(TWO_PLAYERS);
-        Player *player1 = new Player(new Weapon(Axe), sf::Vector2f(50, 520));
-        World::addPlayer(player1);
-        Player *player2 = new Player(new Weapon(Sword), sf::Vector2f(50, 560), true);
-        World::addPlayer(player2);
+        World::addPlayer(make_unique<Player>(make_unique<Weapon>(Axe),
+                                             sf::Vector2f(50, 520)));
+        World::addPlayer(make_unique<Player>(make_unique<Weapon>(Sword),
+                                             sf::Vector2f(50, 560), true));
     }
 
     // Test scene, until there is a level
-    Boar *boar1 = new Boar(Vector2f(app.getSize().x - 1010, app.getSize().y / 2));
-    World::addEntity(boar1);
-    BonusHp *onigiri = new BonusHp(BONUS_ONIGIRI, Vector2f(900, 900));
-    ItemWeapon *sword = new ItemWeapon(Sword, Vector2f(800, 600));
-    World::addEntity(onigiri);
-    World::addEntity(sword);
-    BreakableObject *barrel = new BreakableObject(Chest, Vector2f(520, 430));
-    World::addEntity(barrel);
+    World::addEntity(make_unique<Boar>(
+        Vector2f(app.getSize().x - 1010, app.getSize().y / 2)));
+    World::addEntity(make_unique<BonusHp>(BONUS_ONIGIRI, Vector2f(900, 900)));
+    World::addEntity(make_unique<ItemWeapon>(Sword, Vector2f(800, 600)));
+    World::addEntity(make_unique<BreakableObject>(Chest, Vector2f(520, 430)));
     // Uncomment to test the boss:
-    // World::addEntity(new Dragon(Vector2f(1000, 400)));
+    // World::addEntity(make_unique<Dragon>(Vector2f(1000, 400)));
 
     Clock clock;
     // ---------------- Main Loop ----------------

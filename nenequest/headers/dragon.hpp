@@ -2,14 +2,15 @@
 #define DRAGON_H
 
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 #include "enemy.hpp"
 
-class Projectile;
+#include "projectile.hpp"
+
 class Dragon : public Enemy {
    public:
     Dragon(sf::Vector2f position = sf::Vector2f(0, 0));
-    ~Dragon();
     void draw(sf::RenderTarget &target,
               sf::RenderStates states = sf::RenderStates::Default) const override;
     void update(float elapsedTime) override;
@@ -29,7 +30,7 @@ class Dragon : public Enemy {
     static float constexpr DEAD_SHAKE_DURATION = 0.04f;      // Seconds
     static float constexpr DEAD_DELAY_BETWEEN_FLAMES = 0.6f; // Seconds
 
-    std::vector<Projectile *> flames;
+    std::vector<std::unique_ptr<Projectile>> flames;
     sf::Vector2f computeMove(float elapsedTime);
 
     float movement_timer = 0.f;

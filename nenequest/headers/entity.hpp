@@ -9,6 +9,11 @@ class Entity : public sf::Drawable {
    public:
     static int const DEPTH_DIFF =
         130;  // Maximal depth difference so that 2 entities can interact
+    Entity() = default;
+    virtual ~Entity();
+    // Entities own their hitboxes, so they can't be copied
+    Entity(const Entity &) = delete;
+    Entity &operator=(const Entity &) = delete;
     void draw(
         sf::RenderTarget &target,
         sf::RenderStates states = sf::RenderStates::Default) const override;
@@ -21,6 +26,8 @@ class Entity : public sf::Drawable {
     virtual EntityType getEntityType();
     virtual void update(float elapsedTime);
     virtual bool isDead();
+    // Removed from the world at the next update, whatever its health
+    void markDead();
     bool isIgnoringDepthOnRendering();
     int getHealth();
     virtual void alterHealth(int value, bool relative);
@@ -42,6 +49,7 @@ class Entity : public sf::Drawable {
     sf::Vector2f speed;  // not too fond of the name
     bool ignoreDepthOnRendering = false;
     int health = 11;
+    bool dead = false;
 
    private:
 };

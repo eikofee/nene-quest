@@ -1,6 +1,7 @@
 #include "player.hpp"
 
 #include <SFML/Graphics.hpp>
+#include <algorithm>
 #include <iostream>
 
 #include "world.hpp"
@@ -32,9 +33,9 @@ IntRect walk1normal;
 IntRect walk2normal;
 IntRect moddifierAttack;
 
-Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
+Player::Player(unique_ptr<Weapon> w, Vector2f position, bool secondPlayer) {
 
-    this->weapon = w;
+    this->weapon = std::move(w);
     if (!secondPlayer) {
         this->id = PlayerID::PLAYER1;
         this->texture.loadFromFile("img/player1.png");
@@ -103,9 +104,7 @@ Player::Player(Weapon *w, Vector2f position, bool secondPlayer) {  // 150,170
     this->alterHealth(PLAYER_MAX_HP, false);
 }
 
-Player::~Player() { delete this->weapon; }
-
-Weapon *Player::getWeapon() { return this->weapon; }
+Weapon *Player::getWeapon() { return this->weapon.get(); }
 
 void Player::attack() {
     if (is_attacking) return;
@@ -127,8 +126,8 @@ bool Player::hitOnce(Entity *entity) {
     return true;
 }
 
-void Player::equip(Weapon *w) {
-    this->weapon = w;
+void Player::equip(unique_ptr<Weapon> w) {
+    this->weapon = std::move(w);
     this->weapon->setPosition(this->getPosition().x + this->weaponXOffset,
                               this->getPosition().y + this->weaponYOffset);
 }
@@ -140,7 +139,7 @@ PlayerID Player::getId() {
 void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     target.draw(*this->weapon, states);
     Entity::draw(target, states);
-    for (Entity *var : arrows) {
+    for (auto &var : arrows) {
         target.draw(*var, states);
     }
 }
@@ -190,9 +189,10 @@ void Player::setPosition(float x, float y) {
 }
 
 void Player::fireArrow() {
-    arrows.push_back(new Arrow(Vector2f(this->getPosition().x + weaponXOffset,
-                                        this->getPosition().y + weaponYOffset),
-                               this->getDepth()));
+    arrows.push_back(make_unique<Arrow>(
+        Vector2f(this->getPosition().x + weaponXOffset,
+                 this->getPosition().y + weaponYOffset),
+        this->getDepth()));
     setShootingState(true);
 }
 
@@ -276,19 +276,18 @@ void Player::fixPosition() {
 }
 
 void Player::cleanArrows(float elapsedTime) {
-    for (unsigned int i = 0; i < this->arrows.size();) {
-        this->arrows.at(i)->update(elapsedTime);
-        if (this->arrows.at(i)->isDead()) {
-            delete (this->arrows.at(i));
-            this->arrows.erase(this->arrows.begin() + i);
-        } else {
-            i++;
-        }
-    }
+    for (auto &arrow : arrows) arrow->update(elapsedTime);
+    arrows.erase(remove_if(arrows.begin(), arrows.end(),
+                           [](auto &arrow) { return arrow->isDead(); }),
+                 arrows.end());
 }
 
 EntityType Player::getEntityType() { return PLAYER; }
-vector<Arrow *> Player::getArrows() { return arrows; }
+vector<Arrow *> Player::getArrows() {
+    vector<Arrow *> result;
+    for (auto &arrow : arrows) result.push_back(arrow.get());
+    return result;
+}
 
 bool Player::isShooting() { return is_shooting; }
 

@@ -70,17 +70,15 @@ void Arrow::update(float elapsedTime) {
         else
             zHitboxes.at(0)->setFillColor(sf::Color(0, 0, 255, 128));  // blue
 
-        if (lifespan >= curveTime) is_dead = true;
+        if (lifespan >= curveTime) dead = true;
     } else {
         if (lifespan > 0) lifespan = 0;
         lifespan -= elapsedTime;
 
-        if (lifespan < -150)  //???
-            is_dead = true;
+        if (lifespan < -DYING_DURATION)
+            dead = true;
     }
 }
-
-bool Arrow::isDead() { return is_dead; }
 
 void Arrow::kill() {
     this->depth = 8000;
