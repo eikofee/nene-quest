@@ -1,5 +1,6 @@
 #include "game.hpp"
 
+#include <SFML/Audio.hpp>
 #include <stdlib.h>
 #include <time.h>
 
@@ -57,6 +58,13 @@ ScreenState Game::run(RenderWindow& app) {
     Level level(level0);
     // To test the boss right away, use this level instead:
     // Level level({{0, "scroll", 900}, {0, "dragon", 400}, {900, "scroll", 0}});
+
+    // Streamed from the file, and stopped when leaving this screen
+    Music music;
+    if (music.openFromFile("bgm/bgm.ogg")) {
+        music.setLoop(true);
+        music.play();
+    }
 
     Clock clock;
     // ---------------- Main Loop ----------------
