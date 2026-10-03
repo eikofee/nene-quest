@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "level.hpp"
 #include "world.hpp"
 
 using namespace std;
@@ -53,15 +54,9 @@ ScreenState Game::run(RenderWindow& app) {
                                              sf::Vector2f(50, 560), true));
     }
 
-    // Test scene, until there is a level
-    World::addEntity(make_unique<Boar>(
-        Vector2f(app.getSize().x - 1010, app.getSize().y / 2)));
-    World::addEntity(make_unique<BonusHp>(BONUS_ONIGIRI, Vector2f(900, 900)));
-    World::addEntity(make_unique<ItemWeapon>(Sword, Vector2f(800, 600)));
-    World::addEntity(make_unique<BreakableObject>(Chest, Vector2f(520, 430)));
-    World::setScrollSpeed(120);
-    // Uncomment to test the boss (and set the scroll speed to 0 above):
-    // World::addEntity(make_unique<Dragon>(Vector2f(1000, 400)));
+    Level level(level0);
+    // To test the boss right away, use this level instead:
+    // Level level({{0, "scroll", 900}, {0, "dragon", 400}, {900, "scroll", 0}});
 
     Clock clock;
     // ---------------- Main Loop ----------------
@@ -97,6 +92,7 @@ ScreenState Game::run(RenderWindow& app) {
 
         World::setElapsedTime(elapsedTime);
         World::moveCamera();
+        level.update();
         World::updateEntities();
         World::updatePlayers();
         World::crushPlayersAgainstSolids();
